@@ -96,6 +96,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				8C3824C810DC7033001BA4B1 /* ViewControllers */,
 				1D3623240D0F684500981E51 /* ARKitDemoAppDelegate.h */,
 				1D3623250D0F684500981E51 /* ARKitDemoAppDelegate.m */,
 				111A142D1024C8AC002D39A1 /* ARKIt */,
@@ -117,12 +118,8 @@
 			children = (
 				112543A81024DE590086106E /* ARCoordinate.h */,
 				112543A91024DE590086106E /* ARCoordinate.m */,
-				111A142B1024C8A6002D39A1 /* ARViewController.h */,
-				111A142A1024C8A6002D39A1 /* ARViewController.m */,
 				CE169F561025704E00556F8F /* ARGeoCoordinate.h */,
 				CE169F571025704E00556F8F /* ARGeoCoordinate.m */,
-				11609B091026014F00A964C8 /* ARGeoViewController.h */,
-				11609B0A1026014F00A964C8 /* ARGeoViewController.m */,
 			);
 			name = ARKIt;
 			sourceTree = "<group>";
@@ -180,6 +177,17 @@
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8C3824C810DC7033001BA4B1 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				111A142B1024C8A6002D39A1 /* ARViewController.h */,
+				111A142A1024C8A6002D39A1 /* ARViewController.m */,
+				11609B091026014F00A964C8 /* ARGeoViewController.h */,
+				11609B0A1026014F00A964C8 /* ARGeoViewController.m */,
+			);
+			name = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

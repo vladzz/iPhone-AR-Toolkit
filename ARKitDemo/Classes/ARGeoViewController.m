@@ -7,7 +7,6 @@
 //
 
 #import "ARGeoViewController.h"
-
 #import "ARGeoCoordinate.h"
 
 @implementation ARGeoViewController
@@ -18,13 +17,13 @@
 	[centerLocation release];
 	centerLocation = [newLocation retain];
 	
-	for (ARGeoCoordinate *geoLocation in self.coordinates) {
+	for (ARGeoCoordinate *geoLocation in [self coordinates]) {
+		
 		if ([geoLocation isKindOfClass:[ARGeoCoordinate class]]) {
 			[geoLocation calibrateUsingOrigin:centerLocation];
 			
-			if (geoLocation.radialDistance > self.maximumScaleDistance) {
-				self.maximumScaleDistance = geoLocation.radialDistance;
-			}
+			if ([geoLocation radialDistance] > [self maximumScaleDistance]) 
+				[self setMaximumScaleDistance:[geoLocation radialDistance]];
 		}
 	}
 }

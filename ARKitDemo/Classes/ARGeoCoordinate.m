@@ -8,52 +8,55 @@
 
 #import "ARGeoCoordinate.h"
 
-
 @implementation ARGeoCoordinate
 
 @synthesize geoLocation;
 
 - (float)angleFromCoordinate:(CLLocationCoordinate2D)first toCoordinate:(CLLocationCoordinate2D)second {
-	float longitudinalDifference = second.longitude - first.longitude;
-	float latitudinalDifference = second.latitude - first.latitude;
-	float possibleAzimuth = (M_PI * .5f) - atan(latitudinalDifference / longitudinalDifference);
-	if (longitudinalDifference > 0) return possibleAzimuth;
-	else if (longitudinalDifference < 0) return possibleAzimuth + M_PI;
-	else if (latitudinalDifference < 0) return M_PI;
+	
+	float longitudinalDifference	= second.longitude - first.longitude;
+	float latitudinalDifference		= second.latitude  - first.latitude;
+	float possibleAzimuth			= (M_PI * .5f) - atan(latitudinalDifference / longitudinalDifference);
+	
+	if (longitudinalDifference > 0) 
+		return possibleAzimuth;
+	else if (longitudinalDifference < 0) 
+		return possibleAzimuth + M_PI;
+	else if (latitudinalDifference < 0) 
+		return M_PI;
 	
 	return 0.0f;
 }
 
 - (void)calibrateUsingOrigin:(CLLocation *)origin {
 	
-	if (!self.geoLocation) return;
+	if (![self geoLocation]) 
+		return;
 	
-	double baseDistance = [origin getDistanceFrom:self.geoLocation];
+	double baseDistance = [origin getDistanceFrom:[self geoLocation]];
+	[self setRadialDistance: sqrt(pow(origin.altitude - [[self geoLocation] altitude], 2) + pow(baseDistance, 2))];
 	
-	self.radialDistance = sqrt(pow(origin.altitude - self.geoLocation.altitude, 2) + pow(baseDistance, 2));
-		
-	float angle = sin(ABS(origin.altitude - self.geoLocation.altitude) / self.radialDistance);
+	float angle = sin(ABS([origin altitude] - [[self geoLocation] altitude]) / [self radialDistance]);
 	
-	if (origin.altitude > self.geoLocation.altitude) angle = -angle;
+	if ([origin altitude] > [[self geoLocation] altitude]) angle = -angle;
 	
-	self.inclination = angle;
-	self.azimuth = [self angleFromCoordinate:origin.coordinate toCoordinate:self.geoLocation.coordinate];
+	[self setInclination: angle];
+	[self setAzimuth: [self angleFromCoordinate:[origin coordinate] toCoordinate:[[self geoLocation] coordinate]]];
 }
 
-+ (ARGeoCoordinate *)coordinateWithLocation:(CLLocation *)location {
-	ARGeoCoordinate *newCoordinate = [[ARGeoCoordinate alloc] init];
-	newCoordinate.geoLocation = location;
-	
-	newCoordinate.title = @"";
++ (ARGeoCoordinate *)coordinateWithLocation:(CLLocation *)location locationTitle:(NSString *) titleOfLocation {
+
+	ARGeoCoordinate *newCoordinate	= [[ARGeoCoordinate alloc] init];
+	[newCoordinate setGeoLocation: location];
+	[newCoordinate setTitle: titleOfLocation];
 	
 	return [newCoordinate autorelease];
 }
 
 + (ARGeoCoordinate *)coordinateWithLocation:(CLLocation *)location fromOrigin:(CLLocation *)origin {
-	ARGeoCoordinate *newCoordinate = [ARGeoCoordinate coordinateWithLocation:location];
 	
+	ARGeoCoordinate *newCoordinate = [ARGeoCoordinate coordinateWithLocation:location locationTitle:@""];
 	[newCoordinate calibrateUsingOrigin:origin];
-		
 	return newCoordinate;
 }
 

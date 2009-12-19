@@ -8,6 +8,7 @@
 
 #import "ARViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "CoordinateView.h"
 
 #define VIEWPORT_WIDTH_RADIANS 0.5
 #define VIEWPORT_HEIGHT_RADIANS 0.7392
@@ -34,7 +35,6 @@
 
 @synthesize debugMode	= ar_debugMode;
 @synthesize coordinates = ar_coordinates;
-@synthesize delegate;
 @synthesize locationDelegate;
 @synthesize accelerometerDelegate;
 @synthesize cameraController;
@@ -240,28 +240,24 @@
 
 - (void)deviceOrientationDidChange:(NSNotification *)notification {
 	
-	// we only care about responding to these changes if the delegate cares.
-	if ([self delegate] && [[self delegate] respondsToSelector:@selector(shouldAutorotateViewsToInterfaceOrientation:)]) {
-		
-		UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-		BOOL shouldAutorotate = [[self delegate] shouldAutorotateViewsToInterfaceOrientation:orientation];
-		
-		if (!shouldAutorotate) 
-			return;
-		
-		// remember our old orientation.
-		UIInterfaceOrientation oldOrientation = [self viewInterfaceOrientation];
-		
-		// assign our new orientation.
-		viewInterfaceOrientation = orientation;
-		
-		// go through and rotate all the views.
-		CGFloat rotation = [self _rotationFromOrientation:oldOrientation toOrientation:[self viewInterfaceOrientation]];
-		
-		for (UIView *subview in ar_coordinateViews) {
-			[subview setTransform: CGAffineTransformRotate([subview transform], rotation)];
-		}
+	UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+
+	if (![self shouldAutorotateToInterfaceOrientation:orientation]);
+		return;
+	
+	// remember our old orientation.
+	UIInterfaceOrientation oldOrientation = [self viewInterfaceOrientation];
+	
+	// assign our new orientation.
+	viewInterfaceOrientation = orientation;
+	
+	// go through and rotate all the views.
+	CGFloat rotation = [self _rotationFromOrientation:oldOrientation toOrientation:[self viewInterfaceOrientation]];
+	
+	for (UIView *subview in ar_coordinateViews) {
+		[subview setTransform: CGAffineTransformRotate([subview transform], rotation)];
 	}
+	
 }
 
 - (CGPoint)pointInView:(UIView *)realityView withView:(UIView *)viewToDraw forCoordinate:(ARCoordinate *)coordinate {	
@@ -332,8 +328,9 @@ NSComparisonResult LocationSortClosestFirst(ARCoordinate *s1, ARCoordinate *s2, 
 	if ([coordinate radialDistance] > [self maximumScaleDistance]) 
 		[self setMaximumScaleDistance: [coordinate radialDistance]];
 	
-	//message the delegate.
-	[ar_coordinateViews addObject:[[self delegate] viewForCoordinate:coordinate]];
+	CoordinateView *cv = [[CoordinateView alloc] initForCoordinate:coordinate];
+	[ar_coordinateViews addObject:cv];
+	[cv release];
 }
 
 - (void)addCoordinates:(NSArray *)newCoordinates {

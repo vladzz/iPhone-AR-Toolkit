@@ -10,12 +10,10 @@
 
 #import "ARGeoViewController.h"
 
-@interface ARKitDemoAppDelegate : NSObject <UIApplicationDelegate, ARViewDelegate> {
+@interface ARKitDemoAppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;
 }
 
-- (UIView *)viewForCoordinate:(ARCoordinate *)coordinate;
-- (BOOL)shouldAutorotateViewsToInterfaceOrientation:(UIInterfaceOrientation)possibleOrientation;
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 

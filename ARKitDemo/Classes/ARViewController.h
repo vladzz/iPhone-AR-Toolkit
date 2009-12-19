@@ -10,15 +10,6 @@
 #import <CoreLocation/CoreLocation.h>
 #import "ARCoordinate.h"
 
-@protocol ARViewDelegate
-
-- (UIView *)viewForCoordinate:(ARCoordinate *)coordinate;
-
-@optional
-- (BOOL)shouldAutorotateViewsToInterfaceOrientation:(UIInterfaceOrientation)possibleOrientation;
-
-@end
-
 @interface ARViewController : UIViewController <UIAccelerometerDelegate, CLLocationManagerDelegate> {
 
 	CLLocationManager	*locationManager;
@@ -27,7 +18,6 @@
 	
 	UIImagePickerController *cameraController;
 	
-	NSObject<ARViewDelegate>			*delegate;
 	NSObject<CLLocationManagerDelegate> *locationDelegate;
 	NSObject<UIAccelerometerDelegate>	*accelerometerDelegate;
 	
@@ -72,7 +62,6 @@
 
 @property (readonly) UIInterfaceOrientation viewInterfaceOrientation;
 @property (nonatomic, retain) UIImagePickerController *cameraController;
-@property (nonatomic, assign) NSObject<ARViewDelegate> *delegate;
 @property (nonatomic, assign) NSObject<CLLocationManagerDelegate> *locationDelegate;
 @property (nonatomic, assign) NSObject<UIAccelerometerDelegate> *accelerometerDelegate;
 @property (nonatomic, retain) UIAccelerometer *accelerometerManager;

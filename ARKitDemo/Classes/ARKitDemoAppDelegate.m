@@ -185,6 +185,10 @@
 	return [tempView autorelease];
 }
 
+-(BOOL)shouldAutorotateViewsToInterfaceOrientation:(UIInterfaceOrientation)possibleOrientation {
+   return (possibleOrientation != UIInterfaceOrientationPortraitUpsideDown);
+}
+
 - (void)dealloc {
 	
 	//NEW COMMENT!

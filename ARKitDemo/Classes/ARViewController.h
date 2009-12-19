@@ -14,6 +14,9 @@
 
 - (UIView *)viewForCoordinate:(ARCoordinate *)coordinate;
 
+@optional
+- (BOOL)shouldAutorotateViewsToInterfaceOrientation:(UIInterfaceOrientation)possibleOrientation;
+
 @end
 
 @interface ARViewController : UIViewController <UIAccelerometerDelegate, CLLocationManagerDelegate> {
@@ -36,7 +39,17 @@
 	double updateFrequency; 	//defaults to 20hz;
 	double maximumRotationAngle;
 	
+	UIInterfaceOrientation viewInterfaceOrientation;
+	
 @private
+	double _latestHeading;
+	UIAccelerationValue _latestXAcceleration;
+	UIAccelerationValue _latestYAcceleration;
+	UIAccelerationValue _latestZAcceleration;
+	
+	// in radians.
+	double _viewportRotation;
+	
 	BOOL			ar_debugMode;
 	
 	NSTimer			*_updateTimer;
@@ -57,6 +70,7 @@
 @property double maximumRotationAngle;
 @property double updateFrequency;
 
+@property (readonly) UIInterfaceOrientation viewInterfaceOrientation;
 @property (nonatomic, retain) UIImagePickerController *cameraController;
 @property (nonatomic, assign) NSObject<ARViewDelegate> *delegate;
 @property (nonatomic, assign) NSObject<CLLocationManagerDelegate> *locationDelegate;
@@ -79,7 +93,7 @@
 
 - (void)startListening;
 - (void)updateLocations:(NSTimer *)timer;
-- (CGPoint)pointInView:(UIView *)realityView forCoordinate:(ARCoordinate *)coordinate;
-- (BOOL)viewportContainsCoordinate:(ARCoordinate *)coordinate;
+- (CGPoint)pointInView:(UIView *)realityView withView:(UIView *)viewToDraw forCoordinate:(ARCoordinate *)coordinate;
+- (BOOL)viewportContainsView:(UIView *)viewToDraw forCoordinate:(ARCoordinate *)coordinate;
 
 @end

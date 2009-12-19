@@ -12,6 +12,13 @@
 #define VIEWPORT_WIDTH_RADIANS 0.5
 #define VIEWPORT_HEIGHT_RADIANS 0.7392
 
+@interface ARViewController (Private)
+- (CGFloat) _rotationFromOrientation:(UIInterfaceOrientation)oldOrientation toOrientation:(UIInterfaceOrientation)newOrientation;
+- (void)	_updateCenterCoordinate;
+- (double)	_widthInRadiansForView:(UIView *)viewToDraw;
+- (double)	_heightInRadiansForView:(UIView *)viewToDraw;
+@end
+
 @implementation ARViewController
 
 @synthesize locationManager;
@@ -23,6 +30,8 @@
 @synthesize minimumScaleFactor;
 @synthesize maximumRotationAngle;
 @synthesize updateFrequency;
+@synthesize viewInterfaceOrientation;
+
 @synthesize debugMode	= ar_debugMode;
 @synthesize coordinates = ar_coordinates;
 @synthesize delegate;
@@ -43,7 +52,12 @@
 	ar_coordinateViews	= [[NSMutableArray alloc] init];
 	
 	_updateTimer			= nil;
-	self.updateFrequency	= 1 / 20.0;
+	[self setUpdateFrequency: 5 / 20.0];
+	
+	_latestHeading		 = -1.0f;
+	_latestXAcceleration = -1.0f;
+	_latestYAcceleration = -1.0f;
+	_latestZAcceleration = -1.0f;
 	
 #if !TARGET_IPHONE_SIMULATOR
 	
@@ -71,6 +85,11 @@
 		return nil;
 	
 	[self setLocationManager:manager];
+	
+	//assign our locationDelegate if it already has a delegate object.
+    if ([[self locationManager] delegate]) 
+		[self setLocationDelegate: [[self locationManager] delegate]];
+	
 	[[self locationManager] setDelegate:self];
 	[self setLocationDelegate:nil];
 	
@@ -146,15 +165,28 @@
 		[ar_debugView removeFromSuperview];
 }
 
-- (BOOL)viewportContainsCoordinate:(ARCoordinate *)coordinate {
+- (BOOL)viewportContainsView:(UIView *)viewToDraw forCoordinate:(ARCoordinate *)coordinate {
 	
-	double centerAzimuth	= [[self centerCoordinate] azimuth];
-	double leftAzimuth		= centerAzimuth - VIEWPORT_WIDTH_RADIANS / 2.0;
+	double centerAzimuth = [[self centerCoordinate] azimuth];
+	CGRect viewBounds	 = viewToDraw.bounds;
+	
+	//auto adjust the width and height of our viewport based on the view's size.
+	double viewWidthRadians  = VIEWPORT_WIDTH_RADIANS / ([[self view] bounds].size.width / viewBounds.size.width);
+	double viewHeightRadians = VIEWPORT_HEIGHT_RADIANS / ([[self view] bounds].size.height / viewBounds.size.height);
+	
+	if ([self interfaceOrientation]  == UIInterfaceOrientationLandscapeLeft || [self interfaceOrientation]  == UIInterfaceOrientationLandscapeRight) {
+	   //swap them.
+		double temp			= viewWidthRadians;
+	    viewWidthRadians	= viewHeightRadians;
+	    viewHeightRadians	= temp;
+	 }
+	
+	double leftAzimuth = centerAzimuth - VIEWPORT_WIDTH_RADIANS / 2.0 - viewWidthRadians;
 	
 	if (leftAzimuth < 0.0) 
 		leftAzimuth = 2 * M_PI + leftAzimuth;
 	
-	double rightAzimuth = centerAzimuth + VIEWPORT_WIDTH_RADIANS / 2.0;
+	double rightAzimuth = centerAzimuth + VIEWPORT_WIDTH_RADIANS / 2.0 + viewWidthRadians;
 	
 	if (rightAzimuth > 2 * M_PI)
 		rightAzimuth = rightAzimuth - 2 * M_PI;
@@ -165,13 +197,11 @@
 		result = ([coordinate azimuth] < rightAzimuth || [coordinate azimuth] > leftAzimuth);
 	
 	double centerInclination	= [[self centerCoordinate] inclination];
-	double bottomInclination	= centerInclination - VIEWPORT_HEIGHT_RADIANS / 2.0;
-	double topInclination		= centerInclination + VIEWPORT_HEIGHT_RADIANS / 2.0;
+	double bottomInclination	= centerInclination - VIEWPORT_HEIGHT_RADIANS / 2.0 - viewHeightRadians;
+	double topInclination		= centerInclination + VIEWPORT_HEIGHT_RADIANS / 2.0 + viewHeightRadians;
 	
 	//check the height.
 	result = result && ([coordinate inclination] > bottomInclination && [coordinate inclination] < topInclination);
-	
-	//NSLog(@"coordinate: %@ result: %@", coordinate, result?@"YES":@"NO");
 	
 	return result;
 }
@@ -193,6 +223,9 @@
 		[[self locationManager] startUpdatingHeading];
 	}
 	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+	
 	[[self locationManager] setDelegate: self];
 	
 	if (![self accelerometerManager]) {
@@ -202,31 +235,59 @@
 	}
 	
 	if (![self centerCoordinate]) 
-		[self setCenterCoordinate:[ARCoordinate coordinateWithRadialDistance:0 inclination:0 azimuth:0]];
+		[self setCenterCoordinate:[ARCoordinate coordinateWithRadialDistance:1.0 inclination:0 azimuth:0]];
 }
 
-- (CGPoint)pointInView:(UIView *)realityView forCoordinate:(ARCoordinate *)coordinate {
+- (void)deviceOrientationDidChange:(NSNotification *)notification {
+	
+	// we only care about responding to these changes if the delegate cares.
+	if ([self delegate] && [[self delegate] respondsToSelector:@selector(shouldAutorotateViewsToInterfaceOrientation:)]) {
+		
+		UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+		BOOL shouldAutorotate = [[self delegate] shouldAutorotateViewsToInterfaceOrientation:orientation];
+		
+		if (!shouldAutorotate) 
+			return;
+		
+		// remember our old orientation.
+		UIInterfaceOrientation oldOrientation = [self viewInterfaceOrientation];
+		
+		// assign our new orientation.
+		viewInterfaceOrientation = orientation;
+		
+		// go through and rotate all the views.
+		CGFloat rotation = [self _rotationFromOrientation:oldOrientation toOrientation:[self viewInterfaceOrientation]];
+		
+		for (UIView *subview in ar_coordinateViews) {
+			[subview setTransform: CGAffineTransformRotate([subview transform], rotation)];
+		}
+	}
+}
+
+- (CGPoint)pointInView:(UIView *)realityView withView:(UIView *)viewToDraw forCoordinate:(ARCoordinate *)coordinate {	
 	
 	CGPoint point;
 	
-	//x coordinate.
-	double pointAzimuth = [coordinate azimuth];
+	// x coordinate.
+	double viewWidthRadians		= [self _widthInRadiansForView:viewToDraw];
+	double viewHeightRadians	= [self _heightInRadiansForView:viewToDraw];
+	double pointAzimuth			= [coordinate azimuth];
 	
-	//our x numbers are left based.
-	double leftAzimuth = [[self centerCoordinate] azimuth] - VIEWPORT_WIDTH_RADIANS / 2.0;
+	// our x numbers are left based.
+	double leftAzimuth = [[self centerCoordinate] azimuth] - VIEWPORT_WIDTH_RADIANS / 2.0 - viewWidthRadians;
 	
 	if (leftAzimuth < 0.0) 
 		leftAzimuth = 2 * M_PI + leftAzimuth;
 	
-	//it's past the 0 point.
+	// it's past the 0 point.
 	if (pointAzimuth < leftAzimuth) 
 		point.x = ((2 * M_PI - leftAzimuth + pointAzimuth) / VIEWPORT_WIDTH_RADIANS) * [realityView frame].size.width;
 	else 
 		point.x = ((pointAzimuth - leftAzimuth) / VIEWPORT_WIDTH_RADIANS) * [realityView frame].size.width;
 	
-	//y coordinate.
+	// y coordinate.
 	double pointInclination = [coordinate inclination];
-	double topInclination	= [[self centerCoordinate] inclination] - VIEWPORT_HEIGHT_RADIANS / 2.0;
+	double topInclination	= [[self centerCoordinate] inclination] - VIEWPORT_HEIGHT_RADIANS / 2.0 - viewHeightRadians;;
 	
 	point.y = [realityView frame].size.height - ((pointInclination - topInclination) / VIEWPORT_HEIGHT_RADIANS) * [realityView frame].size.height;
 	
@@ -234,26 +295,16 @@
 }
 
 #define kFilteringFactor 0.05
-UIAccelerationValue rollingX, rollingZ;
+
 
 - (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration {
-	// -1 face down. // 1 face up.
-	//update the center coordinate.
-	//NSLog(@"x: %f y: %f z: %f", acceleration.x, acceleration.y, acceleration.z);
-	//this should be different based on orientation.
-	
-	rollingZ	= (acceleration.z * kFilteringFactor) + (rollingZ * (1.0 - kFilteringFactor));
-    rollingX	= (acceleration.y * kFilteringFactor) + (rollingX * (1.0 - kFilteringFactor));
-	
-	if (rollingZ > 0.0) 
-		[[self centerCoordinate] setInclination: atan(rollingX / rollingZ) + M_PI / 2.0];
-	else if (rollingZ < 0.0) 
-		[[self centerCoordinate] setInclination: atan(rollingX / rollingZ) - M_PI / 2.0];// + M_PI];
-	else if (rollingX < 0) 
-		 [[self centerCoordinate] setInclination: M_PI/2.0];
-	else if (rollingX >= 0) 
-		 [[self centerCoordinate] setInclination: 3 * M_PI/2.0];
 
+	_latestZAcceleration  = (acceleration.z * kFilteringFactor) + (_latestZAcceleration * (1.0 - kFilteringFactor));
+	_latestYAcceleration  = (acceleration.y * kFilteringFactor) + (_latestYAcceleration * (1.0 - kFilteringFactor));
+	_latestXAcceleration  = (acceleration.x * kFilteringFactor) + (_latestXAcceleration * (1.0 - kFilteringFactor));
+	
+	[self _updateCenterCoordinate];
+	
 	//forward the acceleromter.
 	if ([self accelerometerDelegate] && [[self accelerometerDelegate] respondsToSelector:@selector(accelerometer:didAccelerate:)]) 
 		[[self accelerometerDelegate] accelerometer:accelerometer didAccelerate:acceleration];
@@ -319,20 +370,20 @@ NSComparisonResult LocationSortClosestFirst(ARCoordinate *s1, ARCoordinate *s2, 
 	if (!ar_coordinateViews || ar_coordinateViews.count == 0) 
 		return;
 	
-	[ar_debugView setText: [[self centerCoordinate] description]];
+	[ar_debugView setText: [NSString stringWithFormat:@"%.4f %.4f %.4f", _latestXAcceleration, _latestYAcceleration, _viewportRotation]];
 	
 	int index = 0;
 	for (ARCoordinate *item in ar_coordinates) {
 		
 		UIView *viewToDraw = [ar_coordinateViews objectAtIndex:index];
 		
-		if ([self viewportContainsCoordinate:item]) {
+		if ([self viewportContainsView:viewToDraw forCoordinate:item]) {
 			
-			CGPoint loc			= [self pointInView:ar_overlayView forCoordinate:item];
+			CGPoint loc = [self pointInView:ar_overlayView withView:viewToDraw forCoordinate:item];
 			CGFloat scaleFactor = 1.0;
 			
-			if (self.scaleViewsBasedOnDistance) 
-				scaleFactor = 1.0 - self.minimumScaleFactor * (item.radialDistance / self.maximumScaleDistance);
+			if ([self scaleViewsBasedOnDistance]) 
+				scaleFactor = 1.0 - [self minimumScaleFactor] * ([item radialDistance] / [self maximumScaleDistance]);
 			
 			float width		= [viewToDraw bounds].size.width  * scaleFactor;
 			float height	= [viewToDraw bounds].size.height * scaleFactor;
@@ -368,20 +419,20 @@ NSComparisonResult LocationSortClosestFirst(ARCoordinate *s1, ARCoordinate *s2, 
 			if (!([viewToDraw superview])) {
 				[ar_overlayView addSubview:viewToDraw];
 				[ar_overlayView sendSubviewToBack:viewToDraw];
+
 			}
 		} 
-		else {
+		else 
 			[viewToDraw removeFromSuperview];
-			[viewToDraw setTransform: CGAffineTransformIdentity];
-		}
-		
+
 		index++;
 	}
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading {
 		
-	[[self centerCoordinate] setAzimuth: fmod(newHeading.magneticHeading, 360.0) * (2 * (M_PI / 360.0))];
+	_latestHeading = fmod(newHeading.magneticHeading, 360.0) * (2 * (M_PI / 360.0));
+	[self _updateCenterCoordinate];
 	
 	//forward the call.
 	if ([self locationDelegate] && [[self locationDelegate] respondsToSelector:@selector(locationManager:didUpdateHeading:)]) 
@@ -425,10 +476,109 @@ NSComparisonResult LocationSortClosestFirst(ARCoordinate *s1, ARCoordinate *s2, 
 }
 
 - (void)dealloc {
+	[[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
 	[ar_debugView release];
 	[ar_coordinateViews release];
 	[ar_coordinates release];
     [super dealloc];
+}
+
+#pragma mark -
+#pragma mark Private Methods
+- (void)_updateCenterCoordinate {
+	
+	UIAccelerationValue downAcceleration = _latestXAcceleration + _latestYAcceleration;
+	[[self centerCoordinate] setAzimuth: (1.0 - ABS(_latestYAcceleration)) * (M_PI / 2.0) + _latestHeading ];
+	
+	if (_latestZAcceleration > 0.0) 
+		 [[self centerCoordinate] setInclination: atan(downAcceleration / _latestZAcceleration) + M_PI / 2.0];
+	 else if (_latestZAcceleration < 0.0) 
+		 [[self centerCoordinate] setInclination: atan(downAcceleration / _latestZAcceleration) - M_PI / 2.0];// + M_PI;
+	 else if (downAcceleration < 0) 
+		 [[self centerCoordinate] setInclination: M_PI / 2.0];
+	 else if (downAcceleration >= 0) 
+		 [[self centerCoordinate] setInclination: 3 * M_PI / 2.0];
+		
+	_viewportRotation = atan(_latestXAcceleration / _latestYAcceleration);
+
+	if (_latestXAcceleration > 0.0) 
+		_viewportRotation = ABS(_viewportRotation);
+	else 
+		_viewportRotation = -ABS(_viewportRotation);
+	
+	[self updateLocations:nil];
+}
+
+- (CGFloat)_rotationFromOrientation:(UIInterfaceOrientation)oldOrientation toOrientation:(UIInterfaceOrientation)newOrientation {
+
+	CGFloat originalOffset = 0.0f;
+	
+	switch (oldOrientation) {
+		case UIInterfaceOrientationPortrait:
+			originalOffset = 0.0f;
+			break;
+		case UIInterfaceOrientationPortraitUpsideDown:
+			originalOffset = M_PI;
+			break;
+		case UIInterfaceOrientationLandscapeLeft:
+			originalOffset = M_PI / 2.0;
+			break;
+		case UIInterfaceOrientationLandscapeRight:
+			originalOffset = - M_PI / 2.0;
+			break;
+		default:
+			break;
+	}
+	
+	CGFloat newOffset = 0.0f;
+	
+	switch (newOrientation) {
+		case UIInterfaceOrientationPortrait:
+			newOffset = 0.0f;
+			break;
+		case UIInterfaceOrientationPortraitUpsideDown:
+			newOffset = M_PI;
+			break;
+		case UIInterfaceOrientationLandscapeLeft:
+			newOffset = M_PI / 2.0;
+			break;
+		case UIInterfaceOrientationLandscapeRight:
+			newOffset = - M_PI / 2.0;
+			break;
+		default:
+			break;
+	}
+	
+	NSLog(@"ROTATING: from %f to %f", originalOffset, newOffset);
+	return fmod(originalOffset + newOffset, 2 * M_PI);
+}
+
+- (double)_widthInRadiansForView:(UIView *)viewToDraw {
+	
+	CGRect viewBounds = [viewToDraw bounds];
+	BOOL sideways = ([self interfaceOrientation] == UIInterfaceOrientationLandscapeLeft || [self interfaceOrientation] == UIInterfaceOrientationLandscapeRight);
+	
+	//auto adjust the width and height of our viewport based on the view's size.
+	if (!sideways) 
+		return VIEWPORT_WIDTH_RADIANS / ([[self view] bounds].size.width / viewBounds.size.width);
+	 else 
+		return VIEWPORT_HEIGHT_RADIANS / ([[self view] bounds].size.height / viewBounds.size.height);
+	
+	return -1.0;
+}
+
+- (double)_heightInRadiansForView:(UIView *)viewToDraw {
+	
+	CGRect viewBounds = [viewToDraw bounds];
+	BOOL sideways = ([self interfaceOrientation] == UIInterfaceOrientationLandscapeLeft || [self interfaceOrientation] == UIInterfaceOrientationLandscapeRight);
+	
+	//auto adjust the width and height of our viewport based on the view's size.
+	if (sideways) 
+		return VIEWPORT_WIDTH_RADIANS / ([[self view] bounds].size.width / viewBounds.size.width);
+	else 
+		return VIEWPORT_HEIGHT_RADIANS / ([[self view] bounds].size.height / viewBounds.size.height);
+	
+	return -1.0;
 }
 
 @end

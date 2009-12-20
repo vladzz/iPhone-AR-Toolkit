@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "ARGeoViewController.h"
+#import "ARViewController.h"
 
 @interface ARKitDemoAppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;

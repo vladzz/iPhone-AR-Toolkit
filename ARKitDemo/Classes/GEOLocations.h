@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+@class ARCoordinate;
 
 @interface GEOLocations : NSObject {
 	
@@ -18,6 +19,7 @@
 - (id)init;
 -(void) LoadLocations;
 -(NSMutableArray*) getLocations;
+
 
 
 @end

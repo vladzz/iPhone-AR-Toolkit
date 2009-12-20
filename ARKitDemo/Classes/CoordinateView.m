@@ -28,15 +28,15 @@
 		[titleLabel setTextAlignment:	UITextAlignmentCenter];
 		[titleLabel setText:			[coordinate title]];
 		[titleLabel sizeToFit];
-		[titleLabel setFrame:	CGRectMake(BOX_WIDTH / 2.0 - titleLabel.frame.size.width / 2.0 - 4.0, 0, titleLabel.frame.size.width + 8.0, titleLabel.frame.size.height + 8.0)];
+		[titleLabel setFrame:	CGRectMake(BOX_WIDTH / 2.0 - [titleLabel frame].size.width / 2.0 - 4.0, 0, [titleLabel frame].size.width + 8.0, [titleLabel frame].size.height + 8.0)];
 		
 		UIImageView *pointView	= [[UIImageView alloc] initWithFrame:CGRectZero];
 		[pointView setImage:	[UIImage imageNamed:@"location.png"]];
-		[pointView setFrame:	CGRectMake((int)(BOX_WIDTH / 2.0 - pointView.image.size.width / 2.0), (int)(BOX_HEIGHT / 2.0 - pointView.image.size.height / 2.0), pointView.image.size.width, pointView.image.size.height)];
+		[pointView setFrame:	CGRectMake((int)(BOX_WIDTH / 2.0 - [pointView image].size.width / 2.0), (int)(BOX_HEIGHT / 2.0 - [pointView image].size.height / 2.0), [pointView image].size.width, [pointView image].size.height)];
 		
 		[self addSubview:titleLabel];
 		[self addSubview:pointView];
-		
+		[self setBackgroundColor:[UIColor blueColor]];
 		[titleLabel release];
 		[pointView release];
 	}

@@ -3,7 +3,8 @@
 //  ARKitDemo
 //
 //  Created by Zac White on 8/1/09.
-//  Copyright Zac White 2009. All rights reserved.
+// Updated by Niels Hansen 12/19/09
+//  Copyright Agilite Software 2009. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

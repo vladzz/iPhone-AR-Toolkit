@@ -25,17 +25,15 @@
 	[viewController setRotateViewsBasedOnPerspective:YES];
 	
 	GEOLocations* locations = [[GEOLocations alloc] init];
-	
 	[viewController addCoordinates:[locations getLocations]];
-	
 	[locations release];
 		
 	CLLocation *newCenter = [[CLLocation alloc] initWithLatitude:37.41711 longitude:-122.02528];
 	
-	viewController.centerLocation = newCenter;
+	[viewController setCenterLocation: newCenter];
 	[newCenter release];
 	[viewController startListening];
-	[window addSubview:viewController.view];
+	[window addSubview:[viewController view]];
 	
     // Override point for customization after application launch
     [window makeKeyAndVisible];

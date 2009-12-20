@@ -18,7 +18,7 @@
 
 + (ARCoordinate *)coordinateWithRadialDistance:(double)newRadialDistance inclination:(double)newInclination azimuth:(double)newAzimuth {
 	
-	ARCoordinate *newCoordinate		= [[ARCoordinate alloc] init];
+	ARCoordinate *newCoordinate	= [[ARCoordinate alloc] init];
 	[newCoordinate setRadialDistance: newRadialDistance];
 	[newCoordinate setInclination: newInclination];
 	[newCoordinate setAzimuth: newAzimuth];

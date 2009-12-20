@@ -3,7 +3,8 @@
 //  ARKitDemo
 //
 //  Created by Zac White on 8/1/09.
-//  Copyright 2009 Zac White. All rights reserved.
+//  Updated by Niels Hansen on 12/19/09
+//  Copyright 2009 Agilite Software. All rights reserved.
 //
 
 #import "ARViewController.h"
@@ -12,6 +13,8 @@
 
 #define VIEWPORT_WIDTH_RADIANS 0.5
 #define VIEWPORT_HEIGHT_RADIANS 0.7392
+#define kFilteringFactor 0.05
+#define degreesToRadian(x) (M_PI * (x) / 180.0)
 
 @interface ARViewController (Private)
 - (CGFloat) _rotationFromOrientation:(UIInterfaceOrientation)oldOrientation toOrientation:(UIInterfaceOrientation)newOrientation;
@@ -31,7 +34,6 @@
 @synthesize minimumScaleFactor;
 @synthesize maximumRotationAngle;
 @synthesize updateFrequency;
-@synthesize viewInterfaceOrientation;
 
 @synthesize debugMode	= ar_debugMode;
 @synthesize coordinates = ar_coordinates;
@@ -51,9 +53,6 @@
 	ar_coordinates		= [[NSMutableArray alloc] init];
 	ar_coordinateViews	= [[NSMutableArray alloc] init];
 	
-	_updateTimer			= nil;
-	[self setUpdateFrequency: 5 / 20.0];
-	
 	_latestHeading		 = -1.0f;
 	_latestXAcceleration = -1.0f;
 	_latestYAcceleration = -1.0f;
@@ -64,7 +63,6 @@
 	[self setCameraController: [[[UIImagePickerController alloc] init] autorelease]];
 	[[self cameraController] setSourceType: UIImagePickerControllerSourceTypeCamera];
 	[[self cameraController] setCameraViewTransform: CGAffineTransformScale([[self cameraController] cameraViewTransform], 1.13f,  1.13f)];
-	
 	[[self cameraController] setShowsCameraControls:NO];
 	[[self cameraController] setNavigationBarHidden:YES];
 #endif
@@ -79,7 +77,7 @@
 	return self;
 }
 
-- (id)initWithLocationManager:(CLLocationManager *)manager {
+- (id)initWithLocationManager:(CLLocationManager *) manager {
 	
 	if (!(self = [super init])) 
 		return nil;
@@ -100,6 +98,7 @@
 
 	[ar_overlayView release];
 	ar_overlayView = [[UIView alloc] initWithFrame:CGRectZero];
+	 
 	[ar_debugView release];
 	
 	if ([self debugMode]) {
@@ -119,10 +118,7 @@
 	[self presentModalViewController:[self cameraController] animated:NO];
 	[ar_overlayView setFrame:[[[self cameraController] view] bounds]];
 #endif
-	
-	if (!_updateTimer) 
-		_updateTimer = [[NSTimer scheduledTimerWithTimeInterval:[self updateFrequency] target:self selector:@selector(updateLocations:) userInfo:nil repeats:YES] retain];
-	
+
 	[super viewDidAppear:animated];
 }
 
@@ -135,29 +131,12 @@
 	}
 }
 
-- (void)setUpdateFrequency:(double)newUpdateFrequency {
-	
-	updateFrequency = newUpdateFrequency;
-	
-	if (!_updateTimer) 
-		return;
-	
-	[_updateTimer invalidate];
-	[_updateTimer release];
-	
-	_updateTimer = [[NSTimer scheduledTimerWithTimeInterval:self.updateFrequency  target:self selector:@selector(updateLocations:)  userInfo:nil repeats:YES] retain];
-}
-
 - (void)setDebugMode:(BOOL)flag {
 	
 	if ([self debugMode] == flag) 
 		return;
 	
 	ar_debugMode = flag;
-	
-	//we don't need to update the view.
-	if (![self isViewLoaded]) 
-		return;
 	
 	if ([self debugMode]) 
 		[ar_overlayView addSubview:ar_debugView];
@@ -171,16 +150,8 @@
 	CGRect viewBounds	 = viewToDraw.bounds;
 	
 	//auto adjust the width and height of our viewport based on the view's size.
-	double viewWidthRadians  = VIEWPORT_WIDTH_RADIANS / ([[self view] bounds].size.width / viewBounds.size.width);
+	double viewWidthRadians  = VIEWPORT_WIDTH_RADIANS  / ([[self view] bounds].size.width / viewBounds.size.width);
 	double viewHeightRadians = VIEWPORT_HEIGHT_RADIANS / ([[self view] bounds].size.height / viewBounds.size.height);
-	
-	if ([self interfaceOrientation]  == UIInterfaceOrientationLandscapeLeft || [self interfaceOrientation]  == UIInterfaceOrientationLandscapeRight) {
-	   //swap them.
-		double temp			= viewWidthRadians;
-	    viewWidthRadians	= viewHeightRadians;
-	    viewHeightRadians	= temp;
-	 }
-	
 	double leftAzimuth = centerAzimuth - VIEWPORT_WIDTH_RADIANS / 2.0 - viewWidthRadians;
 	
 	if (leftAzimuth < 0.0) 
@@ -196,9 +167,9 @@
 	if(leftAzimuth > rightAzimuth) 
 		result = ([coordinate azimuth] < rightAzimuth || [coordinate azimuth] > leftAzimuth);
 	
-	double centerInclination	= [[self centerCoordinate] inclination];
-	double bottomInclination	= centerInclination - VIEWPORT_HEIGHT_RADIANS / 2.0 - viewHeightRadians;
-	double topInclination		= centerInclination + VIEWPORT_HEIGHT_RADIANS / 2.0 + viewHeightRadians;
+	double centerInclination = [[self centerCoordinate] inclination];
+	double bottomInclination = centerInclination - VIEWPORT_HEIGHT_RADIANS / 2.0 - viewHeightRadians;
+	double topInclination	 = centerInclination + VIEWPORT_HEIGHT_RADIANS / 2.0 + viewHeightRadians;
 	
 	//check the height.
 	result = result && ([coordinate inclination] > bottomInclination && [coordinate inclination] < topInclination);
@@ -207,7 +178,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	return YES;
 }
 
 - (void)startListening {
@@ -230,7 +201,7 @@
 	
 	if (![self accelerometerManager]) {
 		[self setAccelerometerManager: [UIAccelerometer sharedAccelerometer]];
-		[[self accelerometerManager] setUpdateInterval: 0.01];
+		[[self accelerometerManager] setUpdateInterval: 0.15];
 		[[self accelerometerManager] setDelegate: self];
 	}
 	
@@ -242,22 +213,24 @@
 	
 	UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
 
-	if (![self shouldAutorotateToInterfaceOrientation:orientation]);
-		return;
+	CGAffineTransform transform = CGAffineTransformMakeRotation(degreesToRadian(0));
+	CGRect bounds = CGRectMake(0, 0, 320, 480);
 	
-	// remember our old orientation.
-	UIInterfaceOrientation oldOrientation = [self viewInterfaceOrientation];
-	
-	// assign our new orientation.
-	viewInterfaceOrientation = orientation;
-	
-	// go through and rotate all the views.
-	CGFloat rotation = [self _rotationFromOrientation:oldOrientation toOrientation:[self viewInterfaceOrientation]];
-	
-	for (UIView *subview in ar_coordinateViews) {
-		[subview setTransform: CGAffineTransformRotate([subview transform], rotation)];
+	if (orientation == UIDeviceOrientationLandscapeLeft || orientation == UIDeviceOrientationLandscapeRight) {
+		transform = CGAffineTransformMakeRotation(degreesToRadian(90));
+		bounds = CGRectMake(0, 0, 480, 320);
 	}
+	else if (orientation == UIDeviceOrientationLandscapeLeft || orientation == UIDeviceOrientationLandscapeLeft)
+		transform = CGAffineTransformMakeRotation(degreesToRadian(-90));
+	else if (orientation == UIDeviceOrientationLandscapeLeft || orientation == UIDeviceOrientationPortraitUpsideDown)
+		transform = CGAffineTransformMakeRotation(degreesToRadian(180));
 	
+	[[self view] setTransform:CGAffineTransformIdentity];
+	[[self view] setTransform: transform];
+	[[self view] setBounds:bounds];
+	
+	[self updateLocations:nil];
+
 }
 
 - (CGPoint)pointInView:(UIView *)realityView withView:(UIView *)viewToDraw forCoordinate:(ARCoordinate *)coordinate {	
@@ -268,7 +241,7 @@
 	double viewWidthRadians		= [self _widthInRadiansForView:viewToDraw];
 	double viewHeightRadians	= [self _heightInRadiansForView:viewToDraw];
 	double pointAzimuth			= [coordinate azimuth];
-	
+
 	// our x numbers are left based.
 	double leftAzimuth = [[self centerCoordinate] azimuth] - VIEWPORT_WIDTH_RADIANS / 2.0 - viewWidthRadians;
 	
@@ -289,9 +262,6 @@
 	
 	return point;
 }
-
-#define kFilteringFactor 0.05
-
 
 - (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration {
 
@@ -364,7 +334,7 @@ NSComparisonResult LocationSortClosestFirst(ARCoordinate *s1, ARCoordinate *s2, 
 - (void)updateLocations:(NSTimer *)timer {
 
 	//update locations!
-	if (!ar_coordinateViews || ar_coordinateViews.count == 0) 
+	if (!ar_coordinateViews || [ar_coordinateViews count] == 0) 
 		return;
 	
 	[ar_debugView setText: [NSString stringWithFormat:@"%.4f %.4f %.4f", _latestXAcceleration, _latestYAcceleration, _viewportRotation]];
@@ -416,7 +386,6 @@ NSComparisonResult LocationSortClosestFirst(ARCoordinate *s1, ARCoordinate *s2, 
 			if (!([viewToDraw superview])) {
 				[ar_overlayView addSubview:viewToDraw];
 				[ar_overlayView sendSubviewToBack:viewToDraw];
-
 			}
 		} 
 		else 
@@ -553,29 +522,13 @@ NSComparisonResult LocationSortClosestFirst(ARCoordinate *s1, ARCoordinate *s2, 
 - (double)_widthInRadiansForView:(UIView *)viewToDraw {
 	
 	CGRect viewBounds = [viewToDraw bounds];
-	BOOL sideways = ([self interfaceOrientation] == UIInterfaceOrientationLandscapeLeft || [self interfaceOrientation] == UIInterfaceOrientationLandscapeRight);
-	
-	//auto adjust the width and height of our viewport based on the view's size.
-	if (!sideways) 
-		return VIEWPORT_WIDTH_RADIANS / ([[self view] bounds].size.width / viewBounds.size.width);
-	 else 
-		return VIEWPORT_HEIGHT_RADIANS / ([[self view] bounds].size.height / viewBounds.size.height);
-	
-	return -1.0;
+	return VIEWPORT_WIDTH_RADIANS / ([[self view] bounds].size.width / viewBounds.size.width);
 }
 
 - (double)_heightInRadiansForView:(UIView *)viewToDraw {
 	
 	CGRect viewBounds = [viewToDraw bounds];
-	BOOL sideways = ([self interfaceOrientation] == UIInterfaceOrientationLandscapeLeft || [self interfaceOrientation] == UIInterfaceOrientationLandscapeRight);
-	
-	//auto adjust the width and height of our viewport based on the view's size.
-	if (sideways) 
-		return VIEWPORT_WIDTH_RADIANS / ([[self view] bounds].size.width / viewBounds.size.width);
-	else 
-		return VIEWPORT_HEIGHT_RADIANS / ([[self view] bounds].size.height / viewBounds.size.height);
-	
-	return -1.0;
+	return VIEWPORT_HEIGHT_RADIANS / ([[self view] bounds].size.height / viewBounds.size.height);
 }
 
 @end

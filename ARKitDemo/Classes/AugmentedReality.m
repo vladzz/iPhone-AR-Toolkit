@@ -20,8 +20,8 @@
 - (void) UpdateCenterCoordinate;
 - (void) startListening;
 
-- (double)	WidthInRadiansForView:(UIView *)viewToDraw;
-- (double)	HeightInRadiansForView:(UIView *)viewToDraw;
+- (double) HeightInRadiansForView:(UIView *)viewToDraw;
+- (double) findDeltaOfRadianCenter:(double*)centerAzimuth coordinateAzimuth:(double)pointAzimuth;
 @end
 
 @implementation AugmentedReality
@@ -49,7 +49,6 @@
 	_latestYAcceleration = -1.0f;
 	_latestZAcceleration = -1.0f;
 	
-	viewPortWidthRadians =  0.5f;
 	viewPortHeightRadians = 0.7392f;
 	
 	[self setDebugMode:NO];
@@ -126,16 +125,16 @@
 - (void)UpdateCenterCoordinate {
 	
 	UIAccelerationValue downAcceleration = _latestXAcceleration + _latestYAcceleration;
-	[[self centerCoordinate] setAzimuth: (1.0 - ABS(_latestYAcceleration)) * (M_PI / 2.0) + _latestHeading ];
+	[[self centerCoordinate] setAzimuth: (1.0 - ABS(_latestYAcceleration)) * M_PI_2 + _latestHeading ];
 	
 	if (_latestZAcceleration > 0.0) 
-		[[self centerCoordinate] setInclination: atan(downAcceleration / _latestZAcceleration) + M_PI / 2.0];
+		[[self centerCoordinate] setInclination: atan(downAcceleration / _latestZAcceleration) + M_PI_2 ];
 	else if (_latestZAcceleration < 0.0) 
-		[[self centerCoordinate] setInclination: atan(downAcceleration / _latestZAcceleration) - M_PI / 2.0];// + M_PI;
+		[[self centerCoordinate] setInclination: atan(downAcceleration / _latestZAcceleration) - M_PI_2 ];// + M_PI;
 	else if (downAcceleration < 0) 
-		[[self centerCoordinate] setInclination: M_PI / 2.0];
+		[[self centerCoordinate] setInclination: M_PI_2 ];
 	else if (downAcceleration >= 0) 
-		[[self centerCoordinate] setInclination: 3 * M_PI / 2.0];
+		[[self centerCoordinate] setInclination: 3 * M_PI_2 ];
 	
 	_viewportRotation = atan(_latestXAcceleration / _latestYAcceleration);
 	
@@ -223,28 +222,38 @@
 	}
 }
 
+-(double) findDeltaOfRadianCenter:(double*)centerAzimuth coordinateAzimuth:(double)pointAzimuth degree:(double) degreeRange {
+
+	if (*centerAzimuth < 0.0) 
+		*centerAzimuth = (M_PI * 2) + *centerAzimuth;
+	
+	if (*centerAzimuth > (M_PI * 2)) 
+		*centerAzimuth = *centerAzimuth - (M_PI * 2);
+	
+	double deltaAzimith = ABS(pointAzimuth - *centerAzimuth);
+	
+	
+	// If values are on either side of the Azimuth of North we need to adjust it.  Only check the degree range
+	if (*centerAzimuth < degreesToRadian(degreeRange) && pointAzimuth > degreesToRadian(360-degreeRange))
+		deltaAzimith = (*centerAzimuth + ((M_PI * 2) - pointAzimuth));
+	else if (pointAzimuth < degreesToRadian(degreeRange) && *centerAzimuth > degreesToRadian(360-degreeRange))
+		deltaAzimith = (pointAzimuth + ((M_PI * 2) - *centerAzimuth));
+	
+	return deltaAzimith;
+}
+
 - (BOOL)viewportContainsView:(UIView *)viewToDraw  forCoordinate:(ARCoordinate *)coordinate {
 	
-	double centerAzimuth = [[self centerCoordinate] azimuth];
+	double degreeRange		= 25.0;
+	double currentAzimuth	= [[self centerCoordinate] azimuth];
+	double pointAzimuth		= [coordinate azimuth];
+	double deltaAzimith		= [self findDeltaOfRadianCenter: &currentAzimuth coordinateAzimuth:pointAzimuth degree:degreeRange];
+
+	BOOL result = NO;
+	if (deltaAzimith <= degreesToRadian(degreeRange))
+		result = YES;
 	
-	//auto adjust the width and height of our viewport based on the view's size.
-	double viewWidthRadians  = viewPortWidthRadians  / ([[self displayView] bounds].size.width / [viewToDraw bounds].size.width);
 	double viewHeightRadians = viewPortHeightRadians / ([[self displayView] bounds].size.height / [viewToDraw bounds].size.height);
-	double leftAzimuth		 = centerAzimuth - viewPortWidthRadians / 2.0 - viewWidthRadians;
-	
-	if (leftAzimuth < 0.0) 
-		leftAzimuth = 2 * M_PI + leftAzimuth;
-	
-	double rightAzimuth = centerAzimuth + viewPortWidthRadians / 2.0 + viewWidthRadians;
-	
-	if (rightAzimuth > 2 * M_PI)
-		rightAzimuth = rightAzimuth - 2 * M_PI;
-	
-	BOOL result = ([coordinate azimuth] > leftAzimuth && [coordinate azimuth] < rightAzimuth);
-	
-	if (leftAzimuth > rightAzimuth) 
-		result = ([coordinate azimuth] < rightAzimuth || [coordinate azimuth] > leftAzimuth);
-	
 	double centerInclination = [[self centerCoordinate] inclination];
 	double bottomInclination = centerInclination - viewPortHeightRadians / 2.0 - viewHeightRadians;
 	double topInclination	 = centerInclination + viewPortHeightRadians / 2.0 + viewHeightRadians;
@@ -265,6 +274,7 @@
 	
 	int index			= 0;
 	int totalDisplayed	= 0;
+	
 	for (ARCoordinate *item in ar_coordinates) {
 		
 		UIView *viewToDraw = [ar_coordinateViews objectAtIndex:index];
@@ -273,14 +283,17 @@
 			
 			CGPoint loc = [self pointInView:[self displayView] withView:viewToDraw forCoordinate:item];
 			CGFloat scaleFactor = 1.0;
+		// Remove this for now because it was actually causing it to go to zero.  Need to retain the orginal size!
 			
-			if ([self scaleViewsBasedOnDistance]) 
-				scaleFactor = 1.0 - [self minimumScaleFactor] * ([item radialDistance] / [self maximumScaleDistance]);
+		//	if ([self scaleViewsBasedOnDistance]) 
+		//		scaleFactor = 1.0 - [self minimumScaleFactor] * ([item radialDistance] / [self maximumScaleDistance]);
 			
 			float width	 = [viewToDraw bounds].size.width  * scaleFactor;
 			float height = [viewToDraw bounds].size.height * scaleFactor;
 			
 			[viewToDraw setFrame:CGRectMake(loc.x - width / 2.0, loc.y - (height / 2.0), width, height)];
+		//	[viewToDraw setFrame:CGRectMake(loc.x - width / 2.0, 160.0, width, height)];
+
 			
 			totalDisplayed++;
 			
@@ -324,31 +337,23 @@
 - (CGPoint)pointInView:(UIView *)realityView withView:(UIView *)viewToDraw forCoordinate:(ARCoordinate *)coordinate {	
 	
 	CGPoint point;
+	CGRect realityBounds	 = [realityView bounds];
+	double currentAzimuth	 = [[self centerCoordinate] azimuth];
+	double pointAzimuth		 = [coordinate azimuth];
+	double degreeRange		 = 25.0;
+	double deltaAzimith		 = [self findDeltaOfRadianCenter: &currentAzimuth coordinateAzimuth:pointAzimuth degree:degreeRange];
+	double viewHeightRadians = [self HeightInRadiansForView:viewToDraw];
 	
-	// x coordinate.
-	double viewWidthRadians		= [self WidthInRadiansForView:viewToDraw];
-	double viewHeightRadians	= [self HeightInRadiansForView:viewToDraw];
-	double pointAzimuth			= [coordinate azimuth];
-	
-	// our x numbers are left based.
-	double leftAzimuth = [[self centerCoordinate] azimuth] - viewPortWidthRadians / 2.0 - viewWidthRadians;
-	
-	if (leftAzimuth < 0.0) 
-		leftAzimuth = 2 * M_PI + leftAzimuth;
-	
-	CGRect realityFrame = [realityView frame];
-	
-	// it's past the 0 point.
-	if (pointAzimuth < leftAzimuth) 
-		point.x = ((2 * M_PI - leftAzimuth + pointAzimuth) / viewPortWidthRadians) * realityFrame.size.width;
-	else 
-		point.x = ((pointAzimuth - leftAzimuth)			   / viewPortWidthRadians) * realityFrame.size.width;
+	if (pointAzimuth > currentAzimuth || (currentAzimuth > degreesToRadian(360-degreeRange) && pointAzimuth < degreesToRadian(degreeRange)))
+		point.x = (realityBounds.size.width / 2) + ((deltaAzimith / degreesToRadian(1)) * 10);
+	else
+		point.x = (realityBounds.size.width / 2) - ((deltaAzimith / degreesToRadian(1)) * 10);	
 	
 	// y coordinate.
 	double pointInclination = [coordinate inclination];
 	double topInclination	= [[self centerCoordinate] inclination] - viewPortHeightRadians / 2.0 - viewHeightRadians;;
 	
-	point.y = realityFrame.size.height - ((pointInclination - topInclination) / viewPortHeightRadians) * realityFrame.size.height;
+	point.y = realityBounds.size.height - ((pointInclination - topInclination) / viewPortHeightRadians) * realityBounds.size.height;
 	
 	return point;
 }
@@ -382,10 +387,6 @@
 		[ar_debugView removeFromSuperview];
 }
 
-- (double)WidthInRadiansForView:(UIView *)viewToDraw {
-	CGRect bounds = [viewToDraw bounds];
-	return viewPortWidthRadians / ([[self displayView] bounds].size.width / bounds.size.width);
-}
 
 - (double)HeightInRadiansForView:(UIView *)viewToDraw {
 	CGRect bounds = [viewToDraw bounds];

@@ -96,7 +96,7 @@
 	[[self view] setTransform:CGAffineTransformIdentity];
 	[[self view] setTransform: transform];
 	[[self view] setBounds:bounds];
-	[[self view] setFrame:bounds];
+//	[[self view] setFrame:bounds];
 	
 //	[[self agController] updateLocations];
 

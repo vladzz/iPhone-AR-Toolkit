@@ -33,7 +33,7 @@
 @private
 	double				_viewportRotation;// in radians.
 	double				_latestHeading;
-	double				viewPortWidthRadians;
+
 	double				viewPortHeightRadians;
 	UIAccelerationValue _latestXAcceleration;
 	UIAccelerationValue _latestYAcceleration;

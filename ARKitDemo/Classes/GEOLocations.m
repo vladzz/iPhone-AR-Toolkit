@@ -24,7 +24,7 @@
 	
 	ARGeoCoordinate *tempCoordinate;
 	CLLocation		*tempLocation;
-	
+/*	
 	tempLocation = [[CLLocation alloc] initWithLatitude:39.550051 longitude:-105.782067];
 	tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Denver"];
 	[locationArray addObject:tempCoordinate];
@@ -107,22 +107,22 @@
 	tempCoordinate.inclination = M_PI/30;
 	[locationArray addObject:tempCoordinate];
 	[tempLocation release];
+ 
+    tempLocation = [[CLLocation alloc] initWithLatitude:38.892091 longitude:-77.024055];
+	tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Washington, DC"];
+	[locationArray addObject:tempCoordinate];
+	[tempLocation release];
 	
 	tempLocation = [[CLLocation alloc] initWithLatitude:45.545447 longitude:-73.639076];
 	tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Montreal"];
 	[locationArray addObject:tempCoordinate];
 	[tempLocation release];
-	
-	tempLocation = [[CLLocation alloc] initWithLatitude:38.892091 longitude:-77.024055];
-	tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Washington, DC"];
-	[locationArray addObject:tempCoordinate];
-	[tempLocation release];
-	
+*/
 	tempLocation = [[CLLocation alloc] initWithLatitude:53.566667 longitude:-113.516667];
 	tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Edmonton"];
 	[locationArray addObject:tempCoordinate];
 	[tempLocation release];
-	
+/*	
 	tempLocation = [[CLLocation alloc] initWithLatitude:32.78 longitude:-117.15];
 	tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"San Diego"];
 	[locationArray addObject:tempCoordinate];
@@ -142,7 +142,7 @@
 	tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Mexico City"];
 	[locationArray addObject:tempCoordinate];
 	[tempLocation release];
-	
+	*/
 
 }
 

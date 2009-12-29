@@ -21,23 +21,22 @@
 	double minimumScaleFactor;
 	double maximumRotationAngle;
 	
+	
 	ARCoordinate		*centerCoordinate;
 	CLLocationManager	*locationManager;
+	UIDeviceOrientation currentOrientation;
+	
 	UIAccelerometer		*accelerometerManager;
 	CLLocation			*centerLocation;
 	UIView				*displayView;
-	
-	UILabel			*ar_debugView;
-
+	UILabel				*ar_debugView;
 
 @private
-	double				_viewportRotation;// in radians.
-	double				_latestHeading;
-
+	double				latestHeading;
+	double				degreeRange;
 	double				viewPortHeightRadians;
-	UIAccelerationValue _latestXAcceleration;
-	UIAccelerationValue _latestYAcceleration;
-	UIAccelerationValue _latestZAcceleration;	
+	float				viewAngle;
+
 	NSMutableArray		*ar_coordinates;
 	NSMutableArray		*ar_coordinateViews;
 	
@@ -52,19 +51,21 @@
 @property double maximumScaleDistance;
 @property double minimumScaleFactor;
 @property double maximumRotationAngle;
+@property double degreeRange;
 
-@property (nonatomic, retain) UIAccelerometer   *accelerometerManager;
-@property (nonatomic, retain) CLLocationManager *locationManager;
-@property (nonatomic, retain) ARCoordinate		*centerCoordinate;
-@property (nonatomic, retain) CLLocation		*centerLocation;
-@property (nonatomic, retain) UIView			*displayView;
+@property (nonatomic, retain) UIAccelerometer		*accelerometerManager;
+@property (nonatomic, retain) CLLocationManager		*locationManager;
+@property (nonatomic, retain) ARCoordinate			*centerCoordinate;
+@property (nonatomic, retain) CLLocation			*centerLocation;
+@property (nonatomic, retain) UIView				*displayView;
+@property UIDeviceOrientation	currentOrientation;
 
 @property (readonly) NSArray *coordinates;
 
 - (id)initWithViewController:(UIViewController *)theView;
 
-- (CGPoint)pointInView:(UIView *)realityView withView:(UIView *)viewToDraw forCoordinate:(ARCoordinate *)coordinate;
-- (BOOL)viewportContainsView:(UIView *)viewToDraw forCoordinate:(ARCoordinate *)coordinate;
+- (CGPoint) pointInView:(UIView *)realityView withView:(UIView *)viewToDraw forCoordinate:(ARCoordinate *)coordinate;
+- (BOOL) viewportContainsView:(UIView *)viewToDraw forCoordinate:(ARCoordinate *)coordinate;
 - (void) setupDebugPostion;
 - (void) updateLocations;
 

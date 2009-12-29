@@ -24,7 +24,7 @@
 	
 	ARGeoCoordinate *tempCoordinate;
 	CLLocation		*tempLocation;
-/*	
+	
 	tempLocation = [[CLLocation alloc] initWithLatitude:39.550051 longitude:-105.782067];
 	tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Denver"];
 	[locationArray addObject:tempCoordinate];
@@ -57,10 +57,7 @@
 	[locationArray addObject:tempCoordinate];
 	[tempLocation release];
 	
-	tempLocation = [[CLLocation alloc] initWithLatitude:47.620973 longitude:-122.347276];
-	tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Seattle"];
-	[locationArray addObject:tempCoordinate];
-	[tempLocation release];
+	
 	
 	tempLocation = [[CLLocation alloc] initWithLatitude:55.676294 longitude:12.568116];
 	tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Copenhagen"];
@@ -117,12 +114,8 @@
 	tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Montreal"];
 	[locationArray addObject:tempCoordinate];
 	[tempLocation release];
-*/
-	tempLocation = [[CLLocation alloc] initWithLatitude:53.566667 longitude:-113.516667];
-	tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Edmonton"];
-	[locationArray addObject:tempCoordinate];
-	[tempLocation release];
-/*	
+
+	
 	tempLocation = [[CLLocation alloc] initWithLatitude:32.78 longitude:-117.15];
 	tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"San Diego"];
 	[locationArray addObject:tempCoordinate];
@@ -142,8 +135,16 @@
 	tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Mexico City"];
 	[locationArray addObject:tempCoordinate];
 	[tempLocation release];
-	*/
 
+	tempLocation = [[CLLocation alloc] initWithLatitude:53.566667 longitude:-113.516667];
+	tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Edmonton"];
+	[locationArray addObject:tempCoordinate];
+	[tempLocation release];
+	
+	tempLocation = [[CLLocation alloc] initWithLatitude:47.620973 longitude:-122.347276];
+	tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Seattle"];
+	[locationArray addObject:tempCoordinate];
+	[tempLocation release];
 }
 
 -(NSMutableArray*) getLocations 

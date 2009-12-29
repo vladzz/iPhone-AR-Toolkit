@@ -67,8 +67,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	
-	
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -96,7 +94,8 @@
 	[[self view] setTransform:CGAffineTransformIdentity];
 	[[self view] setTransform: transform];
 	[[self view] setBounds:bounds];
-//	[[self view] setFrame:bounds];
+	
+	[[self agController] setDebugMode:YES];
 	
 //	[[self agController] updateLocations];
 
@@ -116,6 +115,5 @@
 	[[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
     [super dealloc];
 }
-
 
 @end

@@ -36,7 +36,7 @@
 		
 		[self addSubview:titleLabel];
 		[self addSubview:pointView];
-		[self setBackgroundColor:[UIColor blueColor]];
+		[self setBackgroundColor:[UIColor clearColor]];
 		[titleLabel release];
 		[pointView release];
 	}

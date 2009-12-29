@@ -130,7 +130,6 @@
 
 - (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration {
 	
-	
 	if (currentOrientation == UIDeviceOrientationLandscapeLeft || currentOrientation == UIDeviceOrientationLandscapeRight)
 		viewAngle = atan2(acceleration.x, acceleration.z);
 	else
@@ -323,7 +322,7 @@
 	else
 		point.x = (realityBounds.size.width / 2) - ((deltaAzimith / degreesToRadian(1)) * 12);	// Left side of Azimuth
 	
-	point.y = (realityBounds.size.height / 2) + (radianToDegrees(M_PI_2 + viewAngle)  * 8.0);
+	point.y = (realityBounds.size.height / 2) + (radianToDegrees(M_PI_2 + viewAngle)  * 2.0);
 	
 	return point;
 }

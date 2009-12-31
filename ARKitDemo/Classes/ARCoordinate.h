@@ -24,7 +24,6 @@
 - (NSString *)subtitle;
 @end
 
-
 @protocol ARGeoPersistentItem
 
 // Center latitude and longitude of the annotion view.
@@ -36,7 +35,6 @@
 - (NSString *)subtitle;
 @end
 
-
 @interface ARCoordinate : NSObject {
 	double radialDistance;
 	double inclination;
@@ -46,9 +44,9 @@
 	NSString *subtitle;
 }
 
-- (NSUInteger)hash;
-- (BOOL)isEqual:(id)other;
-- (BOOL)isEqualToCoordinate:(ARCoordinate *)otherCoordinate;
+- (NSUInteger) hash;
+- (BOOL) isEqual:(id)other;
+- (BOOL) isEqualToCoordinate:(ARCoordinate *) otherCoordinate;
 
 + (ARCoordinate *)coordinateWithRadialDistance:(double)newRadialDistance inclination:(double)newInclination azimuth:(double)newAzimuth;
 

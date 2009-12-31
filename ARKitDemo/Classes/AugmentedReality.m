@@ -44,9 +44,8 @@
 	
 	ar_coordinates		= [[NSMutableArray alloc] init];
 	ar_coordinateViews	= [[NSMutableArray alloc] init];
-	
-	latestHeading		 = -1.0f;
-	ar_debugView		 = nil;
+	latestHeading		= -1.0f;
+	ar_debugView		= nil;
 
 	[self setDebugMode:NO];
 	[self setMaximumScaleDistance: 0.0];
@@ -66,7 +65,7 @@
 
 - (void)startListening {
 	
-	//start our heading readings and our accelerometer readings.
+	// start our heading readings and our accelerometer readings.
 	
 	if (![self locationManager]) {
 		[self setLocationManager: [[CLLocationManager alloc] init]];
@@ -89,7 +88,6 @@
 
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading {
-	
 	latestHeading = degreesToRadian(newHeading.magneticHeading);
 	[self updateCenterCoordinate];
 }
@@ -111,9 +109,9 @@
 	
 	if ([self debugMode]) {
 		[ar_debugView sizeToFit];
-		CGRect displayRect = [[self displayView] frame];
+		CGRect displayRect = [[self displayView] bounds];
 		
-		[ar_debugView setFrame:CGRectMake(0, displayRect.size.height - [ar_debugView frame].size.height,  displayRect.size.width, [ar_debugView frame].size.height)];
+		[ar_debugView setFrame:CGRectMake(0, displayRect.size.height - [ar_debugView bounds].size.height,  displayRect.size.width, [ar_debugView bounds].size.height)];
 	}
 }
 
@@ -211,15 +209,15 @@
 		*centerAzimuth = *centerAzimuth - (M_PI * 2.0);
 	
 	double deltaAzimith = ABS(pointAzimuth - *centerAzimuth);
-	*isBetweenNorth = NO;
+	*isBetweenNorth		= NO;
 
 	// If values are on either side of the Azimuth of North we need to adjust it.  Only check the degree range
 	if (*centerAzimuth < degreesToRadian([self degreeRange]) && pointAzimuth > degreesToRadian(360-[self degreeRange])) {
-		deltaAzimith = (*centerAzimuth + ((M_PI * 2.0) - pointAzimuth));
+		deltaAzimith	= (*centerAzimuth + ((M_PI * 2.0) - pointAzimuth));
 		*isBetweenNorth = YES;
 	}
 	else if (pointAzimuth < degreesToRadian([self degreeRange]) && *centerAzimuth > degreesToRadian(360-[self degreeRange])) {
-		deltaAzimith = (pointAzimuth + ((M_PI * 2.0) - *centerAzimuth));
+		deltaAzimith	= (pointAzimuth + ((M_PI * 2.0) - *centerAzimuth));
 		*isBetweenNorth = YES;
 	}
 			
@@ -327,7 +325,7 @@
 	return point;
 }
 
--(NSComparisonResult) LocationSortClosestFirst:(ARCoordinate *) s1 secondCoord:(ARCoordinate*)s2 {
+-(NSComparisonResult) LocationSortClosestFirst:(ARCoordinate *) s1 secondCoord:(ARCoordinate*) s2 {
     
 	if ([s1 radialDistance] < [s2 radialDistance]) 
 		return NSOrderedAscending;
@@ -340,7 +338,7 @@
 - (void)setDebugMode:(BOOL)flag {
 	
 	if ([self debugMode] == flag) {
-		CGRect debugRect =	[ar_debugView frame];
+		CGRect debugRect;
 		
 		currentOrientation = [[UIDevice currentDevice] orientation];
 		

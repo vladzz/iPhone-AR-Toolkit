@@ -21,7 +21,6 @@
 	double minimumScaleFactor;
 	double maximumRotationAngle;
 	
-	
 	ARCoordinate		*centerCoordinate;
 	CLLocationManager	*locationManager;
 	UIDeviceOrientation currentOrientation;
@@ -34,7 +33,6 @@
 @private
 	double				latestHeading;
 	double				degreeRange;
-	double				viewPortHeightRadians;
 	float				viewAngle;
 
 	NSMutableArray		*ar_coordinates;

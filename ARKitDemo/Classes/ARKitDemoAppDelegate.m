@@ -19,6 +19,7 @@
 	ARViewController *viewController = [[ARViewController alloc] init];
 	[window addSubview:[viewController view]];
 	
+	[viewController release];
     // Override point for customization after application launch
     [window makeKeyAndVisible];
 }

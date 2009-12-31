@@ -28,7 +28,7 @@
 		[titleLabel setTextAlignment:	UITextAlignmentCenter];
 		[titleLabel setText:			[coordinate title]];
 		[titleLabel sizeToFit];
-		[titleLabel setFrame:	CGRectMake(BOX_WIDTH / 2.0 - [titleLabel frame].size.width / 2.0 - 4.0, 0, [titleLabel frame].size.width + 8.0, [titleLabel frame].size.height + 8.0)];
+		[titleLabel setFrame:	CGRectMake(BOX_WIDTH / 2.0 - [titleLabel bounds].size.width / 2.0 - 4.0, 0, [titleLabel bounds].size.width + 8.0, [titleLabel bounds].size.height + 8.0)];
 		
 		UIImageView *pointView	= [[UIImageView alloc] initWithFrame:CGRectZero];
 		[pointView setImage:	[UIImage imageNamed:@"location.png"]];

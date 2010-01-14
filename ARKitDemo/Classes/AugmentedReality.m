@@ -342,7 +342,7 @@
 		
 		currentOrientation = [[UIDevice currentDevice] orientation];
 		
-		if (currentOrientation == UIDeviceOrientationLandscapeLeft || currentOrientation == UIDeviceOrientationLandscapeLeft) {
+		if (currentOrientation == UIDeviceOrientationLandscapeLeft || currentOrientation == UIDeviceOrientationLandscapeRight) {
 			[self setDegreeRange:40.0];
 			debugRect = CGRectMake(0, 300, 480, 20);
 		}

@@ -24,6 +24,9 @@
 	if (!(self = [super init]))
 		return nil;
 
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name: UIDeviceOrientationDidChangeNotification object:nil];
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];	
+	
 #if !TARGET_IPHONE_SIMULATOR
 	[self setCameraController: [[[UIImagePickerController alloc] init] autorelease]];
 	[[self cameraController] setSourceType: UIImagePickerControllerSourceTypeCamera];
@@ -33,8 +36,6 @@
 #endif
 
 	[self setWantsFullScreenLayout: YES];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name: UIDeviceOrientationDidChangeNotification object:nil];
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 
 	return self;
 }

@@ -5,7 +5,7 @@
 //  Created by Zac White on 8/1/09.
 //  Updated by Niels Hansen on 12/19/09
 //  Copyright 2009 Agilite Software. All rights reserved.
-//
+// 
 
 #import "ARViewController.h"
 #import "AugmentedReality.h"
@@ -78,27 +78,30 @@
 	
 	UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
 
-	CGAffineTransform transform = CGAffineTransformMakeRotation(degreesToRadian(0));
-	CGRect bounds = CGRectMake(0, 0, 320, 480);
-	
-	if (orientation == UIDeviceOrientationLandscapeLeft) {
-		transform	= CGAffineTransformMakeRotation(degreesToRadian(90));
-		bounds		= CGRectMake(0, 0, 480, 320);
+	// Later we may handle the Orientation of Faceup to show a Map.  For now let's ignore it.
+	if (orientation != UIDeviceOrientationUnknown && orientation != UIDeviceOrientationFaceUp && orientation != UIDeviceOrientationFaceDown) {
+		
+		CGAffineTransform transform = CGAffineTransformMakeRotation(degreesToRadian(0));
+		CGRect bounds = CGRectMake(0, 0, 320, 480);
+		
+		if (orientation == UIDeviceOrientationLandscapeLeft) {
+			transform	= CGAffineTransformMakeRotation(degreesToRadian(90));
+			bounds		= CGRectMake(0, 0, 480, 320);
+		}
+		else if (orientation == UIDeviceOrientationLandscapeRight) {
+			transform	= CGAffineTransformMakeRotation(degreesToRadian(-90));
+			bounds		= CGRectMake(0, 0, 480, 320);
+		}
+		else if (orientation == UIDeviceOrientationPortraitUpsideDown)
+			transform = CGAffineTransformMakeRotation(degreesToRadian(180));
+		
+		[[self view] setTransform:CGAffineTransformIdentity];
+		[[self view] setTransform: transform];
+		[[self view] setBounds:bounds];
+		
+		[[self agController] setDebugMode:YES];
+		
 	}
-	else if (orientation == UIDeviceOrientationLandscapeRight) {
-		transform	= CGAffineTransformMakeRotation(degreesToRadian(-90));
-		bounds		= CGRectMake(0, 0, 480, 320);
-	}
-	else if (orientation == UIDeviceOrientationPortraitUpsideDown)
-		transform = CGAffineTransformMakeRotation(degreesToRadian(180));
-	
-	[[self view] setTransform:CGAffineTransformIdentity];
-	[[self view] setTransform: transform];
-	[[self view] setBounds:bounds];
-	
-	[[self agController] setDebugMode:YES];
-	
-//	[[self agController] updateLocations];
 
 }
 

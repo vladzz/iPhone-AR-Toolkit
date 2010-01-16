@@ -275,8 +275,8 @@
 	
 			// Commented this for now because it was actually causing it to go to zero.  Need to retain the orginal size!
 			
-		//	if ([self scaleViewsBasedOnDistance]) 
-		//		scaleFactor = 1.0 - [self minimumScaleFactor] * ([item radialDistance] / [self maximumScaleDistance]);
+			if ([self scaleViewsBasedOnDistance]) 
+				scaleFactor = 1.0 - [self minimumScaleFactor] * ([item radialDistance] / [self maximumScaleDistance]);
 			
 			float width	 = [viewToDraw bounds].size.width  * scaleFactor;
 			float height = [viewToDraw bounds].size.height * scaleFactor;

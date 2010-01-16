@@ -119,8 +119,12 @@
 	
 	double adjustment = 0;
 	
-	if (currentOrientation == UIDeviceOrientationLandscapeLeft || currentOrientation == UIDeviceOrientationLandscapeRight)
+	if (currentOrientation == UIDeviceOrientationLandscapeLeft)
 		adjustment = degreesToRadian(270); 
+	else if (currentOrientation == UIDeviceOrientationLandscapeRight)
+		adjustment = degreesToRadian(90);
+	else if (currentOrientation == UIDeviceOrientationPortraitUpsideDown)
+		adjustment = degreesToRadian(180);
 
 	[[self centerCoordinate] setAzimuth: latestHeading - adjustment];
 	[self updateLocations];
@@ -128,11 +132,23 @@
 
 - (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration {
 	
-	if (currentOrientation == UIDeviceOrientationLandscapeLeft || currentOrientation == UIDeviceOrientationLandscapeRight)
-		viewAngle = atan2(acceleration.x, acceleration.z);
-	else
-		viewAngle = atan2(acceleration.y, acceleration.z);
-
+	switch (currentOrientation) {
+		case UIDeviceOrientationLandscapeLeft:
+			viewAngle = atan2(acceleration.x, acceleration.z);
+			break;
+		case UIDeviceOrientationLandscapeRight:
+			viewAngle = atan2(-acceleration.x, acceleration.z);
+			break;
+		case UIDeviceOrientationPortrait:
+			viewAngle = atan2(acceleration.y, acceleration.z);
+			break;
+		case UIDeviceOrientationPortraitUpsideDown:
+			viewAngle = atan2(-acceleration.y, acceleration.z);
+			break;	
+		default:
+			break;
+	}
+	
 	[self updateCenterCoordinate];
 }
 

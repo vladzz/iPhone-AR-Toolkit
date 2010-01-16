@@ -11,7 +11,6 @@
 		1118AA4A10257DCE00C94460 /* location.png in Resources */ = {isa = PBXBuildFile; fileRef = 1118AA4910257DCE00C94460 /* location.png */; };
 		111A141C1024C875002D39A1 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 111A141B1024C875002D39A1 /* CoreLocation.framework */; };
 		111A142C1024C8A6002D39A1 /* ARViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 111A142A1024C8A6002D39A1 /* ARViewController.m */; };
-		112543AA1024DE590086106E /* ARCoordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = 112543A91024DE590086106E /* ARCoordinate.m */; };
 		116DC887102933A200EB5A0A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 116DC886102933A200EB5A0A /* MapKit.framework */; };
 		1D3623260D0F684500981E51 /* ARKitDemoAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* ARKitDemoAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
@@ -19,11 +18,10 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
+		8C6A8D72110246CC0053C976 /* libiPhoneAugmentedRealityLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C6A8D71110246CC0053C976 /* libiPhoneAugmentedRealityLib.a */; };
 		8C9012D710DD424D00E8052F /* GEOLocations.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C9012D610DD424D00E8052F /* GEOLocations.m */; };
 		8C90133710DD488E00E8052F /* CoordinateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C90133610DD488E00E8052F /* CoordinateView.m */; };
-		8C901A4D10DE87AD00E8052F /* AugmentedReality.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C901A4C10DE87AD00E8052F /* AugmentedReality.m */; };
 		8CD6ACEA10F1284600AEFD09 /* UnitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD6ACE910F1284600AEFD09 /* UnitTests.m */; };
-		CE169F581025704E00556F8F /* ARGeoCoordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = CE169F571025704E00556F8F /* ARGeoCoordinate.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,8 +30,6 @@
 		111A141B1024C875002D39A1 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		111A142A1024C8A6002D39A1 /* ARViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARViewController.m; sourceTree = "<group>"; };
 		111A142B1024C8A6002D39A1 /* ARViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARViewController.h; sourceTree = "<group>"; };
-		112543A81024DE590086106E /* ARCoordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCoordinate.h; sourceTree = "<group>"; };
-		112543A91024DE590086106E /* ARCoordinate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCoordinate.m; sourceTree = "<group>"; };
 		116DC886102933A200EB5A0A /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		1171B42A106EEB3600CC3630 /* LogicTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogicTests.h; sourceTree = "<group>"; };
 		1171B42B106EEB3600CC3630 /* LogicTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogicTests.m; sourceTree = "<group>"; };
@@ -47,19 +43,19 @@
 		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* ARKitDemo_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARKitDemo_Prefix.pch; sourceTree = "<group>"; };
+		8C6A8D71110246CC0053C976 /* libiPhoneAugmentedRealityLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libiPhoneAugmentedRealityLib.a; path = "/Users/nielswhansen/Documents/iPhone Projects/iphonearkit/iPhoneAugmentedRealityLib/build/Debug-iphoneos/libiPhoneAugmentedRealityLib.a"; sourceTree = "<absolute>"; };
+		8C6A8D9B110248180053C976 /* ARCoordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARCoordinate.h; path = ../iPhoneAugmentedRealityLib/ARCoordinate.h; sourceTree = SOURCE_ROOT; };
+		8C6A8D9C110248180053C976 /* ARGeoCoordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARGeoCoordinate.h; path = ../iPhoneAugmentedRealityLib/ARGeoCoordinate.h; sourceTree = SOURCE_ROOT; };
+		8C6A8D9D110248180053C976 /* AugmentedReality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AugmentedReality.h; path = ../iPhoneAugmentedRealityLib/AugmentedReality.h; sourceTree = SOURCE_ROOT; };
 		8C9012D510DD424D00E8052F /* GEOLocations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GEOLocations.h; sourceTree = "<group>"; };
 		8C9012D610DD424D00E8052F /* GEOLocations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GEOLocations.m; sourceTree = "<group>"; };
 		8C90133510DD488E00E8052F /* CoordinateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoordinateView.h; sourceTree = "<group>"; };
 		8C90133610DD488E00E8052F /* CoordinateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoordinateView.m; sourceTree = "<group>"; };
 		8C90154A10DD592A00E8052F /* SynthesizeSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynthesizeSingleton.h; sourceTree = "<group>"; };
-		8C901A4B10DE87AD00E8052F /* AugmentedReality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AugmentedReality.h; sourceTree = "<group>"; };
-		8C901A4C10DE87AD00E8052F /* AugmentedReality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AugmentedReality.m; sourceTree = "<group>"; };
 		8CD6ACC510F126EA00AEFD09 /* UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CD6ACE810F1284600AEFD09 /* UnitTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitTests.h; sourceTree = "<group>"; };
 		8CD6ACE910F1284600AEFD09 /* UnitTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitTests.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* ARKitDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ARKitDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
-		CE169F561025704E00556F8F /* ARGeoCoordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARGeoCoordinate.h; sourceTree = "<group>"; };
-		CE169F571025704E00556F8F /* ARGeoCoordinate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARGeoCoordinate.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +69,7 @@
 				111A141C1024C875002D39A1 /* CoreLocation.framework in Frameworks */,
 				116DC887102933A200EB5A0A /* MapKit.framework in Frameworks */,
 				1109BC311082F1B2006FFB4B /* QuartzCore.framework in Frameworks */,
+				8C6A8D72110246CC0053C976 /* libiPhoneAugmentedRealityLib.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,8 +86,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				8C6A8D9A110247EE0053C976 /* StaticHeaders */,
 				8C901A4A10DE878700E8052F /* Toolkit */,
-				8C90154B10DD59A700E8052F /* Managers */,
 				8C90133410DD486F00E8052F /* Views */,
 				8C3824C810DC7033001BA4B1 /* ViewControllers */,
 				1D3623240D0F684500981E51 /* ARKitDemoAppDelegate.h */,
@@ -128,6 +125,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				8C6A8D71110246CC0053C976 /* libiPhoneAugmentedRealityLib.a */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -175,6 +173,16 @@
 			name = ViewControllers;
 			sourceTree = "<group>";
 		};
+		8C6A8D9A110247EE0053C976 /* StaticHeaders */ = {
+			isa = PBXGroup;
+			children = (
+				8C6A8D9B110248180053C976 /* ARCoordinate.h */,
+				8C6A8D9C110248180053C976 /* ARGeoCoordinate.h */,
+				8C6A8D9D110248180053C976 /* AugmentedReality.h */,
+			);
+			name = StaticHeaders;
+			sourceTree = "<group>";
+		};
 		8C9012D310DD421D00E8052F /* Data Objects */ = {
 			isa = PBXGroup;
 			children = (
@@ -193,23 +201,10 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
-		8C90154B10DD59A700E8052F /* Managers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Managers;
-			sourceTree = "<group>";
-		};
 		8C901A4A10DE878700E8052F /* Toolkit */ = {
 			isa = PBXGroup;
 			children = (
 				8C9012D310DD421D00E8052F /* Data Objects */,
-				112543A81024DE590086106E /* ARCoordinate.h */,
-				112543A91024DE590086106E /* ARCoordinate.m */,
-				CE169F561025704E00556F8F /* ARGeoCoordinate.h */,
-				CE169F571025704E00556F8F /* ARGeoCoordinate.m */,
-				8C901A4B10DE87AD00E8052F /* AugmentedReality.h */,
-				8C901A4C10DE87AD00E8052F /* AugmentedReality.m */,
 			);
 			name = Toolkit;
 			sourceTree = "<group>";
@@ -316,11 +311,8 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* ARKitDemoAppDelegate.m in Sources */,
 				111A142C1024C8A6002D39A1 /* ARViewController.m in Sources */,
-				112543AA1024DE590086106E /* ARCoordinate.m in Sources */,
-				CE169F581025704E00556F8F /* ARGeoCoordinate.m in Sources */,
 				8C9012D710DD424D00E8052F /* GEOLocations.m in Sources */,
 				8C90133710DD488E00E8052F /* CoordinateView.m in Sources */,
-				8C901A4D10DE87AD00E8052F /* AugmentedReality.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,6 +337,11 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ARKitDemo_Prefix.pch;
 				INFOPLIST_FILE = "ARKitDemo-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../iPhoneAugmentedRealityLib/build/Debug-iphoneos\"",
+				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ARKitDemo;
 			};
 			name = Debug;
@@ -357,6 +354,11 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ARKitDemo_Prefix.pch;
 				INFOPLIST_FILE = "ARKitDemo-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../iPhoneAugmentedRealityLib/build/Debug-iphoneos\"",
+				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ARKitDemo;
 			};
 			name = Release;
@@ -375,6 +377,10 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = "UnitTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
@@ -402,6 +408,10 @@
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				INFOPLIST_FILE = "UnitTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,

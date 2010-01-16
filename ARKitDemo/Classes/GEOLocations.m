@@ -154,7 +154,6 @@
 
 - (void)dealloc {
 	
-	//NEW COMMENT!
     [locationArray release];
     [super dealloc];
 }

@@ -9,7 +9,6 @@
 #import "AugmentedReality.h"
 #import "ARCoordinate.h"
 #import "ARGeoCoordinate.h"
-#import "CoordinateView.h"
 #import <MapKit/MapKit.h>
 #import <QuartzCore/QuartzCore.h>
 
@@ -59,6 +58,12 @@
 	[self setDegreeRange:45.0];
 
 	[vc setView:displayView];
+	
+	CLLocation *newCenter = [[CLLocation alloc] initWithLatitude:37.41711 longitude:-122.02528];
+	
+	[self setCenterLocation: newCenter];
+	[newCenter release];
+	[self startListening];
 	
 	return self;
 }
@@ -167,35 +172,17 @@
 	}
 }
 
-- (void)addCoordinate:(ARCoordinate *)coordinate {
-	[self addCoordinate:coordinate animated:YES];
-}
 
-- (void)addCoordinate:(ARCoordinate *)coordinate animated:(BOOL)animated {
+- (void)addCoordinate:(ARCoordinate *)coordinate augmentedView:(UIView *)agView animated:(BOOL)animated {
 	
 	[ar_coordinates addObject:coordinate];
 	
 	if ([coordinate radialDistance] > [self maximumScaleDistance]) 
 		[self setMaximumScaleDistance: [coordinate radialDistance]];
 	
-	CoordinateView *cv = [[CoordinateView alloc] initForCoordinate:coordinate];
-	[ar_coordinateViews addObject:cv];
-	[cv release];
+	[ar_coordinateViews addObject:agView];
 }
 
-- (void)addCoordinates:(NSArray *)newCoordinates {
-	
-	//go through and add each coordinate.
-	for (ARCoordinate *coordinate in newCoordinates) {
-		[self addCoordinate:coordinate animated:NO];
-	}
-	
-	CLLocation *newCenter = [[CLLocation alloc] initWithLatitude:37.41711 longitude:-122.02528];
-	
-	[self setCenterLocation: newCenter];
-	[newCenter release];
-	[self startListening];
-}
 
 - (void)removeCoordinate:(ARCoordinate *)coordinate {
 	[self removeCoordinate:coordinate animated:YES];

@@ -68,9 +68,7 @@
 - (void) updateLocations;
 
 // Adding coordinates to the underlying data model.
-- (void)addCoordinate:(ARCoordinate *)coordinate;
-- (void)addCoordinate:(ARCoordinate *)coordinate animated:(BOOL)animated;
-- (void)addCoordinates:(NSArray *)newCoordinates;
+- (void)addCoordinate:(ARCoordinate *)coordinate augmentedView:(UIView *)agView animated:(BOOL)animated ;
 
 // Removing coordinates
 - (void)removeCoordinate:(ARCoordinate *)coordinate;

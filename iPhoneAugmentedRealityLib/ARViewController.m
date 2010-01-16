@@ -10,7 +10,9 @@
 #import "ARViewController.h"
 #import "AugmentedReality.h"
 #import "GEOLocations.h"
+#import "CoordinateView.h"
 #import <QuartzCore/QuartzCore.h>
+#import <UIKit/UIKit.h>
 
 #define degreesToRadian(x) (M_PI * (x) / 180.0)
 
@@ -51,7 +53,14 @@
 	
 	GEOLocations* locations = [[GEOLocations alloc] init];
 	
-	[agController addCoordinates:[locations getLocations]];
+	if ([[locations getLocations] count] > 0) {
+		for (ARCoordinate *coordinate in [locations getLocations]) {
+			CoordinateView *cv = [[CoordinateView alloc] initForCoordinate:coordinate];
+			[agController addCoordinate:coordinate augmentedView:cv animated:NO];
+			[cv release];
+		}
+	}
+	
 	[locations release];
 }
 
@@ -102,7 +111,6 @@
 		[[self agController] setDebugMode:YES];
 		
 	}
-
 }
 
 - (void)didReceiveMemoryWarning {

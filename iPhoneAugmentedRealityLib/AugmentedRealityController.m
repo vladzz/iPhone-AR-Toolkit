@@ -1,12 +1,12 @@
 //
-//  AugmentedReality.m
-//  ARKit
+//  AugmentedRealityController.m
+//  iPhoneAugmentedRealityLib
 //
 //  Created by Niels W Hansen on 12/20/09.
 //  Copyright 2009 Agilite Software. All rights reserved.
 //
 
-#import "AugmentedReality.h"
+#import "AugmentedRealityController.h"
 #import "ARCoordinate.h"
 #import "ARGeoCoordinate.h"
 #import <MapKit/MapKit.h>
@@ -16,13 +16,15 @@
 #define degreesToRadian(x) (M_PI * (x) / 180.0)
 #define radianToDegrees(x) ((x) * 180.0/M_PI)
 
-@interface AugmentedReality (Private)
+@interface AugmentedRealityController (Private)
 - (void) updateCenterCoordinate;
 - (void) startListening;
 - (double) findDeltaOfRadianCenter:(double*)centerAzimuth coordinateAzimuth:(double)pointAzimuth betweenNorth:(BOOL*) isBetweenNorth;
+- (CGPoint) pointInView:(UIView *)realityView withView:(UIView *)viewToDraw forCoordinate:(ARCoordinate *)coordinate;
+- (BOOL) viewportContainsView:(UIView *)viewToDraw forCoordinate:(ARCoordinate *)coordinate;
 @end
 
-@implementation AugmentedReality
+@implementation AugmentedRealityController
 
 @synthesize locationManager;
 @synthesize accelerometerManager;
@@ -34,17 +36,17 @@
 @synthesize minimumScaleFactor;
 @synthesize maximumRotationAngle;
 @synthesize centerLocation;
-@synthesize coordinates = ar_coordinates;
+@synthesize coordinates = coordinates;
 @synthesize debugMode;
 @synthesize currentOrientation;
 @synthesize degreeRange;
 
 - (id)initWithViewController:(UIViewController *)vc {
 	
-	ar_coordinates		= [[NSMutableArray alloc] init];
-	ar_coordinateViews	= [[NSMutableArray alloc] init];
+	coordinates		= [[NSMutableArray alloc] init];
+	coordinateViews	= [[NSMutableArray alloc] init];
 	latestHeading		= -1.0f;
-	ar_debugView		= nil;
+	debugView		= nil;
 
 	[self setDebugMode:NO];
 	[self setMaximumScaleDistance: 0.0];
@@ -113,10 +115,10 @@
 -(void) setupDebugPostion {
 	
 	if ([self debugMode]) {
-		[ar_debugView sizeToFit];
+		[debugView sizeToFit];
 		CGRect displayRect = [[self displayView] bounds];
 		
-		[ar_debugView setFrame:CGRectMake(0, displayRect.size.height - [ar_debugView bounds].size.height,  displayRect.size.width, [ar_debugView bounds].size.height)];
+		[debugView setFrame:CGRectMake(0, displayRect.size.height - [debugView bounds].size.height,  displayRect.size.width, [debugView bounds].size.height)];
 	}
 }
 
@@ -175,12 +177,12 @@
 
 - (void)addCoordinate:(ARCoordinate *)coordinate augmentedView:(UIView *)agView animated:(BOOL)animated {
 	
-	[ar_coordinates addObject:coordinate];
+	[coordinates addObject:coordinate];
 	
 	if ([coordinate radialDistance] > [self maximumScaleDistance]) 
 		[self setMaximumScaleDistance: [coordinate radialDistance]];
 	
-	[ar_coordinateViews addObject:agView];
+	[coordinateViews addObject:agView];
 }
 
 
@@ -189,17 +191,17 @@
 }
 
 - (void)removeCoordinate:(ARCoordinate *)coordinate animated:(BOOL)animated {
-	[ar_coordinates removeObject:coordinate];// do some kind of animation?
+	[coordinates removeObject:coordinate];// do some kind of animation?
 }
 
-- (void)removeCoordinates:(NSArray *)coordinates {	
+- (void)removeCoordinates:(NSArray *)coordinateArray {	
 	
-	for (ARCoordinate *coordinateToRemove in coordinates) {
-		NSUInteger indexToRemove = [ar_coordinates indexOfObject:coordinateToRemove];
+	for (ARCoordinate *coordinateToRemove in coordinateArray) {
+		NSUInteger indexToRemove = [coordinates indexOfObject:coordinateToRemove];
 		
 		//TODO: Error checking in here.
-		[ar_coordinates		removeObjectAtIndex:indexToRemove];
-		[ar_coordinateViews removeObjectAtIndex:indexToRemove];
+		[coordinates	 removeObjectAtIndex:indexToRemove];
+		[coordinateViews removeObjectAtIndex:indexToRemove];
 	}
 }
 
@@ -243,25 +245,23 @@
 
 - (void)updateLocations {
 	
-	if (!ar_coordinateViews || [ar_coordinateViews count] == 0) 
+	if (!coordinateViews || [coordinateViews count] == 0) 
 		return;
 	
-	[ar_debugView setText: [NSString stringWithFormat:@"%.3f %.3f ", -radianToDegrees(viewAngle), [[self centerCoordinate] azimuth]]];
+	[debugView setText: [NSString stringWithFormat:@"%.3f %.3f ", -radianToDegrees(viewAngle), [[self centerCoordinate] azimuth]]];
 	
 	int index			= 0;
 	int totalDisplayed	= 0;
 	
-	for (ARCoordinate *item in ar_coordinates) {
+	for (ARCoordinate *item in coordinates) {
 		
-		UIView *viewToDraw = [ar_coordinateViews objectAtIndex:index];
+		UIView *viewToDraw = [coordinateViews objectAtIndex:index];
 		
 		if ([self viewportContainsView:viewToDraw forCoordinate:item]) {
 			
 			CGPoint loc = [self pointInView:[self displayView] withView:viewToDraw forCoordinate:item];
 			CGFloat scaleFactor = 1.0;
 	
-			// Commented this for now because it was actually causing it to go to zero.  Need to retain the orginal size!
-			
 			if ([self scaleViewsBasedOnDistance]) 
 				scaleFactor = 1.0 - [self minimumScaleFactor] * ([item radialDistance] / [self maximumScaleDistance]);
 			
@@ -345,16 +345,14 @@
 		
 		currentOrientation = [[UIDevice currentDevice] orientation];
 		
-		if (currentOrientation == UIDeviceOrientationLandscapeLeft || currentOrientation == UIDeviceOrientationLandscapeRight) {
+		debugRect = CGRectMake(0, [[self displayView] bounds].size.height -20, [[self displayView] bounds].size.width, 20);		
+		
+		if (currentOrientation == UIDeviceOrientationLandscapeLeft || currentOrientation == UIDeviceOrientationLandscapeRight) 
 			[self setDegreeRange:40.0];
-			debugRect = CGRectMake(0, 300, 480, 20);
-		}
-		else {
-			debugRect = CGRectMake(0, 460, 320, 20);
+		else 
 			[self setDegreeRange:25.0];
-		}
 			
-		[ar_debugView setFrame: debugRect];
+		[debugView setFrame: debugRect];
 		
 		return;
 	}
@@ -362,21 +360,21 @@
 	debugMode = flag;
 	
 	if ([self debugMode]) {
-		ar_debugView = [[UILabel alloc] initWithFrame:CGRectZero];
-		[ar_debugView setTextAlignment: UITextAlignmentCenter];
-		[ar_debugView setText: @"Waiting..."];
-		[displayView addSubview:ar_debugView];
+		debugView = [[UILabel alloc] initWithFrame:CGRectZero];
+		[debugView setTextAlignment: UITextAlignmentCenter];
+		[debugView setText: @"Waiting..."];
+		[displayView addSubview:debugView];
 		[self setupDebugPostion];
 	}
 	else 
-		[ar_debugView removeFromSuperview];
+		[debugView removeFromSuperview];
 }
 
 - (void)dealloc {
 	[locationManager release];
-	[ar_coordinateViews release];
-	[ar_coordinates release];
-	[ar_debugView release];
+	[coordinateViews release];
+	[coordinates release];
+	[debugView release];
     [super dealloc];
 }
 

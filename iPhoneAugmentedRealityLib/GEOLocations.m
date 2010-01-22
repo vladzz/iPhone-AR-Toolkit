@@ -1,6 +1,6 @@
 //
 //  GEOLocations.m
-//  ARKitDemo
+//  iPhoneAugmentedRealityLib
 //
 //  Created by Niels W Hansen on 12/19/09.
 //  Copyright 2009 Zac White. All rights reserved.
@@ -56,8 +56,6 @@
 	tempCoordinate.inclination = M_PI/30;
 	[locationArray addObject:tempCoordinate];
 	[tempLocation release];
-	
-	
 	
 	tempLocation = [[CLLocation alloc] initWithLatitude:55.676294 longitude:12.568116];
 	tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Copenhagen"];

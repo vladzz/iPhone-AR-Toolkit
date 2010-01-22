@@ -1,6 +1,6 @@
 //
 //  ARKViewController.h
-//  ARKitDemo
+//  iPhoneAugmentedRealityLib
 //
 //  Created by Zac White on 8/1/09.
 //  Updated by Niels Hansen 12/19/09
@@ -8,15 +8,15 @@
 //
 #import <UIKit/UIKit.h>
 
-@class AugmentedReality;
+@class AugmentedRealityController;
 
 @interface ARViewController : UIViewController  {
 
-	UIImagePickerController *cameraController;
-	AugmentedReality *agController;
+	UIImagePickerController		*cameraController;
+	AugmentedRealityController	*agController;
 }
 
 @property (nonatomic, retain) UIImagePickerController *cameraController;
-@property (nonatomic, retain) AugmentedReality *agController;
+@property (nonatomic, retain) AugmentedRealityController *agController;
 
 @end

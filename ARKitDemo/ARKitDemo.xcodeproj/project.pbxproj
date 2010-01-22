@@ -26,7 +26,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 8C6A8FC311025D7B0053C976 /* iPhoneAugmentedRealityLib.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = D2AAC07E0554694100DB518D /* libiPhoneAugmentedRealityLib.a */;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
 			remoteInfo = iPhoneAugmentedRealityLib;
 		};
 /* End PBXContainerItemProxy section */

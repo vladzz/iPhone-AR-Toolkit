@@ -1,6 +1,6 @@
 //
 //  ARKViewController.m
-//  ARKitDemo
+//  iPhoneAugmentedRealityLib
 //
 //  Created by Zac White on 8/1/09.
 //  Updated by Niels Hansen on 12/19/09
@@ -8,7 +8,7 @@
 // 
 
 #import "ARViewController.h"
-#import "AugmentedReality.h"
+#import "AugmentedRealityController.h"
 #import "GEOLocations.h"
 #import "CoordinateView.h"
 #import <QuartzCore/QuartzCore.h>
@@ -44,7 +44,7 @@
 
 - (void)loadView {
 
-	[self setAgController:[[AugmentedReality alloc] initWithViewController:self]];
+	[self setAgController:[[AugmentedRealityController alloc] initWithViewController:self]];
 	
 	[agController setDebugMode:YES];
 	[agController setScaleViewsBasedOnDistance:YES];

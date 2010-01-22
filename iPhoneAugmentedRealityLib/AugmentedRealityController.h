@@ -1,6 +1,6 @@
 //
-//  AugmentedReality.h
-//  ARKit
+//  AugmentedRealityController.h
+//  iPhoneAugmentedRealityLib
 //
 //  Created by Niels W Hansen on 12/20/09.
 //  Copyright 2009 Agilite Software All rights reserved.
@@ -12,7 +12,7 @@
 
 @class ARCoordinate;
 
-@interface AugmentedReality : NSObject <UIAccelerometerDelegate, CLLocationManagerDelegate> {
+@interface AugmentedRealityController : NSObject <UIAccelerometerDelegate, CLLocationManagerDelegate> {
 
 	BOOL scaleViewsBasedOnDistance;
 	BOOL rotateViewsBasedOnPerspective;
@@ -28,18 +28,16 @@
 	UIAccelerometer		*accelerometerManager;
 	CLLocation			*centerLocation;
 	UIView				*displayView;
-	UILabel				*ar_debugView;
+	UILabel				*debugView;
 
 @private
 	double				latestHeading;
 	double				degreeRange;
 	float				viewAngle;
-
-	NSMutableArray		*ar_coordinates;
-	NSMutableArray		*ar_coordinateViews;
+	BOOL				debugMode;
 	
-	BOOL   debugMode;
-
+	NSMutableArray		*coordinates;
+	NSMutableArray		*coordinateViews;
 }
 
 @property BOOL scaleViewsBasedOnDistance;
@@ -51,19 +49,17 @@
 @property double maximumRotationAngle;
 @property double degreeRange;
 
-@property (nonatomic, retain) UIAccelerometer		*accelerometerManager;
-@property (nonatomic, retain) CLLocationManager		*locationManager;
-@property (nonatomic, retain) ARCoordinate			*centerCoordinate;
-@property (nonatomic, retain) CLLocation			*centerLocation;
-@property (nonatomic, retain) UIView				*displayView;
+@property (nonatomic, retain) UIAccelerometer	*accelerometerManager;
+@property (nonatomic, retain) CLLocationManager	*locationManager;
+@property (nonatomic, retain) ARCoordinate		*centerCoordinate;
+@property (nonatomic, retain) CLLocation		*centerLocation;
+@property (nonatomic, retain) UIView			*displayView;
 @property UIDeviceOrientation	currentOrientation;
-
 @property (readonly) NSArray *coordinates;
 
 - (id)initWithViewController:(UIViewController *)theView;
 
-- (CGPoint) pointInView:(UIView *)realityView withView:(UIView *)viewToDraw forCoordinate:(ARCoordinate *)coordinate;
-- (BOOL) viewportContainsView:(UIView *)viewToDraw forCoordinate:(ARCoordinate *)coordinate;
+
 - (void) setupDebugPostion;
 - (void) updateLocations;
 
@@ -73,6 +69,6 @@
 // Removing coordinates
 - (void)removeCoordinate:(ARCoordinate *)coordinate;
 - (void)removeCoordinate:(ARCoordinate *)coordinate animated:(BOOL)animated;
-- (void)removeCoordinates:(NSArray *)coordinates;
+- (void)removeCoordinates:(NSArray *)coordinateArray;
 
 @end

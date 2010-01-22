@@ -6,22 +6,22 @@ This version of the iPhone ARKit is a forked version of the ARKit started on Git
 
 ### Goals of the project ###
 * Not depended on a specific View Controller or the main App Delegate. (Completed)
+* Create as a static library that can be added to any other project. (Completed currently only in the static library branch.)
+* Ability to use both the Landscape and Portrait modes (Completed)
 * Use CoreLocation coordinates and update location as the user moves around. (not yet completed.) 
 * Use CoreData to store coordinates (Not yet implemented.)
-* Ability to use both the Landscape and Portrait modes (Completed)
 * Ability to add different type of views to augment. (Not yet implemented.)
 * Ability to touch any of the augment views to handle other tasks. (Not yet implemented.)
-* Create as a static library that can be added to any other project. (Not yet implemented.)
 * Add a Radar Control (Not yet implemented)
-
 
 iPhone ARKit's APIs are modeled after MapKit's. For an overview of MapKit, please read [the documentation](http://developer.apple.com/iphone/library/documentation/MapKit/Reference/MapKit_Framework_Reference/index.html) for more information.
 
 ## Current Status ##
 
-This is a very early stage is is not ready to be used in existing projects. 
-It's possible to run the toolkit with the current ViewController, but it's currently not the ARKit it needs to be to add to your project(s).
-The current code now has been updated to use the accelerator's z variable to determine the angle of the phone and where to position it.
+* This is a very early stage is is not ready to be used in existing projects. 
+* The StaticLibrary branch now has the ARKit in a static library with a Demo project that uses the static Library.
+* Continuing to refactor the static library. Next move will be to remove the Views from the static library and have the ability to add any view to the AGKit.
+
 
 ## Blog for Project ##
 More information about the project can be found at [the agilite software blog](http://www.agilitesoftware.com/blog)

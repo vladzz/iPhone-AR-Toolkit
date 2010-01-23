@@ -16,8 +16,6 @@
 		8C6A8D3411023FAC0053C976 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C6A8D3311023FAC0053C976 /* UIKit.framework */; };
 		8C6A8D3811023FC80053C976 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C6A8D3711023FC80053C976 /* CoreLocation.framework */; };
 		8C6A8D3C11023FD80053C976 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C6A8D3B11023FD80053C976 /* MapKit.framework */; };
-		8C6A8E231102509B0053C976 /* ARViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C6A8E221102509B0053C976 /* ARViewController.m */; };
-		8C6A8E25110250BE0053C976 /* ARViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6A8E24110250BE0053C976 /* ARViewController.h */; };
 		8C6A8E41110251400053C976 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C6A8E40110251400053C976 /* CoreGraphics.framework */; };
 		8C6A8E811102537C0053C976 /* GEOLocations.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6A8E7F1102537C0053C976 /* GEOLocations.h */; };
 		8C6A8E821102537C0053C976 /* GEOLocations.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C6A8E801102537C0053C976 /* GEOLocations.m */; };
@@ -37,8 +35,6 @@
 		8C6A8D3311023FAC0053C976 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		8C6A8D3711023FC80053C976 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		8C6A8D3B11023FD80053C976 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		8C6A8E221102509B0053C976 /* ARViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARViewController.m; sourceTree = "<group>"; };
-		8C6A8E24110250BE0053C976 /* ARViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARViewController.h; sourceTree = "<group>"; };
 		8C6A8E40110251400053C976 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8C6A8E7F1102537C0053C976 /* GEOLocations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GEOLocations.h; sourceTree = "<group>"; };
 		8C6A8E801102537C0053C976 /* GEOLocations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GEOLocations.m; sourceTree = "<group>"; };
@@ -102,7 +98,6 @@
 				8C6A8E881102544F0053C976 /* Views */,
 				8C6A8E87110253C30053C976 /* CoordinateObjects */,
 				8C6A8E7E110253660053C976 /* Data Objects */,
-				8C6A8E1C110250610053C976 /* AugmentedViewController */,
 				8C6A8D1811023F690053C976 /* AugmentedRealityController.h */,
 				8C6A8D1911023F690053C976 /* AugmentedRealityController.m */,
 			);
@@ -115,15 +110,6 @@
 				AA747D9E0F9514B9006C5449 /* iPhoneAugmentedRealityLib_Prefix.pch */,
 			);
 			name = "Other Sources";
-			sourceTree = "<group>";
-		};
-		8C6A8E1C110250610053C976 /* AugmentedViewController */ = {
-			isa = PBXGroup;
-			children = (
-				8C6A8E24110250BE0053C976 /* ARViewController.h */,
-				8C6A8E221102509B0053C976 /* ARViewController.m */,
-			);
-			name = AugmentedViewController;
 			sourceTree = "<group>";
 		};
 		8C6A8E7E110253660053C976 /* Data Objects */ = {
@@ -166,7 +152,6 @@
 				8C6A8D1A11023F690053C976 /* ARCoordinate.h in Headers */,
 				8C6A8D1C11023F690053C976 /* ARGeoCoordinate.h in Headers */,
 				8C6A8D1E11023F690053C976 /* AugmentedRealityController.h in Headers */,
-				8C6A8E25110250BE0053C976 /* ARViewController.h in Headers */,
 				8C6A8E811102537C0053C976 /* GEOLocations.h in Headers */,
 				8C6A8E8B1102546E0053C976 /* CoordinateView.h in Headers */,
 			);
@@ -218,7 +203,6 @@
 				8C6A8D1B11023F690053C976 /* ARCoordinate.m in Sources */,
 				8C6A8D1D11023F690053C976 /* ARGeoCoordinate.m in Sources */,
 				8C6A8D1F11023F690053C976 /* AugmentedRealityController.m in Sources */,
-				8C6A8E231102509B0053C976 /* ARViewController.m in Sources */,
 				8C6A8E821102537C0053C976 /* GEOLocations.m in Sources */,
 				8C6A8E8C1102546E0053C976 /* CoordinateView.m in Sources */,
 			);

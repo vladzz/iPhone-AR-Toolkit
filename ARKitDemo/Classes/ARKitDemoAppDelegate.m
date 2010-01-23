@@ -1,14 +1,13 @@
 //
 //  ARKitDemoAppDelegate.m
-//  ARKitDemo
+//  ARKitDemo using the iPhoneAugmentedRealityLib
 //
-//  Created by Zac White on 8/1/09.
-//  Copyright Zac White 2009. All rights reserved.
+//  Created by Niels Hansen on 1/21/2010.
+//  Copyright Agilite Software 2010. All rights reserved.
 //
 
 #import "ARKitDemoAppDelegate.h"
-#import "ARGeoCoordinate.h"
-#import "GEOLocations.h"
+#import "ARDemoViewController.h"
 
 @implementation ARKitDemoAppDelegate
 
@@ -16,10 +15,9 @@
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {    
 	
-	ARViewController *viewController = [[ARViewController alloc] init];
+	ARDemoViewController *viewController = [[ARDemoViewController alloc] init];
 	[window addSubview:[viewController view]];
 	
-    // Override point for customization after application launch
     [window makeKeyAndVisible];
 }
 

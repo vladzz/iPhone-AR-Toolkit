@@ -25,10 +25,12 @@
 	CLLocationManager	*locationManager;
 	UIDeviceOrientation currentOrientation;
 	
+	UIViewController	*rootViewController;
 	UIAccelerometer		*accelerometerManager;
 	CLLocation			*centerLocation;
 	UIView				*displayView;
 	UILabel				*debugView;
+	UIImagePickerController		*cameraController;
 
 @private
 	double				latestHeading;
@@ -54,14 +56,16 @@
 @property (nonatomic, retain) ARCoordinate		*centerCoordinate;
 @property (nonatomic, retain) CLLocation		*centerLocation;
 @property (nonatomic, retain) UIView			*displayView;
+@property (nonatomic, retain) UIViewController	*rootViewController;
+@property (nonatomic, retain) UIImagePickerController *cameraController;
 @property UIDeviceOrientation	currentOrientation;
 @property (readonly) NSArray *coordinates;
 
 - (id)initWithViewController:(UIViewController *)theView;
 
-
 - (void) setupDebugPostion;
 - (void) updateLocations;
+- (void) displayAR;
 
 // Adding coordinates to the underlying data model.
 - (void)addCoordinate:(ARCoordinate *)coordinate augmentedView:(UIView *)agView animated:(BOOL)animated ;

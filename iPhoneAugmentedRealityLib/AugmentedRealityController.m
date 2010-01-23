@@ -16,6 +16,7 @@
 #define degreesToRadian(x) (M_PI * (x) / 180.0)
 #define radianToDegrees(x) ((x) * 180.0/M_PI)
 
+
 @interface AugmentedRealityController (Private)
 - (void) updateCenterCoordinate;
 - (void) startListening;
@@ -40,13 +41,17 @@
 @synthesize debugMode;
 @synthesize currentOrientation;
 @synthesize degreeRange;
+@synthesize rootViewController;
+
+@synthesize cameraController;
 
 - (id)initWithViewController:(UIViewController *)vc {
-	
 	coordinates		= [[NSMutableArray alloc] init];
 	coordinateViews	= [[NSMutableArray alloc] init];
-	latestHeading		= -1.0f;
+	latestHeading	= -1.0f;
 	debugView		= nil;
+	
+	[self setRootViewController: vc];
 
 	[self setDebugMode:NO];
 	[self setMaximumScaleDistance: 0.0];
@@ -61,13 +66,30 @@
 
 	[vc setView:displayView];
 	
+	[self setCameraController: [[[UIImagePickerController alloc] init] autorelease]];
+	[[self cameraController] setSourceType: UIImagePickerControllerSourceTypeCamera];
+	[[self cameraController] setCameraViewTransform: CGAffineTransformScale([[self cameraController] cameraViewTransform], 1.13f,  1.13f)];
+	[[self cameraController] setShowsCameraControls:NO];
+	[[self cameraController] setNavigationBarHidden:YES];
+	[[self cameraController] setCameraOverlayView:displayView];
+	
 	CLLocation *newCenter = [[CLLocation alloc] initWithLatitude:37.41711 longitude:-122.02528];
 	
 	[self setCenterLocation: newCenter];
 	[newCenter release];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name: UIDeviceOrientationDidChangeNotification object:nil];
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];	
+	
 	[self startListening];
 	
 	return self;
+}
+
+// This is needed to start showing the Camera of the Augemented Reality Toolkit.
+-(void) displayAR {
+	[rootViewController presentModalViewController:[self cameraController] animated:NO];
+	[displayView setFrame:[[[self cameraController] view] bounds]];
 }
 
 - (void)startListening {
@@ -370,7 +392,38 @@
 		[debugView removeFromSuperview];
 }
 
+- (void)deviceOrientationDidChange:(NSNotification *)notification {
+	
+	UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+	
+	// Later we may handle the Orientation of Faceup to show a Map.  For now let's ignore it.
+	if (orientation != UIDeviceOrientationUnknown && orientation != UIDeviceOrientationFaceUp && orientation != UIDeviceOrientationFaceDown) {
+		
+		CGAffineTransform transform = CGAffineTransformMakeRotation(degreesToRadian(0));
+		CGRect bounds = CGRectMake(0, 0, 320, 480);
+		
+		if (orientation == UIDeviceOrientationLandscapeLeft) {
+			transform	= CGAffineTransformMakeRotation(degreesToRadian(90));
+			bounds		= CGRectMake(0, 0, 480, 320);
+		}
+		else if (orientation == UIDeviceOrientationLandscapeRight) {
+			transform	= CGAffineTransformMakeRotation(degreesToRadian(-90));
+			bounds		= CGRectMake(0, 0, 480, 320);
+		}
+		else if (orientation == UIDeviceOrientationPortraitUpsideDown)
+			transform = CGAffineTransformMakeRotation(degreesToRadian(180));
+		
+		[displayView setTransform:CGAffineTransformIdentity];
+		[displayView setTransform: transform];
+		[displayView setBounds:bounds];
+		
+		[self setDebugMode:YES];
+		
+	}
+}
+
 - (void)dealloc {
+	[[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
 	[locationManager release];
 	[coordinateViews release];
 	[coordinates release];

@@ -16,7 +16,6 @@
 #define degreesToRadian(x) (M_PI * (x) / 180.0)
 #define radianToDegrees(x) ((x) * 180.0/M_PI)
 
-
 @interface AugmentedRealityController (Private)
 - (void) updateCenterCoordinate;
 - (void) startListening;
@@ -60,9 +59,11 @@
 	[self setRotateViewsBasedOnPerspective: NO];
 	[self setMaximumRotationAngle: M_PI / 6.0];
 	
-	[self setDisplayView: [[UIView alloc] initWithFrame: CGRectMake(0, 0, 320, 480)]];
+	CGRect screenRect = [[UIScreen mainScreen] bounds];
+	
+	[self setDisplayView: [[UIView alloc] initWithFrame: screenRect]];
 	[self setCurrentOrientation:UIDeviceOrientationPortrait];
-	[self setDegreeRange:45.0];
+	[self setDegreeRange:[[self displayView] bounds].size.width / 12];
 
 	[vc setView:displayView];
 	
@@ -95,7 +96,6 @@
 - (void)startListening {
 	
 	// start our heading readings and our accelerometer readings.
-	
 	if (![self locationManager]) {
 		[self setLocationManager: [[CLLocationManager alloc] init]];
 		[[self locationManager] setHeadingFilter: kCLHeadingFilterNone];
@@ -213,7 +213,7 @@
 }
 
 - (void)removeCoordinate:(ARCoordinate *)coordinate animated:(BOOL)animated {
-	[coordinates removeObject:coordinate];// do some kind of animation?
+	[coordinates removeObject:coordinate];
 }
 
 - (void)removeCoordinates:(NSArray *)coordinateArray {	
@@ -334,11 +334,11 @@
 - (CGPoint)pointInView:(UIView *)realityView withView:(UIView *)viewToDraw forCoordinate:(ARCoordinate *)coordinate {	
 	
 	CGPoint point;
-	CGRect realityBounds	 = [realityView bounds];
-	double currentAzimuth	 = [[self centerCoordinate] azimuth];
-	double pointAzimuth		 = [coordinate azimuth];
-	BOOL isBetweenNorth		 = NO;
-	double deltaAzimith		 = [self findDeltaOfRadianCenter: &currentAzimuth coordinateAzimuth:pointAzimuth betweenNorth:&isBetweenNorth];
+	CGRect realityBounds	= [realityView bounds];
+	double currentAzimuth	= [[self centerCoordinate] azimuth];
+	double pointAzimuth		= [coordinate azimuth];
+	BOOL isBetweenNorth		= NO;
+	double deltaAzimith		= [self findDeltaOfRadianCenter: &currentAzimuth coordinateAzimuth:pointAzimuth betweenNorth:&isBetweenNorth];
 	
 	if ((pointAzimuth > currentAzimuth && !isBetweenNorth) || (currentAzimuth > degreesToRadian(360-[self degreeRange]) && pointAzimuth < degreesToRadian([self degreeRange])))
 		point.x = (realityBounds.size.width / 2) + ((deltaAzimith / degreesToRadian(1)) * 12);  // Right side of Azimuth
@@ -360,25 +360,48 @@
 		return NSOrderedSame;
 }
 
-- (void)setDebugMode:(BOOL)flag {
+- (void)deviceOrientationDidChange:(NSNotification *)notification {
 	
+	UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+	
+	// Later we may handle the Orientation of Faceup to show a Map.  For now let's ignore it.
+	if (orientation != UIDeviceOrientationUnknown && orientation != UIDeviceOrientationFaceUp && orientation != UIDeviceOrientationFaceDown) {
+		
+		CGAffineTransform transform = CGAffineTransformMakeRotation(degreesToRadian(0));
+		CGRect bounds = [[UIScreen mainScreen] bounds];
+		
+		if (orientation == UIDeviceOrientationLandscapeLeft) {
+			transform		   = CGAffineTransformMakeRotation(degreesToRadian(90));
+			bounds.size.width  = [[UIScreen mainScreen] bounds].size.height;
+			bounds.size.height = [[UIScreen mainScreen] bounds].size.width;
+		}
+		else if (orientation == UIDeviceOrientationLandscapeRight) {
+			transform		   = CGAffineTransformMakeRotation(degreesToRadian(-90));
+			bounds.size.width  = [[UIScreen mainScreen] bounds].size.height;
+			bounds.size.height = [[UIScreen mainScreen] bounds].size.width;
+		}
+		else if (orientation == UIDeviceOrientationPortraitUpsideDown)
+			transform = CGAffineTransformMakeRotation(degreesToRadian(180));
+		
+		[displayView setTransform:CGAffineTransformIdentity];
+		[displayView setTransform: transform];
+		[displayView setBounds:bounds];
+		
+		[self setDegreeRange:[[self displayView] bounds].size.width / 12];
+		[self setDebugMode:YES];
+	}
+}
+
+- (void)setDebugMode:(BOOL)flag {
+
 	if ([self debugMode] == flag) {
-		CGRect debugRect;
-		
 		currentOrientation = [[UIDevice currentDevice] orientation];
-		
-		debugRect = CGRectMake(0, [[self displayView] bounds].size.height -20, [[self displayView] bounds].size.width, 20);		
-		
-		if (currentOrientation == UIDeviceOrientationLandscapeLeft || currentOrientation == UIDeviceOrientationLandscapeRight) 
-			[self setDegreeRange:40.0];
-		else 
-			[self setDegreeRange:25.0];
-			
+
+		CGRect debugRect  = CGRectMake(0, [[self displayView] bounds].size.height -20, [[self displayView] bounds].size.width, 20);	
 		[debugView setFrame: debugRect];
-		
 		return;
 	}
-			
+	
 	debugMode = flag;
 	
 	if ([self debugMode]) {
@@ -390,36 +413,6 @@
 	}
 	else 
 		[debugView removeFromSuperview];
-}
-
-- (void)deviceOrientationDidChange:(NSNotification *)notification {
-	
-	UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-	
-	// Later we may handle the Orientation of Faceup to show a Map.  For now let's ignore it.
-	if (orientation != UIDeviceOrientationUnknown && orientation != UIDeviceOrientationFaceUp && orientation != UIDeviceOrientationFaceDown) {
-		
-		CGAffineTransform transform = CGAffineTransformMakeRotation(degreesToRadian(0));
-		CGRect bounds = CGRectMake(0, 0, 320, 480);
-		
-		if (orientation == UIDeviceOrientationLandscapeLeft) {
-			transform	= CGAffineTransformMakeRotation(degreesToRadian(90));
-			bounds		= CGRectMake(0, 0, 480, 320);
-		}
-		else if (orientation == UIDeviceOrientationLandscapeRight) {
-			transform	= CGAffineTransformMakeRotation(degreesToRadian(-90));
-			bounds		= CGRectMake(0, 0, 480, 320);
-		}
-		else if (orientation == UIDeviceOrientationPortraitUpsideDown)
-			transform = CGAffineTransformMakeRotation(degreesToRadian(180));
-		
-		[displayView setTransform:CGAffineTransformIdentity];
-		[displayView setTransform: transform];
-		[displayView setBounds:bounds];
-		
-		[self setDebugMode:YES];
-		
-	}
 }
 
 - (void)dealloc {

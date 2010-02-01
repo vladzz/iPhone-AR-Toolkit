@@ -424,4 +424,8 @@
     [super dealloc];
 }
 
+@synthesize debugView;
+@synthesize latestHeading;
+@synthesize viewAngle;
+@synthesize coordinateViews;
 @end

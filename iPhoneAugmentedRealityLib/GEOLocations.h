@@ -22,4 +22,5 @@
 
 
 
+@property (retain,getter=getLocations) NSMutableArray *locationArray;
 @end

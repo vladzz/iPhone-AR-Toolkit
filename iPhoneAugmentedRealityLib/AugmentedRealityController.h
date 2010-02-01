@@ -75,4 +75,8 @@
 - (void)removeCoordinate:(ARCoordinate *)coordinate animated:(BOOL)animated;
 - (void)removeCoordinates:(NSArray *)coordinateArray;
 
+@property (retain) UILabel				*debugView;
+@property double				latestHeading;
+@property float				viewAngle;
+@property (retain) NSMutableArray		*coordinateViews;
 @end

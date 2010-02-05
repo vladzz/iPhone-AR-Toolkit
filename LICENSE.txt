@@ -53,3 +53,7 @@ THE SOFTWARE.
 
 Based on existing work by Zac White:
 <http://github.com/zac/iphonearkit>
+
+"It isn't GPL. I haven't made the license clear, but it is a non-viral
+license with attribution."
+http://twitter.com/iphonearkit/status/5463780383

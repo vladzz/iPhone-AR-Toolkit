@@ -20,7 +20,7 @@
 	if (!(self = [super init]))
 		return nil;
 	
-//	[self setWantsFullScreenLayout: YES];
+	[self setWantsFullScreenLayout: YES];
 	
 	return self;
 }
@@ -28,7 +28,7 @@
 - (void)loadView {
 	[self setAgController:[[AugmentedRealityController alloc] initWithViewController:self]];
 	
-	[agController setDebugMode:YES];
+	[agController setDebugMode:NO];
 	[agController setScaleViewsBasedOnDistance:YES];
 	[agController setMinimumScaleFactor:0.5];
 	[agController setRotateViewsBasedOnPerspective:YES];

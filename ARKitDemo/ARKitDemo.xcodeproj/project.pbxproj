@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 45;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -22,7 +22,8 @@
 		69E66638111BAF3500BD3E6D /* AugmentedRealityController.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E66631111BAF3500BD3E6D /* AugmentedRealityController.m */; };
 		69E66639111BAF3500BD3E6D /* CoordinateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E66633111BAF3500BD3E6D /* CoordinateView.m */; };
 		69E6663A111BAF3500BD3E6D /* GEOLocations.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E66635111BAF3500BD3E6D /* GEOLocations.m */; };
-		8CA1AC27110B86240087D1DD /* ARDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CA1AC26110B86240087D1DD /* ARDemoViewController.m */; };
+		7F4C19A1112674030093704B /* ARLocationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F4C19A0112674030093704B /* ARLocationDelegate.m */; };
+		8CA1AC27110B86240087D1DD /* ARViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CA1AC26110B86240087D1DD /* ARViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,8 +50,10 @@
 		69E66633111BAF3500BD3E6D /* CoordinateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoordinateView.m; sourceTree = "<group>"; };
 		69E66634111BAF3500BD3E6D /* GEOLocations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GEOLocations.h; sourceTree = "<group>"; };
 		69E66635111BAF3500BD3E6D /* GEOLocations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GEOLocations.m; sourceTree = "<group>"; };
-		8CA1AC25110B86240087D1DD /* ARDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDemoViewController.h; sourceTree = "<group>"; };
-		8CA1AC26110B86240087D1DD /* ARDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDemoViewController.m; sourceTree = "<group>"; };
+		7F4C199F112674030093704B /* ARLocationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLocationDelegate.h; sourceTree = "<group>"; };
+		7F4C19A0112674030093704B /* ARLocationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLocationDelegate.m; sourceTree = "<group>"; };
+		8CA1AC25110B86240087D1DD /* ARViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARViewController.h; path = Classes/ARViewController.h; sourceTree = SOURCE_ROOT; };
+		8CA1AC26110B86240087D1DD /* ARViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARViewController.m; path = Classes/ARViewController.m; sourceTree = SOURCE_ROOT; };
 		8D1107310486CEB800E47090 /* ARKitDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ARKitDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -74,7 +77,6 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				8C901A4A10DE878700E8052F /* ViewControllers */,
 				1D3623240D0F684500981E51 /* ARKitDemoAppDelegate.h */,
 				1D3623250D0F684500981E51 /* ARKitDemoAppDelegate.m */,
 			);
@@ -137,6 +139,8 @@
 		69E6662B111BAF3500BD3E6D /* ARKit */ = {
 			isa = PBXGroup;
 			children = (
+				8CA1AC25110B86240087D1DD /* ARViewController.h */,
+				8CA1AC26110B86240087D1DD /* ARViewController.m */,
 				69E6662C111BAF3500BD3E6D /* ARCoordinate.h */,
 				69E6662D111BAF3500BD3E6D /* ARCoordinate.m */,
 				69E6662E111BAF3500BD3E6D /* ARGeoCoordinate.h */,
@@ -147,19 +151,12 @@
 				69E66633111BAF3500BD3E6D /* CoordinateView.m */,
 				69E66634111BAF3500BD3E6D /* GEOLocations.h */,
 				69E66635111BAF3500BD3E6D /* GEOLocations.m */,
+				7F4C199F112674030093704B /* ARLocationDelegate.h */,
+				7F4C19A0112674030093704B /* ARLocationDelegate.m */,
 			);
 			name = ARKit;
 			path = ../ARKit;
 			sourceTree = SOURCE_ROOT;
-		};
-		8C901A4A10DE878700E8052F /* ViewControllers */ = {
-			isa = PBXGroup;
-			children = (
-				8CA1AC25110B86240087D1DD /* ARDemoViewController.h */,
-				8CA1AC26110B86240087D1DD /* ARDemoViewController.m */,
-			);
-			name = ViewControllers;
-			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
@@ -191,7 +188,7 @@
 				ORGANIZATIONNAME = "Mike Tigas";
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "ARKitDemo" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 1;
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
@@ -221,12 +218,13 @@
 			files = (
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* ARKitDemoAppDelegate.m in Sources */,
-				8CA1AC27110B86240087D1DD /* ARDemoViewController.m in Sources */,
+				8CA1AC27110B86240087D1DD /* ARViewController.m in Sources */,
 				69E66636111BAF3500BD3E6D /* ARCoordinate.m in Sources */,
 				69E66637111BAF3500BD3E6D /* ARGeoCoordinate.m in Sources */,
 				69E66638111BAF3500BD3E6D /* AugmentedRealityController.m in Sources */,
 				69E66639111BAF3500BD3E6D /* CoordinateView.m in Sources */,
 				69E6663A111BAF3500BD3E6D /* GEOLocations.m in Sources */,
+				7F4C19A1112674030093704B /* ARLocationDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -247,7 +245,7 @@
 				INFOPLIST_FILE = "ARKitDemo-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../iPhoneAugmentedRealityLib/build/Debug-iphoneos\"",
+					"\\\"$(SRCROOT)/../iPhoneAugmentedRealityLib/build/Debug-iphoneos\\\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ARKitDemo;
@@ -265,7 +263,7 @@
 				INFOPLIST_FILE = "ARKitDemo-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../iPhoneAugmentedRealityLib/build/Debug-iphoneos\"",
+					"\\\"$(SRCROOT)/../iPhoneAugmentedRealityLib/build/Debug-iphoneos\\\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ARKitDemo;
@@ -298,7 +296,7 @@
 				INFOPLIST_FILE = "ARKitDemo-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../iPhoneAugmentedRealityLib/build/Debug-iphoneos\"",
+					"\\\"$(SRCROOT)/../iPhoneAugmentedRealityLib/build/Debug-iphoneos\\\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ARKitDemo;

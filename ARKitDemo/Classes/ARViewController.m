@@ -1,21 +1,25 @@
 //
-//  ARDemoViewController.m
+//  ARViewController.m
 //  ARKitDemo
 //
 //  Created by Niels W Hansen on 1/23/10.
 //  Copyright 2010 Agilite Software. All rights reserved.
 //
 
-#import "ARDemoViewController.h"
+#import "ARViewController.h"
 #import "AugmentedRealityController.h"
 #import "GEOLocations.h"
 #import "CoordinateView.h"
 
-@implementation ARDemoViewController
+@implementation ARViewController
 
 @synthesize agController;
+@synthesize delegate;
 
-- (id)init {
+-(id)initWithDelegate:(id<ARLocationDelegate>) aDelegate {
+	
+	
+	self.delegate = aDelegate;
 	
 	if (!(self = [super init]))
 		return nil;
@@ -33,7 +37,7 @@
 	[agController setMinimumScaleFactor:0.5];
 	[agController setRotateViewsBasedOnPerspective:YES];
 	
-	GEOLocations* locations = [[GEOLocations alloc] init];
+	GEOLocations* locations = [[GEOLocations alloc] initWithDelegate:delegate];
 	
 	if ([[locations getLocations] count] > 0) {
 		for (ARCoordinate *coordinate in [locations getLocations]) {

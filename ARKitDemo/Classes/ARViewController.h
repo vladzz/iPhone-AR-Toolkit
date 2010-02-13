@@ -1,5 +1,5 @@
 //
-//  ARDemoViewController.h
+//  ARViewController.h
 //  ARKitDemo
 //
 //  Created by Niels W Hansen on 1/23/10.
@@ -7,15 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "ARLocationDelegate.h"
 
 
 @class AugmentedRealityController;
 
-@interface ARDemoViewController : UIViewController {
+@interface ARViewController : UIViewController {
 	AugmentedRealityController	*agController;
+	id<ARLocationDelegate> delegate;
 }
 
 @property (nonatomic, retain) AugmentedRealityController *agController;
+@property (nonatomic, assign) id<ARLocationDelegate> delegate;
+
+-(id)initWithDelegate:(id<ARLocationDelegate>) aDelegate;
 
 @end
+

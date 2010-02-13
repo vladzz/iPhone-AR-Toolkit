@@ -7,17 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "ARLocationDelegate.h"
+ 
 @class ARCoordinate;
 
 @interface GEOLocations : NSObject {
 	
 	NSMutableArray *locationArray;
-	
+	id<ARLocationDelegate> delegate;
 }
 
-- (id)init;
--(void) LoadLocations;
+@property(nonatomic,assign) id<ARLocationDelegate> delegate;
+
+- (id)initWithDelegate:(id<ARLocationDelegate>) aDelegate;
 -(NSMutableArray*) getLocations;
 
 

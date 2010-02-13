@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ARLocationDelegate.h"
 
 
-@interface ARKitDemoAppDelegate : NSObject <UIApplicationDelegate> {
+@interface ARKitDemoAppDelegate : NSObject <UIApplicationDelegate, ARLocationDelegate> {
     UIWindow *window;
 }
 

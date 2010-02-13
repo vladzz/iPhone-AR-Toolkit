@@ -15,7 +15,7 @@
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {    
 	
-	ARViewController *viewController = [[ARViewController alloc] init];
+	ARViewController *viewController = [[ARViewController alloc] initWithDelegate:self];
 	[window addSubview:[viewController view]];
 	
     [window makeKeyAndVisible];

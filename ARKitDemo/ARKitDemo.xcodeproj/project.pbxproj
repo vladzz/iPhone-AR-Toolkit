@@ -23,7 +23,7 @@
 		69E66639111BAF3500BD3E6D /* CoordinateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E66633111BAF3500BD3E6D /* CoordinateView.m */; };
 		69E6663A111BAF3500BD3E6D /* GEOLocations.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E66635111BAF3500BD3E6D /* GEOLocations.m */; };
 		7F4C19A1112674030093704B /* ARLocationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F4C19A0112674030093704B /* ARLocationDelegate.m */; };
-		8CA1AC27110B86240087D1DD /* ARViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CA1AC26110B86240087D1DD /* ARViewController.m */; };
+		7F4C19F6112677260093704B /* ARViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F4C19F5112677260093704B /* ARViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,8 +52,8 @@
 		69E66635111BAF3500BD3E6D /* GEOLocations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GEOLocations.m; sourceTree = "<group>"; };
 		7F4C199F112674030093704B /* ARLocationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLocationDelegate.h; sourceTree = "<group>"; };
 		7F4C19A0112674030093704B /* ARLocationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLocationDelegate.m; sourceTree = "<group>"; };
-		8CA1AC25110B86240087D1DD /* ARViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARViewController.h; path = Classes/ARViewController.h; sourceTree = SOURCE_ROOT; };
-		8CA1AC26110B86240087D1DD /* ARViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARViewController.m; path = Classes/ARViewController.m; sourceTree = SOURCE_ROOT; };
+		7F4C19F4112677260093704B /* ARViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARViewController.h; sourceTree = "<group>"; };
+		7F4C19F5112677260093704B /* ARViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARViewController.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* ARKitDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ARKitDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -139,8 +139,8 @@
 		69E6662B111BAF3500BD3E6D /* ARKit */ = {
 			isa = PBXGroup;
 			children = (
-				8CA1AC25110B86240087D1DD /* ARViewController.h */,
-				8CA1AC26110B86240087D1DD /* ARViewController.m */,
+				7F4C19F4112677260093704B /* ARViewController.h */,
+				7F4C19F5112677260093704B /* ARViewController.m */,
 				69E6662C111BAF3500BD3E6D /* ARCoordinate.h */,
 				69E6662D111BAF3500BD3E6D /* ARCoordinate.m */,
 				69E6662E111BAF3500BD3E6D /* ARGeoCoordinate.h */,
@@ -218,13 +218,13 @@
 			files = (
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* ARKitDemoAppDelegate.m in Sources */,
-				8CA1AC27110B86240087D1DD /* ARViewController.m in Sources */,
 				69E66636111BAF3500BD3E6D /* ARCoordinate.m in Sources */,
 				69E66637111BAF3500BD3E6D /* ARGeoCoordinate.m in Sources */,
 				69E66638111BAF3500BD3E6D /* AugmentedRealityController.m in Sources */,
 				69E66639111BAF3500BD3E6D /* CoordinateView.m in Sources */,
 				69E6663A111BAF3500BD3E6D /* GEOLocations.m in Sources */,
 				7F4C19A1112674030093704B /* ARLocationDelegate.m in Sources */,
+				7F4C19F6112677260093704B /* ARViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

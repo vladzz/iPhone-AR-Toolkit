@@ -14,8 +14,20 @@
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {    
 	
-	ARViewController *viewController = [[ARViewController alloc] initWithDelegate:self];
-	[window addSubview:[viewController view]];
+	if([ARKit deviceSupportsAR]){
+		ARViewController *viewController = [[ARViewController alloc] initWithDelegate:self];
+		[window addSubview:[viewController view]];
+	}
+	else{
+		UIViewController *viewController = [[UIViewController alloc] init];
+		UILabel *errorLabel = [[[UILabel alloc] init] autorelease];
+		errorLabel.numberOfLines = 0;
+		errorLabel.text = @"Augmented Reality is not supported on this device";
+		errorLabel.frame = viewController.view.bounds;
+		errorLabel.textAlignment = UITextAlignmentCenter;
+		[viewController.view addSubview:errorLabel];
+		[window addSubview:[viewController view]];
+	}
 	
     [window makeKeyAndVisible];
 }

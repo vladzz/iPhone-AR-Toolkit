@@ -8,7 +8,3 @@
 
 #import "ARLocationDelegate.h"
 
-
-@implementation ARLocationDelegate
-
-@end

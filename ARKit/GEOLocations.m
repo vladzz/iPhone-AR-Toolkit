@@ -21,7 +21,7 @@
 
 -(NSMutableArray*) getLocations 
 {
-	[delegate getLocations];
+	return [delegate getLocations];
 }
 
 - (void)dealloc {

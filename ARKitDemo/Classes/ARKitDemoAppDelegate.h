@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ARLocationDelegate.h"
+#import "ARKit.h"
 
 
 @interface ARKitDemoAppDelegate : NSObject <UIApplicationDelegate, ARLocationDelegate> {

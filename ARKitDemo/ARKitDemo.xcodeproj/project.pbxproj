@@ -24,6 +24,7 @@
 		69E6663A111BAF3500BD3E6D /* GEOLocations.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E66635111BAF3500BD3E6D /* GEOLocations.m */; };
 		7F4C19A1112674030093704B /* ARLocationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F4C19A0112674030093704B /* ARLocationDelegate.m */; };
 		7F4C19F6112677260093704B /* ARViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F4C19F5112677260093704B /* ARViewController.m */; };
+		7F4C19FA112678E50093704B /* ARKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F4C19F9112678E50093704B /* ARKit.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,8 @@
 		7F4C19A0112674030093704B /* ARLocationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLocationDelegate.m; sourceTree = "<group>"; };
 		7F4C19F4112677260093704B /* ARViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARViewController.h; sourceTree = "<group>"; };
 		7F4C19F5112677260093704B /* ARViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARViewController.m; sourceTree = "<group>"; };
+		7F4C19F8112678E50093704B /* ARKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARKit.h; sourceTree = "<group>"; };
+		7F4C19F9112678E50093704B /* ARKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARKit.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* ARKitDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ARKitDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -153,6 +156,8 @@
 				69E66635111BAF3500BD3E6D /* GEOLocations.m */,
 				7F4C199F112674030093704B /* ARLocationDelegate.h */,
 				7F4C19A0112674030093704B /* ARLocationDelegate.m */,
+				7F4C19F8112678E50093704B /* ARKit.h */,
+				7F4C19F9112678E50093704B /* ARKit.m */,
 			);
 			name = ARKit;
 			path = ../ARKit;
@@ -225,6 +230,7 @@
 				69E6663A111BAF3500BD3E6D /* GEOLocations.m in Sources */,
 				7F4C19A1112674030093704B /* ARLocationDelegate.m in Sources */,
 				7F4C19F6112677260093704B /* ARViewController.m in Sources */,
+				7F4C19FA112678E50093704B /* ARKit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

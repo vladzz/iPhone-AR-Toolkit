@@ -7,7 +7,6 @@
 //
 
 #import "ARKitDemoAppDelegate.h"
-#import "ARViewController.h"
 
 @implementation ARKitDemoAppDelegate
 

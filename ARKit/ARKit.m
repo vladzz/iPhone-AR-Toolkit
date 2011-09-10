@@ -18,14 +18,10 @@
 		return NO;
 	}
 	
-	//Detect compass, if not there, return NO
-	CLLocationManager *locMan = [[CLLocationManager alloc] init];
-	if(!locMan.headingAvailable){
-		[locMan release];
+	if(![CLLocationManager headingAvailable]){
 		return NO;
 	}
-	[locMan release];
-	
+		
 	//cannot detect presence of GPS
 	//I could look at location accuracy, but the GPS takes too long to
 	//initialize to be effective for a quick check

@@ -89,8 +89,16 @@
 
 // This is needed to start showing the Camera of the Augemented Reality Toolkit.
 -(void) displayAR {
-	[rootViewController presentModalViewController:[self cameraController] animated:NO];
-	[displayView setFrame:[[[self cameraController] view] bounds]];
+    @try {
+       [rootViewController presentModalViewController:self.cameraController animated:NO];
+       [displayView setFrame: [[[self cameraController] view] bounds]]; 
+    }
+ 	@catch (NSException *exception) {
+        NSLog(@"displayAR exception: %@", exception);
+    }
+ 	@finally {
+        NSLog(@"No error");
+    }
 }
 
 - (void)startListening {

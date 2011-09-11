@@ -3,7 +3,7 @@
 //  ARKitDemo
 //
 //  Created by Niels W Hansen on 1/23/10.
-//  Copyright 2010 Agilite Software. All rights reserved.
+//  Copyright 2011 Agilite Software. All rights reserved.
 //
 
 #import "ARViewController.h"
@@ -18,18 +18,32 @@
 
 -(id)initWithDelegate:(id<ARLocationDelegate>) aDelegate {
 	
-	
-	self.delegate = aDelegate;
+	[self setDelegate:aDelegate];
 	
 	if (!(self = [super init]))
 		return nil;
 	
 	[self setWantsFullScreenLayout: YES];
+ 
 	
 	return self;
 }
 
+- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    
+    CGPoint locationPoint = [[touches anyObject] locationInView:[self view]];
+    UIView* viewtoTouch = [[self view] hitTest:locationPoint withEvent:event];
+    
+    if (viewtoTouch != [self view])
+        [viewtoTouch touchesBegan:touches withEvent:event];
+}
+
+- (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+
+}
+
 - (void)loadView {
+    
 	[self setAgController:[[AugmentedRealityController alloc] initWithViewController:self]];
 	
 	[agController setDebugMode:NO];

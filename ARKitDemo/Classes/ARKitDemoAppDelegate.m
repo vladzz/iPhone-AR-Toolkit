@@ -22,11 +22,11 @@
 	else{
 		UIViewController *viewController = [[UIViewController alloc] init];
 		UILabel *errorLabel = [[[UILabel alloc] init] autorelease];
-		errorLabel.numberOfLines = 0;
-		errorLabel.text = @"Augmented Reality is not supported on this device";
-		errorLabel.frame = viewController.view.bounds;
-		errorLabel.textAlignment = UITextAlignmentCenter;
-		[viewController.view addSubview:errorLabel];
+        [errorLabel setNumberOfLines:0];
+        [errorLabel setText: @"Augmented Reality is not supported on this device"];
+		[errorLabel setFrame: [[viewController view] bounds]];
+        [errorLabel setTextAlignment:UITextAlignmentCenter];
+		[[viewController view] addSubview:errorLabel];
 		[window addSubview:[viewController view]];
         [viewController release];
 	}

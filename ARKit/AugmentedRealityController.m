@@ -2,8 +2,8 @@
 //  AugmentedRealityController.m
 //  iPhoneAugmentedRealityLib
 //
-//  Created by Niels W Hansen on 12/20/09.
-//  Copyright 2009 Agilite Software. All rights reserved.
+//  Modified by Niels W Hansen on 8/10/11.
+//  Copyright 2011 Agilite Software. All rights reserved.
 //
 
 #import "AugmentedRealityController.h"
@@ -51,6 +51,7 @@
 	debugView		= nil;
 	
 	[self setRootViewController: vc];
+    
 
 	[self setDebugMode:NO];
 	[self setMaximumScaleDistance: 0.0];
@@ -86,6 +87,8 @@
 	
 	return self;
 }
+
+
 
 // This is needed to start showing the Camera of the Augemented Reality Toolkit.
 -(void) displayAR {
@@ -299,7 +302,7 @@
 			float height = [viewToDraw bounds].size.height * scaleFactor;
 			
 			[viewToDraw setFrame:CGRectMake(loc.x - width / 2.0, loc.y - (height / 2.0), width, height)];
-
+            
 			totalDisplayed++;
 			
 			CATransform3D transform = CATransform3DIdentity;

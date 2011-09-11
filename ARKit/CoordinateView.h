@@ -12,10 +12,10 @@
 @class ARCoordinate;
 
 @interface CoordinateView : UIView {
-
-	
+	NSString *title;
 }
 
 - (id)initForCoordinate:(ARCoordinate *)coordinate;
 
+@property (nonatomic,retain) NSString *title;
 @end

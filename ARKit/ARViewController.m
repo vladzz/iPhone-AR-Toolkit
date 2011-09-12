@@ -15,6 +15,7 @@
 
 @synthesize agController;
 @synthesize delegate;
+@synthesize unloaded;
 
 -(id)initWithDelegate:(id<ARLocationDelegate>) aDelegate {
 	
@@ -24,9 +25,8 @@
 		return nil;
 	
 	[self setWantsFullScreenLayout: YES];
- 
-	
-	return self;
+    
+ 	return self;
 }
 
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -62,11 +62,21 @@
 	}
 	
 	[locations release];
+    
+    unloaded = NO;
+
+}
+
+-(void) unloadFromView {
+    unloaded = YES;
+    [[self parentViewController] dismissModalViewControllerAnimated:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
 	
-	[agController displayAR];
+	if (agController && unloaded == NO)
+        [agController displayAR];
+    
 	[super viewDidAppear:animated];
 }
 
@@ -87,6 +97,7 @@
 }
 
 - (void)viewDidUnload {
+    [agController release];
 	agController = nil;
 }
 

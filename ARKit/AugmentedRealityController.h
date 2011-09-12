@@ -3,11 +3,12 @@
 //  iPhoneAugmentedRealityLib
 //
 //  Created by Niels W Hansen on 12/20/09.
-//  Copyright 2009 Agilite Software All rights reserved.
+//  Copyright 2011 Agilite Software All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+#import "ARViewController.h"
 #import <UIKit/UIKit.h>
 
 @class ARCoordinate;
@@ -25,11 +26,12 @@
 	CLLocationManager	*locationManager;
 	UIDeviceOrientation currentOrientation;
 	
-	UIViewController	*rootViewController;
+	ARViewController	*rootViewController;
 	UIAccelerometer		*accelerometerManager;
 	CLLocation			*centerLocation;
 	UIView				*displayView;
 	UILabel				*debugView;
+    UIButton            *closeButton;
 	UIImagePickerController	*cameraController;
 
 @private
@@ -56,7 +58,7 @@
 @property (nonatomic, retain) ARCoordinate		*centerCoordinate;
 @property (nonatomic, retain) CLLocation		*centerLocation;
 @property (nonatomic, retain) UIView			*displayView;
-@property (nonatomic, retain) UIViewController	*rootViewController;
+@property (nonatomic, retain) ARViewController	*rootViewController;
 @property (nonatomic, retain) UIImagePickerController *cameraController;
 @property UIDeviceOrientation	currentOrientation;
 @property (readonly) NSArray *coordinates;
@@ -66,6 +68,8 @@
 - (void) setupDebugPostion;
 - (void) updateLocations;
 - (void) displayAR;
+- (void) dismissAR;
+- (void) stopListening;
 
 // Adding coordinates to the underlying data model.
 - (void)addCoordinate:(ARCoordinate *)coordinate augmentedView:(UIView *)agView animated:(BOOL)animated ;
@@ -76,6 +80,7 @@
 - (void)removeCoordinates:(NSArray *)coordinateArray;
 
 @property (retain) UILabel              *debugView;
+@property (retain) UIButton             *closeButton;
 @property double                        latestHeading;
 @property float                         viewAngle;
 @property (retain) NSMutableArray		*coordinateViews;

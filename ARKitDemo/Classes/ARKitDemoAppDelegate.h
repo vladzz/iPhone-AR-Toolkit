@@ -9,13 +9,16 @@
 #import <UIKit/UIKit.h>
 #import "ARKit.h"
 
+@class MainViewController;
 
-@interface ARKitDemoAppDelegate : NSObject <UIApplicationDelegate, ARLocationDelegate> {
+@interface ARKitDemoAppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;
+    MainViewController *viewController;
 }
 
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
+@property (nonatomic, retain) MainViewController *viewController;
 
 @end
 

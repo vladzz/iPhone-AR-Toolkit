@@ -41,18 +41,19 @@
     
     if([ARKit deviceSupportsAR]){
         ARViewController *viewController = [[ARViewController alloc] initWithDelegate:self];
-        viewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+        [viewController setModalTransitionStyle: UIModalTransitionStyleFlipHorizontal];
         [self presentModalViewController:viewController animated:YES]; 
         [viewController release];
     }
     else {
         UIViewController *viewController = [[UIViewController alloc] init];
-        UILabel *errorLabel = [[[UILabel alloc] init] autorelease];
+        UILabel *errorLabel = [[UILabel alloc] init];
         [errorLabel setNumberOfLines:0];
         [errorLabel setText: @"Augmented Reality is not supported on this device"];
         [errorLabel setFrame: [[viewController view] bounds]];
         [errorLabel setTextAlignment:UITextAlignmentCenter];
         [[viewController view] addSubview:errorLabel];
+        [errorLabel release];
         [[appDelegate window] addSubview:[viewController view]];
         [viewController release];
     }

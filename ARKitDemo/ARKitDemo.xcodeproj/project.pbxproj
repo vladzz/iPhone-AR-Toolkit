@@ -263,10 +263,7 @@
 				GCC_PREFIX_HEADER = ARKitDemo_Prefix.pch;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "ARKitDemo-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ARKitDemo;
 				PROVISIONING_PROFILE = "";
@@ -286,10 +283,7 @@
 				GCC_PREFIX_HEADER = ARKitDemo_Prefix.pch;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "ARKitDemo-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ARKitDemo;
 				PROVISIONING_PROFILE = "";
@@ -323,10 +317,7 @@
 				GCC_PREFIX_HEADER = ARKitDemo_Prefix.pch;
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "ARKitDemo-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ARKitDemo;
 				PROVISIONING_PROFILE = "";

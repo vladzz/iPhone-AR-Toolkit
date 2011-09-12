@@ -64,6 +64,7 @@
 		8C0F54F0141E66E5009D0D64 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		8C0F54F1141E66E5009D0D64 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		8C0F54F2141E66E5009D0D64 /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
+		8C0F54F6141E9D4D009D0D64 /* ARViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARViewProtocol.h; sourceTree = "<group>"; };
 		8C564DDC141BDC3C0092E120 /* AR-logo-57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AR-logo-57.png"; sourceTree = "<group>"; };
 		8C564DDD141BDC3C0092E120 /* AR-logo-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AR-logo-114.png"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* ARKitDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ARKitDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
@@ -172,6 +173,7 @@
 				7F4C19A0112674030093704B /* ARLocationDelegate.m */,
 				7F4C19F8112678E50093704B /* ARKit.h */,
 				7F4C19F9112678E50093704B /* ARKit.m */,
+				8C0F54F6141E9D4D009D0D64 /* ARViewProtocol.h */,
 			);
 			name = ARKit;
 			path = ../ARKit;

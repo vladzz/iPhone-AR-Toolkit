@@ -13,7 +13,8 @@
 @protocol ARLocationDelegate
 
 //returns an array of ARGeoCoordinates
--(NSMutableArray *)getLocations;
+-(NSMutableArray *)geoLocations;
+-(void) locationClicked:(ARGeoCoordinate *) coordinate;
 
 @end
 

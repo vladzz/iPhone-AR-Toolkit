@@ -6,8 +6,9 @@
 //  Copyright 2011 Agilite Software. All rights reserved.
 //
 
+#import "ARViewProtocol.h"
+#import "ARGeoCoordinate.h"
 #import "CoordinateView.h"
-#import "ARCoordinate.h"
 
 
 #define BOX_WIDTH 150
@@ -15,11 +16,15 @@
 
 @implementation CoordinateView
 
-@synthesize title;
 
+@synthesize coordinateInfo;
+@synthesize delegate;
 
-- (id)initForCoordinate:(ARCoordinate *)coordinate {
-    	
+- (id)initForCoordinate:(ARGeoCoordinate *)coordinate withDelgate:(id<ARViewProtocol>) aDelegate {
+    
+	[self setCoordinateInfo:coordinate];
+    [self setDelegate:aDelegate];
+    
 	CGRect theFrame = CGRectMake(0, 0, BOX_WIDTH, BOX_HEIGHT);
 	
 	if ((self = [super initWithFrame:theFrame])) {
@@ -33,8 +38,7 @@
 		[titleLabel setTextAlignment:	UITextAlignmentCenter];
 		[titleLabel setText:			[coordinate title]];
 		[titleLabel sizeToFit];
-        
-        [self setTitle:[coordinate title]];
+
         
 		[titleLabel setFrame: CGRectMake(BOX_WIDTH / 2.0 - [titleLabel bounds].size.width / 2.0 - 4.0, 0, 
                                          [titleLabel bounds].size.width + 8.0, [titleLabel bounds].size.height + 8.0)];
@@ -58,7 +62,9 @@
 }
 
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    NSLog(@"%@ was touched!",[self title]);
+    NSLog(@"%@ was touched!",[[self coordinateInfo] title]);
+    [delegate locationClicked:[self coordinateInfo]];
+
 }
 
 - (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {

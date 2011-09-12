@@ -29,19 +29,6 @@
  	return self;
 }
 
-- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    
-    CGPoint locationPoint = [[touches anyObject] locationInView:[self view]];
-    UIView* viewtoTouch = [[self view] hitTest:locationPoint withEvent:event];
-    
-    if (viewtoTouch != [self view])
-        [viewtoTouch touchesBegan:touches withEvent:event];
-}
-
-- (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-
-}
-
 - (void)loadView {
     
 	[self setAgController:[[AugmentedRealityController alloc] initWithViewController:self]];
@@ -53,9 +40,9 @@
 	
 	GEOLocations* locations = [[GEOLocations alloc] initWithDelegate:delegate];
 	
-	if ([[locations getLocations] count] > 0) {
-		for (ARCoordinate *coordinate in [locations getLocations]) {
-			CoordinateView *cv = [[CoordinateView alloc] initForCoordinate:coordinate];
+	if ([[locations returnLocations] count] > 0) {
+		for (ARGeoCoordinate *coordinate in [locations returnLocations]) {
+			CoordinateView *cv = [[CoordinateView alloc] initForCoordinate:coordinate withDelgate:self] ;
 			[agController addCoordinate:coordinate augmentedView:cv animated:NO];
 			[cv release];
 		}
@@ -69,6 +56,7 @@
 
 -(void) unloadFromView {
     unloaded = YES;
+    [agController unloadCamera];
     [[self parentViewController] dismissModalViewControllerAnimated:YES];
 }
 
@@ -86,6 +74,12 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	return YES;
+}
+
+-(void) locationClicked:(ARGeoCoordinate *) coordinate {
+    NSLog(@"delegate worked click on %@", [coordinate title]);
+    [delegate locationClicked:coordinate];
+    
 }
 
 

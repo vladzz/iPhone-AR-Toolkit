@@ -3,19 +3,22 @@
 //  iPhoneAugmentedRealityLib
 //
 //  Created by Niels W Hansen on 12/19/09.
-//  Copyright 2009 Agilite Software. All rights reserved.
+//  Copyright 2011 Agilite Software. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
+#import "ARViewProtocol.h"
 
-
-@class ARCoordinate;
+@class ARGeoCoordinate;
 
 @interface CoordinateView : UIView {
-	NSString *title;
+    ARGeoCoordinate *coordinateInfo;
+    id<ARViewProtocol> delegate;
 }
 
-- (id)initForCoordinate:(ARCoordinate *)coordinate;
+- (id)initForCoordinate:(ARGeoCoordinate *)coordinate withDelgate:(id<ARViewProtocol>) aDelegate;
 
-@property (nonatomic,retain) NSString *title;
+@property (nonatomic,retain) ARGeoCoordinate *coordinateInfo;
+@property (nonatomic, assign) id<ARViewProtocol> delegate;
+
 @end

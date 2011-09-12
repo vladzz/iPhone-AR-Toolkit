@@ -10,9 +10,13 @@
 
 
 @interface MainViewController : UIViewController<ARLocationDelegate> {
-    
+    ARViewController *cameraViewController;
+    UIViewController *infoViewController;
 }
 
 -(IBAction) displayAR:(id) sender;
+
+@property (nonatomic, retain) ARViewController *cameraViewController;
+@property (nonatomic, retain) UIViewController *infoViewController;
 
 @end

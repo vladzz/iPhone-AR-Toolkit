@@ -13,24 +13,26 @@
 
 @implementation GEOLocations
 
+
+@synthesize delegate;
+
 - (id)initWithDelegate:(id<ARLocationDelegate>) aDelegate{
-	self.delegate = aDelegate;
+	[self setDelegate:aDelegate];
 
 	return self;
 }
 
--(NSMutableArray*) getLocations 
+-(NSMutableArray*) returnLocations 
 {
-	return [delegate getLocations];
+	return [delegate geoLocations];
 }
 
 - (void)dealloc {
 	
-    [locationArray release];
+
     [super dealloc];
 }
 
 
-@synthesize locationArray;
-@synthesize delegate;
+
 @end

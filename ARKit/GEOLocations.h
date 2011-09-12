@@ -13,16 +13,16 @@
 
 @interface GEOLocations : NSObject {
 	
-	NSMutableArray *locationArray;
+
 	id<ARLocationDelegate> delegate;
 }
 
 @property(nonatomic,assign) id<ARLocationDelegate> delegate;
 
 - (id)initWithDelegate:(id<ARLocationDelegate>) aDelegate;
--(NSMutableArray*) getLocations;
+-(NSMutableArray*) returnLocations;
 
 
 
-@property (retain,getter=getLocations) NSMutableArray *locationArray;
+
 @end

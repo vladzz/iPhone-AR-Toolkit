@@ -11,10 +11,13 @@
 
 @implementation MainViewController
 
+@synthesize cameraViewController;
+@synthesize infoViewController;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    [self setWantsFullScreenLayout: YES];
-        
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
             // Custom initialization
@@ -40,26 +43,72 @@
     ARKitDemoAppDelegate *appDelegate = (ARKitDemoAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     if([ARKit deviceSupportsAR]){
-        ARViewController *viewController = [[ARViewController alloc] initWithDelegate:self];
-        [viewController setModalTransitionStyle: UIModalTransitionStyleFlipHorizontal];
-        [self presentModalViewController:viewController animated:YES]; 
-        [viewController release];
+        [self setCameraViewController:[[ARViewController alloc] initWithDelegate:self]];
+        [cameraViewController setModalTransitionStyle: UIModalTransitionStyleFlipHorizontal];
+        [self presentModalViewController:cameraViewController animated:YES]; 
     }
     else {
-        UIViewController *viewController = [[UIViewController alloc] init];
+        [self setInfoViewController:[[UIViewController alloc] init]];
         UILabel *errorLabel = [[UILabel alloc] init];
         [errorLabel setNumberOfLines:0];
         [errorLabel setText: @"Augmented Reality is not supported on this device"];
-        [errorLabel setFrame: [[viewController view] bounds]];
+        [errorLabel setFrame: [[infoViewController view] bounds]];
         [errorLabel setTextAlignment:UITextAlignmentCenter];
-        [[viewController view] addSubview:errorLabel];
+        [[infoViewController view] addSubview:errorLabel];
         [errorLabel release];
-        [[appDelegate window] addSubview:[viewController view]];
-        [viewController release];
+        UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
+        [closeButton setTitle:@"Close" forState:UIControlStateNormal];
+        
+        [closeButton setBackgroundColor:[UIColor blueColor]];
+        [closeButton addTarget:self action:@selector(closeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [[infoViewController view] addSubview:closeButton];
+        [closeButton release];
+        [[appDelegate window] addSubview:[infoViewController view]];
+ 
     }
 }
 
--(NSMutableArray*) getLocations {
+- (IBAction)closeButtonClicked:(id)sender {
+
+    [[[self infoViewController] view] removeFromSuperview];
+    infoViewController = nil;
+}
+
+-(void) locationClicked:(ARGeoCoordinate *) coordinate {
+    
+    if (coordinate != nil) {
+        NSLog(@"Main View Controller received the click Event for: %@",[coordinate title]);
+    //    [[self cameraViewController] setUnloaded:YES];
+     //   [[self cameraViewController] unloadFromView];
+     //   cameraViewController = nil;
+        
+        ARKitDemoAppDelegate *appDelegate = (ARKitDemoAppDelegate*)[[UIApplication sharedApplication] delegate];
+
+        
+        [self setInfoViewController:[[UIViewController alloc] init]];
+        UILabel *errorLabel = [[UILabel alloc] init];
+        [errorLabel setNumberOfLines:0];
+        [errorLabel setText: [NSString stringWithFormat:@"You clicked on %@",[coordinate title]]];
+        [errorLabel setFrame: [[infoViewController view] bounds]];
+        [errorLabel setTextAlignment:UITextAlignmentCenter];
+        [[infoViewController view] addSubview:errorLabel];
+        [errorLabel release];
+        
+        UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
+        [closeButton setTitle:@"Close" forState:UIControlStateNormal];
+        
+        [closeButton setBackgroundColor:[UIColor blueColor]];
+        [closeButton addTarget:self action:@selector(closeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [[infoViewController view] addSubview:closeButton];
+        [closeButton release];
+        
+        [[appDelegate window] addSubview:[infoViewController view]];
+
+    }
+}
+
+
+-(NSMutableArray*) geoLocations {
     
     NSMutableArray *locationArray = [[[NSMutableArray alloc] init] autorelease];
     ARGeoCoordinate *tempCoordinate;

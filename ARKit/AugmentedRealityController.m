@@ -130,6 +130,12 @@
 
 - (IBAction)closeButtonClicked:(id)sender {
     [[self rootViewController] setUnloaded:YES];
+    [[self rootViewController] unloadFromView];
+}
+
+
+
+-(void) unloadCamera {
     [self stopListening];
     [self dismissAR];
 }
@@ -185,9 +191,6 @@
 		[self setCenterLocation:newLocation];
 }
 
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-	
-}
 
 -(void) setupDebugPostion {
 	

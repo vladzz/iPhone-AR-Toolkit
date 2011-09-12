@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "ARLocationDelegate.h"
+#import "ARViewProtocol.h"
 
 
 @class AugmentedRealityController;
 
-@interface ARViewController : UIViewController {
+@interface ARViewController : UIViewController<ARViewProtocol> {
 	AugmentedRealityController	*agController;
 	id<ARLocationDelegate> delegate;
     BOOL unloaded;

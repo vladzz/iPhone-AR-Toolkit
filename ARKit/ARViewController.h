@@ -15,16 +15,12 @@
 @interface ARViewController : UIViewController {
 	AugmentedRealityController	*agController;
 	id<ARLocationDelegate> delegate;
-    BOOL unloaded;
-    
 }
 
 @property (nonatomic, retain) AugmentedRealityController *agController;
 @property (nonatomic, assign) id<ARLocationDelegate> delegate;
-@property (nonatomic) BOOL unloaded;
 
 -(id)initWithDelegate:(id<ARLocationDelegate>) aDelegate;
--(void) unloadFromView;
 
 @end
 

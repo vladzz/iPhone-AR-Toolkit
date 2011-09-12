@@ -38,13 +38,19 @@
 @synthesize centerLocation;
 @synthesize coordinates = coordinates;
 @synthesize debugMode;
+@synthesize closeButton;
 @synthesize currentOrientation;
 @synthesize degreeRange;
 @synthesize rootViewController;
 
 @synthesize cameraController;
 
-- (id)initWithViewController:(UIViewController *)vc {
+@synthesize debugView;
+@synthesize latestHeading;
+@synthesize viewAngle;
+@synthesize coordinateViews;
+
+- (id)initWithViewController:(ARViewController *)vc {
 	coordinates		= [[NSMutableArray alloc] init];
 	coordinateViews	= [[NSMutableArray alloc] init];
 	latestHeading	= -1.0f;
@@ -68,7 +74,7 @@
 
 	[vc setView:displayView];
 	
-	[self setCameraController: [[[UIImagePickerController alloc] init] autorelease]];
+	[self setCameraController: [[UIImagePickerController alloc] init]];
 	[[self cameraController] setSourceType: UIImagePickerControllerSourceTypeCamera];
 	[[self cameraController] setCameraViewTransform: CGAffineTransformScale([[self cameraController] cameraViewTransform], 1.13f,  1.13f)];
 	[[self cameraController] setShowsCameraControls:NO];
@@ -83,12 +89,19 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name: UIDeviceOrientationDidChangeNotification object:nil];
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];	
 	
+    closeButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
+    [closeButton setTitle:@"Close" forState:UIControlStateNormal];
+    
+    [closeButton setBackgroundColor:[UIColor greenColor]];
+    [closeButton addTarget:self action:@selector(closeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [displayView addSubview:closeButton];
+    [closeButton release];
+    
 	[self startListening];
-	
+    
+ 	
 	return self;
 }
-
-
 
 // This is needed to start showing the Camera of the Augemented Reality Toolkit.
 -(void) displayAR {
@@ -103,6 +116,30 @@
         NSLog(@"No error");
     }
 }
+
+
+// This is needed to start showing the Camera of the Augemented Reality Toolkit.
+-(void) dismissAR {
+    @try {
+        [[[self rootViewController] parentViewController] dismissModalViewControllerAnimated:YES];
+    }
+ 	@catch (NSException *exception) {
+        NSLog(@"Dismiss AR exception: %@", exception);
+    }
+ 	@finally {
+        NSLog(@"No error dismissing");
+    }
+}
+
+
+- (IBAction)closeButtonClicked:(id)sender {
+   
+    NSLog(@"SubView Count %d",[[[self displayView] subviews] count]);
+    [[self rootViewController] setUnloaded:YES];
+    [self stopListening];
+    [self dismissAR];
+}
+
 
 - (void)startListening {
 	
@@ -124,8 +161,28 @@
 	
 	if (![self centerCoordinate]) 
 		[self setCenterCoordinate:[ARCoordinate coordinateWithRadialDistance:1.0 inclination:0 azimuth:0]];
+    
+    
 }
 
+- (void)stopListening {
+	
+    [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+   
+	if ([self locationManager]) {
+        [[self locationManager] setDelegate: nil];
+
+	}
+    
+	if ([self accelerometerManager]) {
+		[[self accelerometerManager] setDelegate: nil];
+
+	}
+}
+    
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading {
 	latestHeading = degreesToRadian(newHeading.magneticHeading);
@@ -427,6 +484,7 @@
 }
 
 - (void)dealloc {
+    [cameraController release];
 	[[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
 	[locationManager release];
 	[coordinateViews release];
@@ -435,8 +493,5 @@
     [super dealloc];
 }
 
-@synthesize debugView;
-@synthesize latestHeading;
-@synthesize viewAngle;
-@synthesize coordinateViews;
+
 @end

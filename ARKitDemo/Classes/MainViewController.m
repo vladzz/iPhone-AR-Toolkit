@@ -3,7 +3,7 @@
 //  ARKitDemo
 //
 //  Created by Niels Hansen on 9/11/11.
-//  Copyright Agilite Software. All rights reserved.
+//  Copyright 2011 Agilite Software. All rights reserved.
 //
 
 #import "ARKitDemoAppDelegate.h"
@@ -74,16 +74,19 @@
     infoViewController = nil;
 }
 
+- (IBAction)closeARButtonClicked:(id)sender {
+    
+    [self dismissModalViewControllerAnimated:YES];
+    [[[self infoViewController] view] removeFromSuperview];
+    infoViewController = nil;
+}
+
 -(void) locationClicked:(ARGeoCoordinate *) coordinate {
     
     if (coordinate != nil) {
         NSLog(@"Main View Controller received the click Event for: %@",[coordinate title]);
-    //    [[self cameraViewController] setUnloaded:YES];
-     //   [[self cameraViewController] unloadFromView];
-     //   cameraViewController = nil;
         
         ARKitDemoAppDelegate *appDelegate = (ARKitDemoAppDelegate*)[[UIApplication sharedApplication] delegate];
-
         
         [self setInfoViewController:[[UIViewController alloc] init]];
         UILabel *errorLabel = [[UILabel alloc] init];
@@ -101,6 +104,15 @@
         [closeButton addTarget:self action:@selector(closeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         [[infoViewController view] addSubview:closeButton];
         [closeButton release];
+        
+        UIButton *closeARButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 50, 60, 30)];
+        [closeARButton setTitle:@"Close AR View" forState:UIControlStateNormal];
+        
+        [closeARButton setBackgroundColor:[UIColor blackColor]];
+        [closeARButton addTarget:self action:@selector(closeARButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [[infoViewController view] addSubview:closeARButton];
+        [closeARButton release];
+
         
         [[appDelegate window] addSubview:[infoViewController view]];
 

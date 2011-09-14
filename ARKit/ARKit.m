@@ -3,7 +3,7 @@
 //  ARKitDemo
 //
 //  Created by Jared Crawford on 2/13/10.
-//  Copyright 201. All rights reserved.
+//  Copyright 2011 Agilite Software. All rights reserved.
 //
 
 #import "ARKit.h"

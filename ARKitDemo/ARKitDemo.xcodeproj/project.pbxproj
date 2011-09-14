@@ -29,6 +29,8 @@
 		8C0F54F4141E66E5009D0D64 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C0F54F2141E66E5009D0D64 /* MainViewController.xib */; };
 		8C564DDE141BDC3C0092E120 /* AR-logo-57.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C564DDC141BDC3C0092E120 /* AR-logo-57.png */; };
 		8C564DDF141BDC3C0092E120 /* AR-logo-114.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C564DDD141BDC3C0092E120 /* AR-logo-114.png */; };
+		8CD0EE40141FBA2100207B2F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CD0EE3F141FBA2100207B2F /* AVFoundation.framework */; };
+		8CD0EE4B141FBBCE00207B2F /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CD0EE4A141FBBCE00207B2F /* CoreMedia.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +69,8 @@
 		8C0F54F6141E9D4D009D0D64 /* ARViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARViewProtocol.h; sourceTree = "<group>"; };
 		8C564DDC141BDC3C0092E120 /* AR-logo-57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AR-logo-57.png"; sourceTree = "<group>"; };
 		8C564DDD141BDC3C0092E120 /* AR-logo-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AR-logo-114.png"; sourceTree = "<group>"; };
+		8CD0EE3F141FBA2100207B2F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		8CD0EE4A141FBBCE00207B2F /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* ARKitDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ARKitDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -75,6 +79,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CD0EE4B141FBBCE00207B2F /* CoreMedia.framework in Frameworks */,
+				8CD0EE40141FBA2100207B2F /* AVFoundation.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
@@ -110,6 +116,8 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				8CD0EE4A141FBBCE00207B2F /* CoreMedia.framework */,
+				8CD0EE3F141FBA2100207B2F /* AVFoundation.framework */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,

@@ -11,6 +11,7 @@
 #import "ARGeoCoordinate.h"
 #import <MapKit/MapKit.h>
 #import <QuartzCore/QuartzCore.h>
+#import <AVFoundation/AVFoundation.h>
 
 #define kFilteringFactor 0.05
 #define degreesToRadian(x) (M_PI * (x) / 180.0)
@@ -46,6 +47,8 @@
 @synthesize latestHeading;
 @synthesize viewAngle;
 @synthesize coordinateViews;
+@synthesize captureSession;
+@synthesize previewLayer;
 
 @synthesize cameraController;
 
@@ -67,20 +70,69 @@
 	
 	CGRect screenRect = [[UIScreen mainScreen] bounds];
 	
-	[self setDisplayView: [[UIView alloc] initWithFrame: screenRect]];
+	UIView *ARview = [[UIView alloc] initWithFrame: screenRect];
+	[self setCurrentOrientation:UIDeviceOrientationPortrait];
+	[self setDegreeRange:[ARview bounds].size.width / 12];
+    
+    [self setDisplayView: [[UIView alloc] initWithFrame: screenRect]];
 	[self setCurrentOrientation:UIDeviceOrientationPortrait];
 	[self setDegreeRange:[[self displayView] bounds].size.width / 12];
 
 	[vc setView:displayView];
-	
+    [[vc view] insertSubview:ARview atIndex:0];
+/*	
 	[self setCameraController: [[[UIImagePickerController alloc] init] autorelease]];
 	[[self cameraController] setSourceType: UIImagePickerControllerSourceTypeCamera];
 	[[self cameraController] setCameraViewTransform: CGAffineTransformScale([[self cameraController] cameraViewTransform], 1.13f,  1.13f)];
 	[[self cameraController] setShowsCameraControls:NO];
 	[[self cameraController] setNavigationBarHidden:YES];
 	[[self cameraController] setCameraOverlayView:displayView];
-	
-	CLLocation *newCenter = [[CLLocation alloc] initWithLatitude:37.41711 longitude:-122.02528];
+ 
+*/	
+#if !TARGET_IPHONE_SIMULATOR
+    captureSession = [[AVCaptureSession alloc] init];
+    
+    AVCaptureDevice *videoCaptureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    
+    NSError *error = nil;
+    
+    AVCaptureDeviceInput *videoInput = [AVCaptureDeviceInput deviceInputWithDevice:videoCaptureDevice error:&error];
+    
+    if (videoInput) {
+        [captureSession addInput:videoInput];
+    }
+    else {
+        // Handle the failure.
+    }
+    
+    AVCaptureVideoPreviewLayer *newCaptureVideoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:captureSession];
+    UIView *view = ARview;
+    CALayer *viewLayer = [view layer];
+    [viewLayer setMasksToBounds:YES];
+    
+    CGRect bounds = [view bounds];
+    [newCaptureVideoPreviewLayer setFrame:bounds];
+    
+    if ([newCaptureVideoPreviewLayer isOrientationSupported]) {
+        [newCaptureVideoPreviewLayer setOrientation:AVCaptureVideoOrientationPortrait];
+    }
+    
+    [newCaptureVideoPreviewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
+    
+    [viewLayer insertSublayer:newCaptureVideoPreviewLayer below:[[viewLayer sublayers] objectAtIndex:0]];
+    
+    [self setPreviewLayer:newCaptureVideoPreviewLayer];
+    [newCaptureVideoPreviewLayer release];
+    
+    [captureSession setSessionPreset:AVCaptureSessionPresetLow];
+
+    [captureSession startRunning];
+
+#endif
+    
+    [ARview release];
+    
+    CLLocation *newCenter = [[CLLocation alloc] initWithLatitude:37.41711 longitude:-122.02528];
 	
 	[self setCenterLocation: newCenter];
 	[newCenter release];
@@ -154,7 +206,7 @@
 			
 	if (![self accelerometerManager]) {
 		[self setAccelerometerManager: [UIAccelerometer sharedAccelerometer]];
-		[[self accelerometerManager] setUpdateInterval: 0.25];
+		[[self accelerometerManager] setUpdateInterval: 0.75];
 		[[self accelerometerManager] setDelegate: self];
 	}
 	
@@ -214,6 +266,7 @@
 		adjustment = degreesToRadian(180);
 
 	[[self centerCoordinate] setAzimuth: latestHeading - adjustment];
+
 	[self updateLocations];
 }
 
@@ -343,7 +396,7 @@
 			CGFloat scaleFactor = 1.0;
 	
 			if ([self scaleViewsBasedOnDistance]) 
-				scaleFactor = 1.0 - [self minimumScaleFactor] * ([item radialDistance] / [self maximumScaleDistance]);
+				scaleFactor = 1.0 - [self minimumScaleFactor]*([item radialDistance] / [self maximumScaleDistance]);
 			
 			float width	 = [viewToDraw bounds].size.width  * scaleFactor;
 			float height = [viewToDraw bounds].size.height * scaleFactor;
@@ -357,7 +410,7 @@
 			// Set the scale if it needs it. Scale the perspective transform if we have one.
 			if ([self scaleViewsBasedOnDistance]) 
 				transform = CATransform3DScale(transform, scaleFactor, scaleFactor, scaleFactor);
-			
+		
 			if ([self rotateViewsBasedOnPerspective]) {
 				transform.m34 = 1.0 / 300.0;
 				
@@ -371,19 +424,19 @@
 					itemAzimuth  += 2 * M_PI;
 				
 				double angleDifference	= itemAzimuth - centerAzimuth;
-				transform				= CATransform3DRotate(transform, [self maximumRotationAngle] * angleDifference / 0.3696f , 0, 1, 0);
+		//		transform				= CATransform3DRotate(transform, [self maximumRotationAngle] * angleDifference / 0.3696f , 0, 1, 0);
 			}
-			
 			[[viewToDraw layer] setTransform:transform];
 			
 			//if we don't have a superview, set it up.
 			if (!([viewToDraw superview])) {
-				[[self displayView] addSubview:viewToDraw];
-				[[self displayView] sendSubviewToBack:viewToDraw];
+				[[self displayView] insertSubview:viewToDraw atIndex:1];
+
 			}
 		} 
 		else 
-			[viewToDraw removeFromSuperview];
+            if ([viewToDraw superview])
+                [viewToDraw removeFromSuperview];
 		
 		index++;
 	}
@@ -427,24 +480,37 @@
 		
 		CGAffineTransform transform = CGAffineTransformMakeRotation(degreesToRadian(0));
 		CGRect bounds = [[UIScreen mainScreen] bounds];
+        
+        
 		
 		if (orientation == UIDeviceOrientationLandscapeLeft) {
 			transform		   = CGAffineTransformMakeRotation(degreesToRadian(90));
 			bounds.size.width  = [[UIScreen mainScreen] bounds].size.height;
 			bounds.size.height = [[UIScreen mainScreen] bounds].size.width;
+            [[self previewLayer] setOrientation:AVCaptureVideoOrientationLandscapeRight];
 		}
 		else if (orientation == UIDeviceOrientationLandscapeRight) {
 			transform		   = CGAffineTransformMakeRotation(degreesToRadian(-90));
 			bounds.size.width  = [[UIScreen mainScreen] bounds].size.height;
 			bounds.size.height = [[UIScreen mainScreen] bounds].size.width;
+            [[self previewLayer] setOrientation:AVCaptureVideoOrientationLandscapeLeft];
 		}
 		else if (orientation == UIDeviceOrientationPortraitUpsideDown)
+        {
 			transform = CGAffineTransformMakeRotation(degreesToRadian(180));
+            [[self previewLayer] setOrientation:AVCaptureVideoOrientationPortraitUpsideDown];
+        }
 		
+        if (orientation == UIDeviceOrientationPortrait)
+            [[self previewLayer] setOrientation:AVCaptureVideoOrientationPortrait];
+        
 		[displayView setTransform:CGAffineTransformIdentity];
 		[displayView setTransform: transform];
 		[displayView setBounds:bounds];
 		
+  //      [previewLayer setFrame:bounds];
+
+        
 		[self setDegreeRange:[[self displayView] bounds].size.width / 12];
 		[self setDebugMode:YES];
 	}

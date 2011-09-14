@@ -10,6 +10,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import "ARViewController.h"
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
 
 @class ARCoordinate;
 
@@ -33,6 +34,8 @@
 	UILabel				*debugView;
     UIButton            *closeButton;
 	UIImagePickerController	*cameraController;
+    AVCaptureSession    *captureSession;
+    AVCaptureVideoPreviewLayer *previewLayer;
 
 @private
 	double				latestHeading;
@@ -62,6 +65,8 @@
 @property (nonatomic, retain) UIImagePickerController *cameraController;
 @property UIDeviceOrientation	currentOrientation;
 @property (readonly) NSArray *coordinates;
+@property (nonatomic, retain) AVCaptureSession    *captureSession;
+@property (nonatomic, retain) AVCaptureVideoPreviewLayer *previewLayer;
 
 - (id)initWithViewController:(UIViewController *)theView;
 

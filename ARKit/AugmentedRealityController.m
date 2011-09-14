@@ -50,7 +50,6 @@
 @synthesize captureSession;
 @synthesize previewLayer;
 
-@synthesize cameraController;
 
 - (id)initWithViewController:(ARViewController *)vc {
 	coordinates		= [[NSMutableArray alloc] init];
@@ -80,15 +79,7 @@
 
 	[vc setView:displayView];
     [[vc view] insertSubview:ARview atIndex:0];
-/*	
-	[self setCameraController: [[[UIImagePickerController alloc] init] autorelease]];
-	[[self cameraController] setSourceType: UIImagePickerControllerSourceTypeCamera];
-	[[self cameraController] setCameraViewTransform: CGAffineTransformScale([[self cameraController] cameraViewTransform], 1.13f,  1.13f)];
-	[[self cameraController] setShowsCameraControls:NO];
-	[[self cameraController] setNavigationBarHidden:YES];
-	[[self cameraController] setCameraOverlayView:displayView];
- 
-*/	
+
 #if !TARGET_IPHONE_SIMULATOR
     captureSession = [[AVCaptureSession alloc] init];
     
@@ -153,43 +144,12 @@
 	return self;
 }
 
-
-// This is needed to start showing the Camera of the Augemented Reality Toolkit.
--(void) displayAR {
-    @try {
-       [rootViewController presentModalViewController:self.cameraController animated:NO];
-       [displayView setFrame: [[[self cameraController] view] bounds]]; 
-    }
- 	@catch (NSException *exception) {
-        NSLog(@"displayAR exception: %@", exception);
-    }
- 	@finally {
-        NSLog(@"No error");
-    }
-}
-
--(void) dismissAR {
-    @try {
-        [[[self rootViewController] parentViewController] dismissModalViewControllerAnimated:YES];
-    }
-    @catch (NSException *exception) {
-        NSLog(@"Dismiss AR exception: %@", exception);
-    }
-    @finally {
-        NSLog(@"No error dismissing");
-    }
-}
-
 - (IBAction)closeButtonClicked:(id)sender {
-    [[self rootViewController] setUnloaded:YES];
-    [[self rootViewController] unloadFromView];
+    [[self rootViewController] dismissModalViewControllerAnimated:YES];
 }
-
-
 
 -(void) unloadCamera {
     [self stopListening];
-    [self dismissAR];
 }
 
 - (void)startListening {

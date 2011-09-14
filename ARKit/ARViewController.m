@@ -15,7 +15,6 @@
 
 @synthesize agController;
 @synthesize delegate;
-@synthesize unloaded;
 
 -(id)initWithDelegate:(id<ARLocationDelegate>) aDelegate {
 	
@@ -47,24 +46,12 @@
 			[cv release];
 		}
 	}
-	
 	[locations release];
-    
-    unloaded = NO;
-
 }
 
--(void) unloadFromView {
-    unloaded = YES;
-    [agController unloadCamera];
-    [[self parentViewController] dismissModalViewControllerAnimated:YES];
-}
+
 
 - (void)viewDidAppear:(BOOL)animated {
-	
-	if (agController && unloaded == NO)
-        [agController displayAR];
-    
 	[super viewDidAppear:animated];
 }
 
@@ -82,7 +69,6 @@
     
 }
 
-
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
@@ -94,7 +80,6 @@
     [agController release];
 	agController = nil;
 }
-
 
 - (void)dealloc {
     [super dealloc];

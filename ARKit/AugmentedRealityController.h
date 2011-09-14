@@ -33,7 +33,6 @@
 	UIView				*displayView;
 	UILabel				*debugView;
     UIButton            *closeButton;
-	UIImagePickerController	*cameraController;
     AVCaptureSession    *captureSession;
     AVCaptureVideoPreviewLayer *previewLayer;
 
@@ -62,7 +61,6 @@
 @property (nonatomic, retain) CLLocation		*centerLocation;
 @property (nonatomic, retain) UIView			*displayView;
 @property (nonatomic, retain) ARViewController	*rootViewController;
-@property (nonatomic, retain) UIImagePickerController *cameraController;
 @property UIDeviceOrientation	currentOrientation;
 @property (readonly) NSArray *coordinates;
 @property (nonatomic, retain) AVCaptureSession    *captureSession;
@@ -72,8 +70,6 @@
 
 - (void) setupDebugPostion;
 - (void) updateLocations;
-- (void) displayAR;
-- (void) dismissAR;
 - (void) stopListening;
 - (void) unloadCamera;
 

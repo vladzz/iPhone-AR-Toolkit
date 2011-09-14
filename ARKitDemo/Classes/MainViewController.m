@@ -97,7 +97,7 @@
         [[infoViewController view] addSubview:errorLabel];
         [errorLabel release];
         
-        UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
+        UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 90, 30)];
         [closeButton setTitle:@"Close" forState:UIControlStateNormal];
         
         [closeButton setBackgroundColor:[UIColor blueColor]];
@@ -105,7 +105,7 @@
         [[infoViewController view] addSubview:closeButton];
         [closeButton release];
         
-        UIButton *closeARButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 50, 60, 30)];
+        UIButton *closeARButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 50, 120, 30)];
         [closeARButton setTitle:@"Close AR View" forState:UIControlStateNormal];
         
         [closeARButton setBackgroundColor:[UIColor blackColor]];

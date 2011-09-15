@@ -6,9 +6,8 @@ This version of the iPhone ARKit is a forked version of the ARKit started on Git
 
 ### Goals of the project ###
 * Not depended on a specific View Controller or the main App Delegate. (Completed)
-* Create as a static library that can be added to any other project. (Completed currently only in the static library branch.)
 * Ability to use both the Landscape and Portrait modes (Completed)
-* Use CoreLocation coordinates and update location as the user moves around. (not yet completed.) 
+* Use CoreLocation coordinates and update location as the user moves around. (Completed.) 
 * Use CoreData to store coordinates (Not yet implemented.)
 * Ability to add different type of views to augment. (Not yet implemented.)
 * Ability to touch any of the augment views to handle other tasks. (Completed.)
@@ -18,9 +17,16 @@ iPhone ARKit's APIs are modeled after MapKit's. For an overview of MapKit, pleas
 
 ## Current Status ##
 
-* This is a very early stage is is not ready to be used in existing projects. 
-* The StaticLibrary branch now has the ARKit in a static library with a Demo project that uses the static Library.
-* Continuing to refactor the static library. Next move will be to remove the Views from the static library and have the ability to add any view to the AGKit.
+* The big changes to the UI kit is that its using new features of iOS4. 
+* Using the AVFoundation instead of the UIViewImagePickerControler.
+* No longer a ModalViewController but instead a view. 
+* Launches from a different view, and items are not clickable and will display their own View Controller with information.
+* Improved perfomance.
+* 
+
+## Current Issues ##
+Still having issues with some minor memory leaks.  Looking into what we need to do to fix this. If anyone sees a memory leak,
+please let me know where and I'll take a look and fix it ASAP.
 
 
 ## Blog for Project ##

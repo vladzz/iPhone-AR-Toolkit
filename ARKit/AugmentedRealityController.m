@@ -49,6 +49,7 @@
 @synthesize coordinateViews;
 @synthesize captureSession;
 @synthesize previewLayer;
+@synthesize ARView;
 
 
 - (id)initWithViewController:(ARViewController *)vc {
@@ -58,7 +59,6 @@
 	debugView		= nil;
 	
 	[self setRootViewController: vc];
-    
 
 	[self setDebugMode:NO];
 	[self setMaximumScaleDistance: 0.0];
@@ -69,16 +69,17 @@
 	
 	CGRect screenRect = [[UIScreen mainScreen] bounds];
 	
-	UIView *ARview = [[UIView alloc] initWithFrame: screenRect];
+	ARView = [[UIView alloc] initWithFrame: screenRect];
+     
 	[self setCurrentOrientation:UIDeviceOrientationPortrait];
-	[self setDegreeRange:[ARview bounds].size.width / 12];
+	[self setDegreeRange:[ARView bounds].size.width / 12];
     
     [self setDisplayView: [[UIView alloc] initWithFrame: screenRect]];
 	[self setCurrentOrientation:UIDeviceOrientationPortrait];
 	[self setDegreeRange:[[self displayView] bounds].size.width / 12];
 
 	[vc setView:displayView];
-    [[vc view] insertSubview:ARview atIndex:0];
+    [[vc view] insertSubview:ARView atIndex:0];
 
 #if !TARGET_IPHONE_SIMULATOR
     captureSession = [[AVCaptureSession alloc] init];
@@ -97,7 +98,7 @@
     }
     
     AVCaptureVideoPreviewLayer *newCaptureVideoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:captureSession];
-    UIView *view = ARview;
+    UIView *view = ARView;
     CALayer *viewLayer = [view layer];
     [viewLayer setMasksToBounds:YES];
     
@@ -120,9 +121,7 @@
     [captureSession startRunning];
 
 #endif
-    
-    [ARview release];
-    
+
     CLLocation *newCenter = [[CLLocation alloc] initWithLatitude:37.41711 longitude:-122.02528];
 	
 	[self setCenterLocation: newCenter];
@@ -187,8 +186,6 @@
        [[self accelerometerManager] setDelegate: nil];
     }
 }
-  
-
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading {
 	latestHeading = degreesToRadian(newHeading.magneticHeading);
@@ -203,7 +200,6 @@
 
 		[self setCenterLocation:newLocation];
 }
-
 
 -(void) setupDebugPostion {
 	
@@ -268,7 +264,6 @@
 	}
 }
 
-
 - (void)addCoordinate:(ARCoordinate *)coordinate augmentedView:(UIView *)agView animated:(BOOL)animated {
 	
 	[coordinates addObject:coordinate];
@@ -278,7 +273,6 @@
 	
 	[coordinateViews addObject:agView];
 }
-
 
 - (void)removeCoordinate:(ARCoordinate *)coordinate {
 	[self removeCoordinate:coordinate animated:YES];
@@ -384,7 +378,7 @@
 				if (itemAzimuth - centerAzimuth < -M_PI) 
 					itemAzimuth  += 2 * M_PI;
 				
-				double angleDifference	= itemAzimuth - centerAzimuth;
+		//		double angleDifference	= itemAzimuth - centerAzimuth;
 		//		transform				= CATransform3DRotate(transform, [self maximumRotationAngle] * angleDifference / 0.3696f , 0, 1, 0);
 			}
 			[[viewToDraw layer] setTransform:transform];
@@ -392,7 +386,6 @@
 			//if we don't have a superview, set it up.
 			if (!([viewToDraw superview])) {
 				[[self displayView] insertSubview:viewToDraw atIndex:1];
-
 			}
 		} 
 		else 
@@ -441,9 +434,7 @@
 		
 		CGAffineTransform transform = CGAffineTransformMakeRotation(degreesToRadian(0));
 		CGRect bounds = [[UIScreen mainScreen] bounds];
-        
-        
-		
+          
 		if (orientation == UIDeviceOrientationLandscapeLeft) {
 			transform		   = CGAffineTransformMakeRotation(degreesToRadian(90));
 			bounds.size.width  = [[UIScreen mainScreen] bounds].size.height;
@@ -465,12 +456,12 @@
         if (orientation == UIDeviceOrientationPortrait)
             [[self previewLayer] setOrientation:AVCaptureVideoOrientationPortrait];
         
-		[displayView setTransform:CGAffineTransformIdentity];
-		[displayView setTransform: transform];
-		[displayView setBounds:bounds];
-		
-  //      [previewLayer setFrame:bounds];
+        [[self ARView] setFrame:bounds];
+		[[self previewLayer] setFrame:bounds];
 
+        [displayView setTransform:CGAffineTransformIdentity];
+		[displayView setTransform: transform];
+		[displayView setBounds:bounds];  
         
 		[self setDegreeRange:[[self displayView] bounds].size.width / 12];
 		[self setDebugMode:YES];
@@ -502,12 +493,12 @@
 
 - (void)dealloc {
 	[[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
+    [ARView release];
 	[locationManager release];
 	[coordinateViews release];
 	[coordinates release];
 	[debugView release];
     [super dealloc];
 }
-
 
 @end

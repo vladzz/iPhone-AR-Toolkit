@@ -60,6 +60,7 @@
 @property (nonatomic, retain) ARCoordinate		*centerCoordinate;
 @property (nonatomic, retain) CLLocation		*centerLocation;
 @property (nonatomic, retain) UIView			*displayView;
+@property (nonatomic, retain) UIView			*ARView;
 @property (nonatomic, retain) ARViewController	*rootViewController;
 @property UIDeviceOrientation	currentOrientation;
 @property (readonly) NSArray *coordinates;

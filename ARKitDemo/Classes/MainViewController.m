@@ -86,12 +86,13 @@
     if (coordinate != nil) {
         NSLog(@"Main View Controller received the click Event for: %@",[coordinate title]);
         
+        
         ARKitDemoAppDelegate *appDelegate = (ARKitDemoAppDelegate*)[[UIApplication sharedApplication] delegate];
         
         [self setInfoViewController:[[UIViewController alloc] init]];
         UILabel *errorLabel = [[UILabel alloc] init];
         [errorLabel setNumberOfLines:0];
-        [errorLabel setText: [NSString stringWithFormat:@"You clicked on %@",[coordinate title]]];
+        [errorLabel setText: [NSString stringWithFormat:@"You clicked on %@ and distance is %f",[coordinate title], [coordinate distanceFromOrigin]]];
         [errorLabel setFrame: [[infoViewController view] bounds]];
         [errorLabel setTextAlignment:UITextAlignmentCenter];
         [[infoViewController view] addSubview:errorLabel];

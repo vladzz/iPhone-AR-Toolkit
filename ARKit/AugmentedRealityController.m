@@ -157,8 +157,9 @@
 	// start our heading readings and our accelerometer readings.
 	if (![self locationManager]) {
 		[self setLocationManager: [[CLLocationManager alloc] init]];
-		[[self locationManager] setHeadingFilter: kCLHeadingFilterNone];
-		[[self locationManager] setDesiredAccuracy: kCLLocationAccuracyBest];
+		[[self locationManager] setHeadingFilter: 1.0];
+        [[self locationManager] setDistanceFilter:2.0];
+		[[self locationManager] setDesiredAccuracy: kCLLocationAccuracyNearestTenMeters];
 		[[self locationManager] startUpdatingHeading];
 		[[self locationManager] startUpdatingLocation];
 		[[self locationManager] setDelegate: self];
@@ -199,7 +200,7 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
-	if (oldLocation == nil)
+
 		[self setCenterLocation:newLocation];
 }
 
@@ -341,7 +342,7 @@
 	if (!coordinateViews || [coordinateViews count] == 0) 
 		return;
 	
-	[debugView setText: [NSString stringWithFormat:@"%.3f %.3f ", -radianToDegrees(viewAngle), [[self centerCoordinate] azimuth]]];
+	[debugView setText: [NSString stringWithFormat:@"%.3f %.3f ", -radianToDegrees(viewAngle), radianToDegrees([[self centerCoordinate] azimuth])]];
 	
 	int index			= 0;
 	int totalDisplayed	= 0;

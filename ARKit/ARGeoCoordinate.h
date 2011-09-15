@@ -12,9 +12,13 @@
 
 @interface ARGeoCoordinate : ARCoordinate {
 	CLLocation *geoLocation;
+    double distanceFromOrigin;
+    
 }
 
 @property (nonatomic, retain) CLLocation *geoLocation;
+@property (nonatomic) double distanceFromOrigin;
+
 
 - (float)angleFromCoordinate:(CLLocationCoordinate2D)first toCoordinate:(CLLocationCoordinate2D)second;
 

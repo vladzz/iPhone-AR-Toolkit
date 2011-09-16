@@ -17,9 +17,9 @@ iPhone ARKit's APIs are modeled after MapKit's. For an overview of MapKit, pleas
 
 ## Current Status ##
 
-* The big changes to the UI kit is that its using new features of iOS4. 
+* The AR kit is using new features available to use via iOS4 to make it a better project This includes the following: 
 * Using the AVFoundation instead of the UIViewImagePickerControler.
-* No longer a ModalViewController but instead a view. 
+* No longer a ModalViewController but instead can be loaded into a view. 
 * Launches from a different view, and items are not clickable and will display their own View Controller with information.
 * Improved perfomance.
 * 

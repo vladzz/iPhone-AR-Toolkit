@@ -2,7 +2,7 @@
 //  AugmentedRealityController.h
 //  iPhoneAugmentedRealityLib
 //
-//  Created by Niels W Hansen on 12/20/09.
+//  Modified by Niels W Hansen on 9/15/11.
 //  Copyright 2011 Agilite Software All rights reserved.
 //
 
@@ -22,6 +22,14 @@
 	double maximumScaleDistance;
 	double minimumScaleFactor;
 	double maximumRotationAngle;
+    
+    CGPoint startPoint;
+	CGPoint endPoint;
+    float verticleDiff;
+	float prevHeading;
+    int totalDisplayed;
+	int prevTotalDisplayed;
+
 	
 	ARCoordinate		*centerCoordinate;
 	CLLocationManager	*locationManager;
@@ -55,6 +63,11 @@
 @property double maximumRotationAngle;
 @property double degreeRange;
 
+@property float verticleDiff;
+@property float prevHeading;
+@property int totalDisplayed;
+@property int prevTotalDisplayed;
+
 @property (nonatomic, retain) UIAccelerometer	*accelerometerManager;
 @property (nonatomic, retain) CLLocationManager	*locationManager;
 @property (nonatomic, retain) ARCoordinate		*centerCoordinate;
@@ -66,6 +79,9 @@
 @property (readonly) NSArray *coordinates;
 @property (nonatomic, retain) AVCaptureSession    *captureSession;
 @property (nonatomic, retain) AVCaptureVideoPreviewLayer *previewLayer;
+
+@property CGPoint startPoint;
+@property CGPoint endPoint;
 
 - (id)initWithViewController:(UIViewController *)theView;
 

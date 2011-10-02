@@ -13,6 +13,8 @@
 
 #define BOX_WIDTH 150
 #define BOX_HEIGHT 100
+#define BOX_GAP 10
+
 
 @implementation CoordinateView
 

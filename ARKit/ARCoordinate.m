@@ -2,8 +2,8 @@
 //  ARCoordinate.m
 //  iPhoneAugmentedRealityLib
 //
-//  Created by Zac White on 8/1/09.
-//  Copyright 2009 Zac White. All rights reserved.
+//  Modified by Niels Hansen on 10/02/11
+//  Copyright 2011 Agilite Software. All rights reserved.
 //
 
 #import "ARCoordinate.h"
@@ -51,7 +51,7 @@
 	equal = equal && [self inclination] == [otherCoordinate inclination];
 	equal = equal && [self azimuth]		== [otherCoordinate azimuth];
 		
-	if ([self title] && [otherCoordinate title] || [self title] && ![otherCoordinate title] || ![self title] && [otherCoordinate title]) 
+	if (([self title] && [otherCoordinate title]) || ([self title] && ![otherCoordinate title]) || (![self title] && [otherCoordinate title]))
 		equal = equal && [[self title] isEqualToString:[otherCoordinate title]];
 	
 	return equal;

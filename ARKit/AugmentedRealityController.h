@@ -2,7 +2,7 @@
 //  AugmentedRealityController.h
 //  iPhoneAugmentedRealityLib
 //
-//  Modified by Niels W Hansen on 9/15/11.
+//  Modified by Niels W Hansen on 10/02/11.
 //  Copyright 2011 Agilite Software All rights reserved.
 //
 
@@ -56,7 +56,7 @@
 
 @property BOOL scaleViewsBasedOnDistance;
 @property BOOL rotateViewsBasedOnPerspective;
-@property BOOL debugMode;
+@property (nonatomic) BOOL debugMode;
 
 @property double maximumScaleDistance;
 @property double minimumScaleFactor;

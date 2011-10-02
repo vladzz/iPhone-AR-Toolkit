@@ -2,7 +2,7 @@
 //  AugmentedRealityController.m
 //  iPhoneAugmentedRealityLib
 //
-//  Modified by Niels W Hansen on 9/15/11.
+//  Modified by Niels W Hansen on 10/02/11.
 //  Copyright 2011 Agilite Software. All rights reserved.
 //
 
@@ -166,7 +166,9 @@
 	
 	// start our heading readings and our accelerometer readings.
 	if (![self locationManager]) {
-		[self setLocationManager: [[CLLocationManager alloc] init]];
+		CLLocationManager *newLocationManager = [[CLLocationManager alloc] init];
+        [self setLocationManager: newLocationManager];
+        [newLocationManager release];
 		[[self locationManager] setHeadingFilter: 1.0];
         [[self locationManager] setDistanceFilter:2.0];
 		[[self locationManager] setDesiredAccuracy: kCLLocationAccuracyNearestTenMeters];

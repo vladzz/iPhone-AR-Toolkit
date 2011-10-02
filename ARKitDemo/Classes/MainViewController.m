@@ -2,7 +2,7 @@
 //  MainViewController.m
 //  ARKitDemo
 //
-//  Created by Niels Hansen on 9/11/11.
+//  Modified by Niels Hansen on 10/2/11.
 //  Copyright 2011 Agilite Software. All rights reserved.
 //
 
@@ -43,12 +43,17 @@
     ARKitDemoAppDelegate *appDelegate = (ARKitDemoAppDelegate*)[[UIApplication sharedApplication] delegate];
     
     if([ARKit deviceSupportsAR]){
-        [self setCameraViewController:[[ARViewController alloc] initWithDelegate:self]];
+        ARViewController *newCameraViewController = [[ARViewController alloc] initWithDelegate:self];
+        [self setCameraViewController:newCameraViewController];
+        [newCameraViewController release];
         [cameraViewController setModalTransitionStyle: UIModalTransitionStyleFlipHorizontal];
         [self presentModalViewController:cameraViewController animated:YES]; 
     }
     else {
-        [self setInfoViewController:[[UIViewController alloc] init]];
+        UIViewController *newInfoViewController = [[UIViewController alloc] init];
+        [self setInfoViewController:newInfoViewController];
+        [newInfoViewController release];
+        
         UILabel *errorLabel = [[UILabel alloc] init];
         [errorLabel setNumberOfLines:0];
         [errorLabel setText: @"Augmented Reality is not supported on this device"];
@@ -64,14 +69,14 @@
         [[infoViewController view] addSubview:closeButton];
         [closeButton release];
         [[appDelegate window] addSubview:[infoViewController view]];
- 
-    }
+   }
 }
 
 - (IBAction)closeButtonClicked:(id)sender {
 
     [[[self infoViewController] view] removeFromSuperview];
     infoViewController = nil;
+    
 }
 
 - (IBAction)closeARButtonClicked:(id)sender {
@@ -79,13 +84,13 @@
     [self dismissModalViewControllerAnimated:YES];
     [[[self infoViewController] view] removeFromSuperview];
     infoViewController = nil;
+ 
 }
 
 -(void) locationClicked:(ARGeoCoordinate *) coordinate {
     
     if (coordinate != nil) {
         NSLog(@"Main View Controller received the click Event for: %@",[coordinate title]);
-        
         
         ARKitDemoAppDelegate *appDelegate = (ARKitDemoAppDelegate*)[[UIApplication sharedApplication] delegate];
         
@@ -114,9 +119,7 @@
         [[infoViewController view] addSubview:closeARButton];
         [closeARButton release];
 
-        
         [[appDelegate window] addSubview:[infoViewController view]];
-
     }
 }
 
@@ -256,8 +259,17 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+    
+    if ([self cameraViewController] != nil) {
+        [cameraViewController release];
+        [self setCameraViewController:nil];
+    }
+    
+    if ([self infoViewController] != nil) {
+        [infoViewController release];
+        [self setInfoViewController:nil];
+    }
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

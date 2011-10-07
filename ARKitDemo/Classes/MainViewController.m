@@ -47,7 +47,8 @@
         [self setCameraViewController:newCameraViewController];
         [newCameraViewController release];
         [cameraViewController setModalTransitionStyle: UIModalTransitionStyleFlipHorizontal];
-        [self presentModalViewController:cameraViewController animated:YES]; 
+        [self presentModalViewController:cameraViewController animated:YES];
+        newCameraViewController = nil;
     }
     else {
         UIViewController *newInfoViewController = [[UIViewController alloc] init];

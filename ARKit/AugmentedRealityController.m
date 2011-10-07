@@ -154,12 +154,19 @@
 	return self;
 }
 
-- (IBAction)closeButtonClicked:(id)sender {
-    [[self rootViewController] dismissModalViewControllerAnimated:YES];
+-(void)unloadAV {
+    [captureSession stopRunning];
+    AVCaptureInput* input = [captureSession.inputs objectAtIndex:0];
+    [captureSession removeInput:input];
+    [[self previewLayer] removeFromSuperlayer];
+    [self setCaptureSession:nil];
+    [self setPreviewLayer:nil];	
 }
 
--(void) unloadCamera {
+- (IBAction)closeButtonClicked:(id)sender {
     [self stopListening];
+    [self unloadAV];
+    [[self rootViewController] dismissModalViewControllerAnimated:YES];
 }
 
 - (void)startListening {
@@ -528,8 +535,11 @@
 }
 
 - (void)dealloc {
+    [self unloadAV];
 	[[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
     [ARView release];
+    locationManager.delegate = nil;
+    [UIAccelerometer sharedAccelerometer].delegate = nil;
 	[locationManager release];
 	[coordinateViews release];
 	[coordinates release];

@@ -32,6 +32,9 @@ please let me know where and I'll take a look and fix it ASAP.
 ## Blog for Project ##
 More information about the project can be found at [the agilite software blog](http://www.agilitesoftware.com/blog)
 
+## Twitter account ##
+Keep up to date on announcements and more by following Agilite Software on Twitter, <a href="http://twitter.com/agilite">@agilite</a>.
+
 ## Acknowledgements ##
 I would like to thank Zac White for starting the initial project and giving me the ability to fork his code and make the changes I see to make an awesome ARKit.
 I would also like to thank Gamaliel A. Toro Herrera, Jared Crawford and Mike Tigas for their contributes to the project that I pulled in from their forked projects.

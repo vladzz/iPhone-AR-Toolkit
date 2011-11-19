@@ -30,22 +30,25 @@
 
 - (void)loadView {
     
-	[self setAgController:[[AugmentedRealityController alloc] initWithViewController:self]];
+	AugmentedRealityController*  arc = [[AugmentedRealityController alloc] initWithViewController:self];
 	
-	[agController setDebugMode:NO];
-	[agController setScaleViewsBasedOnDistance:YES];
-	[agController setMinimumScaleFactor:0.5];
-	[agController setRotateViewsBasedOnPerspective:YES];
+	[arc setDebugMode:NO];
+	[arc setScaleViewsBasedOnDistance:YES];
+	[arc setMinimumScaleFactor:0.5];
+	[arc setRotateViewsBasedOnPerspective:YES];
 	
 	GEOLocations* locations = [[GEOLocations alloc] initWithDelegate:delegate];
 	
 	if ([[locations returnLocations] count] > 0) {
 		for (ARGeoCoordinate *coordinate in [locations returnLocations]) {
 			CoordinateView *cv = [[CoordinateView alloc] initForCoordinate:coordinate withDelgate:self] ;
-			[agController addCoordinate:coordinate augmentedView:cv animated:NO];
+			[arc addCoordinate:coordinate augmentedView:cv animated:NO];
 			[cv release];
 		}
 	}
+    
+    [self setAgController:arc];
+    [arc release];
 	[locations release];
 }
 

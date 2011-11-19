@@ -28,6 +28,7 @@
 - (void)dealloc
 {
     [super dealloc];
+    [infoViewController release];
 }
 
 - (void)didReceiveMemoryWarning
@@ -94,14 +95,14 @@
         NSLog(@"Main View Controller received the click Event for: %@",[coordinate title]);
         
         ARKitDemoAppDelegate *appDelegate = (ARKitDemoAppDelegate*)[[UIApplication sharedApplication] delegate];
+        UIViewController *infovc = [[UIViewController alloc] init];
         
-        [self setInfoViewController:[[UIViewController alloc] init]];
         UILabel *errorLabel = [[UILabel alloc] init];
         [errorLabel setNumberOfLines:0];
         [errorLabel setText: [NSString stringWithFormat:@"You clicked on %@ and distance is %f",[coordinate title], [coordinate distanceFromOrigin]]];
-        [errorLabel setFrame: [[infoViewController view] bounds]];
+        [errorLabel setFrame: [[infovc view] bounds]];
         [errorLabel setTextAlignment:UITextAlignmentCenter];
-        [[infoViewController view] addSubview:errorLabel];
+        [[infovc view] addSubview:errorLabel];
         [errorLabel release];
         
         UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 90, 30)];
@@ -109,7 +110,7 @@
         
         [closeButton setBackgroundColor:[UIColor blueColor]];
         [closeButton addTarget:self action:@selector(closeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [[infoViewController view] addSubview:closeButton];
+        [[infovc view] addSubview:closeButton];
         [closeButton release];
         
         UIButton *closeARButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 50, 120, 30)];
@@ -117,10 +118,13 @@
         
         [closeARButton setBackgroundColor:[UIColor blackColor]];
         [closeARButton addTarget:self action:@selector(closeARButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [[infoViewController view] addSubview:closeARButton];
+        [[infovc view] addSubview:closeARButton];
         [closeARButton release];
 
-        [[appDelegate window] addSubview:[infoViewController view]];
+        [[appDelegate window] addSubview:[infovc view]];
+        
+        [self setInfoViewController:infovc];
+        [infovc release];
     }
 }
 

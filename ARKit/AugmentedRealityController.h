@@ -67,6 +67,8 @@
 @property float prevHeading;
 @property int totalDisplayed;
 @property int prevTotalDisplayed;
+@property double  latestHeading;
+@property float   viewAngle;
 
 @property (nonatomic, retain) UIAccelerometer	*accelerometerManager;
 @property (nonatomic, retain) CLLocationManager	*locationManager;
@@ -76,9 +78,13 @@
 @property (nonatomic, retain) UIView			*ARView;
 @property (nonatomic, retain) ARViewController	*rootViewController;
 @property UIDeviceOrientation	currentOrientation;
-@property (readonly) NSArray *coordinates;
 @property (nonatomic, retain) AVCaptureSession    *captureSession;
 @property (nonatomic, retain) AVCaptureVideoPreviewLayer *previewLayer;
+
+@property (retain) UILabel              *debugView;
+@property (retain) UIButton             *closeButton;
+@property (nonatomic,retain) NSMutableArray		*coordinates;
+@property (nonatomic,retain) NSMutableArray		*coordinateViews;
 
 @property CGPoint startPoint;
 @property CGPoint endPoint;
@@ -97,9 +103,5 @@
 - (void)removeCoordinate:(ARCoordinate *)coordinate animated:(BOOL)animated;
 - (void)removeCoordinates:(NSArray *)coordinateArray;
 
-@property (retain) UILabel              *debugView;
-@property (retain) UIButton             *closeButton;
-@property double                        latestHeading;
-@property float                         viewAngle;
-@property (retain) NSMutableArray		*coordinateViews;
+
 @end

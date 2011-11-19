@@ -42,7 +42,7 @@
 @synthesize minimumScaleFactor;
 @synthesize maximumRotationAngle;
 @synthesize centerLocation;
-@synthesize coordinates = coordinates;
+@synthesize coordinates;
 @synthesize debugMode;
 @synthesize currentOrientation;
 @synthesize degreeRange;
@@ -61,40 +61,42 @@
 
 
 - (id)initWithViewController:(ARViewController *)vc {
-	coordinates		= [[NSMutableArray alloc] init];
-	coordinateViews	= [[NSMutableArray alloc] init];
-	latestHeading	= -1.0f;
-	debugView		= nil;
     
-    verticleDiff    = 0;
-	prevHeading     = -1;
+    if (!(self = [super init]))
+		return nil;
 	
+    [self setLatestHeading: -1.0f];
+    [self setVerticleDiff:0.0f];
+    [self setPrevHeading:-1.0f];
 	[self setRootViewController: vc];
-
 	[self setDebugMode:NO];
 	[self setMaximumScaleDistance: 0.0];
 	[self setMinimumScaleFactor: 1.0];
 	[self setScaleViewsBasedOnDistance: NO];
 	[self setRotateViewsBasedOnPerspective: NO];
 	[self setMaximumRotationAngle: M_PI / 6.0];
+    
+    [self setCoordinates:[[NSMutableArray alloc] init]];
+	[self setCoordinateViews:[[NSMutableArray alloc] init]];
 	
 	CGRect screenRect = [[UIScreen mainScreen] bounds];
 	
-	ARView = [[UIView alloc] initWithFrame: screenRect];
+	UIView *arView = [[UIView alloc] initWithFrame: screenRect];
      
 	[self setCurrentOrientation:UIDeviceOrientationPortrait];
-	[self setDegreeRange:[ARView bounds].size.width / ADJUST_BY];
+	[self setDegreeRange:[arView bounds].size.width / ADJUST_BY];
     
-    [self setDisplayView: [[UIView alloc] initWithFrame: screenRect]];
-	[self setCurrentOrientation:UIDeviceOrientationPortrait];
+    UIView *displayV= [[UIView alloc] initWithFrame: screenRect];
+	
+    [self setCurrentOrientation:UIDeviceOrientationPortrait];
 	
 
-	[vc setView:displayView];
-    [[vc view] insertSubview:ARView atIndex:0];
+	[vc setView:displayV];
+    [[vc view] insertSubview:arView atIndex:0];
 
 #if !TARGET_IPHONE_SIMULATOR
-    captureSession = [[AVCaptureSession alloc] init];
     
+    AVCaptureSession *avCaptureSession = [[AVCaptureSession alloc] init];
     AVCaptureDevice *videoCaptureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     
     NSError *error = nil;
@@ -102,15 +104,17 @@
     AVCaptureDeviceInput *videoInput = [AVCaptureDeviceInput deviceInputWithDevice:videoCaptureDevice error:&error];
     
     if (videoInput) {
-        [captureSession addInput:videoInput];
+        [avCaptureSession addInput:videoInput];
     }
     else {
         // Handle the failure.
     }
     
-    AVCaptureVideoPreviewLayer *newCaptureVideoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:captureSession];
-    UIView *view = ARView;
-    CALayer *viewLayer = [view layer];
+    AVCaptureVideoPreviewLayer *newCaptureVideoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:avCaptureSession];
+    
+    UIView *view        = arView;
+    CALayer *viewLayer  = [view layer];
+    
     [viewLayer setMasksToBounds:YES];
     
     CGRect bounds = [view bounds];
@@ -127,9 +131,11 @@
     [self setPreviewLayer:newCaptureVideoPreviewLayer];
     [newCaptureVideoPreviewLayer release];
     
-    [captureSession setSessionPreset:AVCaptureSessionPresetLow];
-
-    [captureSession startRunning];
+    [avCaptureSession setSessionPreset:AVCaptureSessionPresetLow];
+    [avCaptureSession startRunning];
+    
+    [self setCaptureSession:avCaptureSession];  
+    [avCaptureSession release];
 
 #endif
 
@@ -141,15 +147,23 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name: UIDeviceOrientationDidChangeNotification object:nil];
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];	
     
-    closeButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
-    [closeButton setTitle:@"Close" forState:UIControlStateNormal];
+    UIButton *closeBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
     
-    [closeButton setBackgroundColor:[UIColor greenColor]];
-    [closeButton addTarget:self action:@selector(closeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [displayView addSubview:closeButton];
-    [closeButton release];
-	
+    [closeBtn setTitle:@"Close" forState:UIControlStateNormal];
+    
+    [closeBtn setBackgroundColor:[UIColor greenColor]];
+    [closeBtn addTarget:self action:@selector(closeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [displayV addSubview:closeBtn];
+    	
 	[self startListening];
+    
+    [self setCloseButton:closeBtn];
+    [self setARView:arView];
+    [self setDisplayView:displayV];
+    
+    [arView release];
+    [closeBtn release];
+    [displayV release];
 	
 	return self;
 }
@@ -536,6 +550,7 @@
 
 - (void)dealloc {
     [self unloadAV];
+    [closeButton release];
 	[[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
     [ARView release];
     locationManager.delegate = nil;

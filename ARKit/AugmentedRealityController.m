@@ -458,14 +458,15 @@
 	else
 		point.x = (realityBounds.size.width / 2) - ((deltaAzimith / degreesToRadian(1)) * ADJUST_BY);	// Left side of Azimuth
 	
-//	point.y = (realityBounds.size.height / 2) + (radianToDegrees(M_PI_2 + viewAngle)  * 2.0);
+	point.y = (realityBounds.size.height / 2) + (radianToDegrees(M_PI_2 + viewAngle)  * 2.0);
     
+/*
     if(frameIndex == 0)
 		point.y = 0;  
 	else
 		// Adding radianToDegrees part in Y-Axis making point bousing continously so ignore it.
 		point.y = frameIndex * (BOX_HEIGHT + BOX_GAP); // + (radianToDegrees(M_PI_2 + viewAngle)  * 2.0);
-    
+ */   
 	
 	return point;
 }

@@ -223,10 +223,11 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading {
 	
+    prevHeading = latestHeading;
     latestHeading = degreesToRadian(newHeading.magneticHeading);
     
-    if (prevHeading == -1)  
-		prevHeading = newHeading.magneticHeading;
+    NSLog(@"latest: %f, prev: %f",latestHeading,prevHeading);
+    
 	    
 	[self updateCenterCoordinate];
 }
@@ -458,14 +459,14 @@
 	else
 		point.x = (realityBounds.size.width / 2) - ((deltaAzimith / degreesToRadian(1)) * ADJUST_BY);	// Left side of Azimuth
 	
-//	point.y = (realityBounds.size.height / 2) + (radianToDegrees(M_PI_2 + viewAngle)  * 2.0);
-    
+	point.y = (realityBounds.size.height / 2) + (radianToDegrees(M_PI_2 + viewAngle)  * 2.0);
+/*    
     if(frameIndex == 0)
 		point.y = 0;  
 	else
 		// Adding radianToDegrees part in Y-Axis making point bousing continously so ignore it.
 		point.y = frameIndex * (BOX_HEIGHT + BOX_GAP); // + (radianToDegrees(M_PI_2 + viewAngle)  * 2.0);
-    
+*/    
 	
 	return point;
 }

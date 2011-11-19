@@ -382,7 +382,7 @@
 	
 	int index		= 0;
 	totalDisplayed	= 0;
-	int frameIndex = 0;
+	int frameIndex  = 0;
 	
 	for (ARCoordinate *item in coordinates) {
 		

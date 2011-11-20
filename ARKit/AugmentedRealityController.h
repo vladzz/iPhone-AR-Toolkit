@@ -66,16 +66,6 @@
 @property double maximumScaleDistance;
 @property double minimumScaleFactor;
 @property double maximumRotationAngle;
-@property double degreeRange;
-@property double  latestHeading;
-
-@property float verticleDiff;
-@property float prevHeading;
-@property float   viewAngle;
-
-@property int totalDisplayed;
-@property int prevTotalDisplayed;
-@property int cameraOrientation;
 
 @property CGPoint startPoint;
 @property CGPoint endPoint;

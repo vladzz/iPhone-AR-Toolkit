@@ -32,10 +32,11 @@
     
 	AugmentedRealityController*  arc = [[AugmentedRealityController alloc] initWithViewController:self];
 	
-	[arc setDebugMode:NO];
+	[arc setDebugMode:YES];
 	[arc setScaleViewsBasedOnDistance:YES];
 	[arc setMinimumScaleFactor:0.5];
 	[arc setRotateViewsBasedOnPerspective:YES];
+    [arc updateDebugMode:![arc debugMode]];
 	
 	GEOLocations* locations = [[GEOLocations alloc] initWithDelegate:delegate];
 	
@@ -50,6 +51,8 @@
     [self setAgController:arc];
     [arc release];
 	[locations release];
+    
+   
 }
 
 

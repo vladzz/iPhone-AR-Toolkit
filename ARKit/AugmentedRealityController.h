@@ -18,76 +18,83 @@
 
 	BOOL scaleViewsBasedOnDistance;
 	BOOL rotateViewsBasedOnPerspective;
-	
+
 	double maximumScaleDistance;
 	double minimumScaleFactor;
 	double maximumRotationAngle;
+
+	ARCoordinate		*centerCoordinate;
+	CLLocationManager	*locationManager;
+	ARViewController	*rootViewController;
+	
+@private
+	double	latestHeading;
+	double  degreeRange;
+	
+	BOOL	debugMode;
+   
+    float	viewAngle;
+    float   verticleDiff;
+	float   prevHeading;
+    
+    int     totalDisplayed;
+	int     prevTotalDisplayed;
+    int     cameraOrientation;
     
     CGPoint startPoint;
 	CGPoint endPoint;
-    float verticleDiff;
-	float prevHeading;
-    int totalDisplayed;
-	int prevTotalDisplayed;
-
-	
-	ARCoordinate		*centerCoordinate;
-	CLLocationManager	*locationManager;
-	UIDeviceOrientation currentOrientation;
-	
-	ARViewController	*rootViewController;
-	UIAccelerometer		*accelerometerManager;
-	CLLocation			*centerLocation;
-	UIView				*displayView;
-	UILabel				*debugView;
-    UIButton            *closeButton;
+    
+	NSMutableArray	*coordinates;
+	NSMutableArray	*coordinateViews;
+    
+    UILabel				*debugView;
     AVCaptureSession    *captureSession;
     AVCaptureVideoPreviewLayer *previewLayer;
-
-@private
-	double				latestHeading;
-	double				degreeRange;
-	float				viewAngle;
-	BOOL				debugMode;
-	
-	NSMutableArray		*coordinates;
-	NSMutableArray		*coordinateViews;
+    
+    UIAccelerometer		*accelerometerManager;
+	CLLocation			*centerLocation;
+	UIView				*displayView;
+    
+    
+    
 }
 
 @property BOOL scaleViewsBasedOnDistance;
 @property BOOL rotateViewsBasedOnPerspective;
-@property (nonatomic) BOOL debugMode;
+@property BOOL debugMode;
 
 @property double maximumScaleDistance;
 @property double minimumScaleFactor;
 @property double maximumRotationAngle;
 @property double degreeRange;
+@property double  latestHeading;
 
 @property float verticleDiff;
 @property float prevHeading;
-@property int totalDisplayed;
-@property int prevTotalDisplayed;
-@property double  latestHeading;
 @property float   viewAngle;
 
-@property (nonatomic, retain) UIAccelerometer	*accelerometerManager;
-@property (nonatomic, retain) CLLocationManager	*locationManager;
-@property (nonatomic, retain) ARCoordinate		*centerCoordinate;
-@property (nonatomic, retain) CLLocation		*centerLocation;
-@property (nonatomic, retain) UIView			*displayView;
-@property (nonatomic, retain) UIView			*ARView;
-@property (nonatomic, retain) ARViewController	*rootViewController;
-@property UIDeviceOrientation	currentOrientation;
-@property (nonatomic, retain) AVCaptureSession    *captureSession;
-@property (nonatomic, retain) AVCaptureVideoPreviewLayer *previewLayer;
-
-@property (retain) UILabel              *debugView;
-@property (retain) UIButton             *closeButton;
-@property (nonatomic,retain) NSMutableArray		*coordinates;
-@property (nonatomic,retain) NSMutableArray		*coordinateViews;
+@property int totalDisplayed;
+@property int prevTotalDisplayed;
+@property int cameraOrientation;
 
 @property CGPoint startPoint;
 @property CGPoint endPoint;
+
+@property (nonatomic, retain) UIAccelerometer           *accelerometerManager;
+@property (nonatomic, retain) CLLocationManager         *locationManager;
+@property (nonatomic, retain) ARCoordinate              *centerCoordinate;
+@property (nonatomic, retain) CLLocation                *centerLocation;
+@property (nonatomic, retain) UIView                    *displayView;
+@property (nonatomic, retain) UIView                    *ARView;
+@property (nonatomic, retain) ARViewController          *rootViewController;
+@property (nonatomic, retain) AVCaptureSession          *captureSession;
+@property (nonatomic, retain) AVCaptureVideoPreviewLayer *previewLayer;
+
+
+@property (retain) UILabel  *debugView;
+
+@property (nonatomic,retain) NSMutableArray		*coordinates;
+@property (nonatomic,retain) NSMutableArray		*coordinateViews;
 
 - (id)initWithViewController:(UIViewController *)theView;
 
@@ -102,6 +109,7 @@
 - (void)removeCoordinate:(ARCoordinate *)coordinate;
 - (void)removeCoordinate:(ARCoordinate *)coordinate animated:(BOOL)animated;
 - (void)removeCoordinates:(NSArray *)coordinateArray;
+- (void) updateDebugMode:(BOOL) flag;
 
 
 @end

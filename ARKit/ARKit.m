@@ -2,7 +2,7 @@
 //  ARKit.m
 //  ARKitDemo
 //
-//  Created by Jared Crawford on 2/13/10.
+//  Modifed by Niels Hansen 11/20/11.
 //  Copyright 2011 Agilite Software. All rights reserved.
 //
 
@@ -12,20 +12,31 @@
 @implementation ARKit
 
 +(BOOL)deviceSupportsAR{
-	
-	//Detect camera, if not there, return NO
-	if(![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
-		return NO;
-	}
-	
+    
+    
+    // Go thru and see if the device supports Video Capture.
+    NSArray *devices = [AVCaptureDevice devices];
+
+    BOOL suportsVideo = NO;
+    
+    if (devices != nil && [devices count] > 0) {
+        for (AVCaptureDevice *device in devices) {
+            if ([device hasMediaType:AVMediaTypeVideo]) {
+                suportsVideo = YES;
+                break;
+            }
+        }
+    }
+    
+    if (!suportsVideo)
+        return NO;
+   
+	//TODO: Check to see if Device supports the Gyroscope (iPhone4 and higher)
+    
+
 	if(![CLLocationManager headingAvailable]){
 		return NO;
 	}
-		
-	//cannot detect presence of GPS
-	//I could look at location accuracy, but the GPS takes too long to
-	//initialize to be effective for a quick check
-	//I'll assume if you made it this far, it's there
 	
 	return YES;
 }

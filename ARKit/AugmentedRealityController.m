@@ -71,6 +71,7 @@
 	[self setRootViewController: vc];
     [self setMaximumScaleDistance: 0.0];
 	[self setMinimumScaleFactor: 1.0];
+    
 	[self setScaleViewsBasedOnDistance: NO];
 	[self setRotateViewsBasedOnPerspective: NO];
 	[self setMaximumRotationAngle: M_PI / 6.0];

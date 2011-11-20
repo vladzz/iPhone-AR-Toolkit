@@ -41,17 +41,17 @@
 
 -(IBAction) displayAR:(id)sender {
     
-    ARKitDemoAppDelegate *appDelegate = (ARKitDemoAppDelegate*)[[UIApplication sharedApplication] delegate];
-    
     if([ARKit deviceSupportsAR]){
-        ARViewController *newCameraViewController = [[ARViewController alloc] initWithDelegate:self];
-        [self setCameraViewController:newCameraViewController];
-        [newCameraViewController release];
+        ARViewController *arvc = [[ARViewController alloc] initWithDelegate:self];
+        [self setCameraViewController:arvc];
+        [arvc release];
         [cameraViewController setModalTransitionStyle: UIModalTransitionStyleFlipHorizontal];
         [self presentModalViewController:cameraViewController animated:YES];
-        newCameraViewController = nil;
+        arvc = nil;
     }
     else {
+         ARKitDemoAppDelegate *appDelegate = (ARKitDemoAppDelegate*)[[UIApplication sharedApplication] delegate];
+        
         UIViewController *newInfoViewController = [[UIViewController alloc] init];
         [self setInfoViewController:newInfoViewController];
         [newInfoViewController release];

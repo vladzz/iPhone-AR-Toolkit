@@ -2,11 +2,12 @@
 //  ARKit.h
 //  ARKitDemo
 //
-//  Created by Jared Crawford on 2/13/10.
+//  Modified by Niels Hansen on 11/20/11.
 //  Copyright 2011 Agilite Software. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
+#import <AVFoundation/AVFoundation.h>
 
 #import "ARViewController.h"
 #import "ARLocationDelegate.h"

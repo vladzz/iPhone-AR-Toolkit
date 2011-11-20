@@ -59,8 +59,8 @@
 		69E66635111BAF3500BD3E6D /* GEOLocations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GEOLocations.m; sourceTree = "<group>"; };
 		7F4C199F112674030093704B /* ARLocationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLocationDelegate.h; sourceTree = "<group>"; };
 		7F4C19A0112674030093704B /* ARLocationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLocationDelegate.m; sourceTree = "<group>"; };
-		7F4C19F4112677260093704B /* ARViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARViewController.h; sourceTree = "<group>"; };
-		7F4C19F5112677260093704B /* ARViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARViewController.m; sourceTree = "<group>"; };
+		7F4C19F4112677260093704B /* ARViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARViewController.h; path = ../../ARKit/ARViewController.h; sourceTree = "<group>"; };
+		7F4C19F5112677260093704B /* ARViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARViewController.m; path = ../../ARKit/ARViewController.m; sourceTree = "<group>"; };
 		7F4C19F8112678E50093704B /* ARKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARKit.h; sourceTree = "<group>"; };
 		7F4C19F9112678E50093704B /* ARKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARKit.m; sourceTree = "<group>"; };
 		8C0F54F0141E66E5009D0D64 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -96,6 +96,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				7F4C19F4112677260093704B /* ARViewController.h */,
+				7F4C19F5112677260093704B /* ARViewController.m */,
 				1D3623240D0F684500981E51 /* ARKitDemoAppDelegate.h */,
 				1D3623250D0F684500981E51 /* ARKitDemoAppDelegate.m */,
 				8C0F54F0141E66E5009D0D64 /* MainViewController.h */,
@@ -165,8 +167,6 @@
 		69E6662B111BAF3500BD3E6D /* ARKit */ = {
 			isa = PBXGroup;
 			children = (
-				7F4C19F4112677260093704B /* ARViewController.h */,
-				7F4C19F5112677260093704B /* ARViewController.m */,
 				69E6662C111BAF3500BD3E6D /* ARCoordinate.h */,
 				69E6662D111BAF3500BD3E6D /* ARCoordinate.m */,
 				69E6662E111BAF3500BD3E6D /* ARGeoCoordinate.h */,

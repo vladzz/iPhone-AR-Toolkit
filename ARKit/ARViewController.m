@@ -51,11 +51,7 @@
     [self setAgController:arc];
     [arc release];
 	[locations release];
-    
-   
 }
-
-
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];

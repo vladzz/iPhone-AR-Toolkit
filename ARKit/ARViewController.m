@@ -2,7 +2,7 @@
 //  ARViewController.m
 //  ARKitDemo
 //
-//  Created by Niels W Hansen on 1/23/10.
+//  Modified by Niels W Hansen on 11/20/11.
 //  Copyright 2011 Agilite Software. All rights reserved.
 //
 
@@ -10,6 +10,7 @@
 #import "AugmentedRealityController.h"
 #import "GEOLocations.h"
 #import "CoordinateView.h"
+#import "ContentManager.h"
 
 @implementation ARViewController
 
@@ -32,8 +33,8 @@
     
 	AugmentedRealityController*  arc = [[AugmentedRealityController alloc] initWithViewController:self];
 	
-	[arc setDebugMode:YES];
-	[arc setScaleViewsBasedOnDistance:YES];
+	[arc setDebugMode:[[ContentManager sharedContentManager] debugMode]];
+	[arc setScaleViewsBasedOnDistance:[[ContentManager sharedContentManager] scaleOnDistance]];
 	[arc setMinimumScaleFactor:0.5];
 	[arc setRotateViewsBasedOnPerspective:YES];
     [arc updateDebugMode:![arc debugMode]];

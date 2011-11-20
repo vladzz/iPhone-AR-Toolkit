@@ -31,6 +31,9 @@
 		8C564DDF141BDC3C0092E120 /* AR-logo-114.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C564DDD141BDC3C0092E120 /* AR-logo-114.png */; };
 		8CD0EE40141FBA2100207B2F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CD0EE3F141FBA2100207B2F /* AVFoundation.framework */; };
 		8CD0EE4B141FBBCE00207B2F /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CD0EE4A141FBBCE00207B2F /* CoreMedia.framework */; };
+		8CD21B801479B8EF00618F21 /* ContentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD21B7D1479B8EF00618F21 /* ContentManager.m */; };
+		8CD21B841479B9A900618F21 /* ARKitDemo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8CD21B821479B9A900618F21 /* ARKitDemo.xcdatamodeld */; };
+		8CD21B861479B9EA00618F21 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CD21B851479B9EA00618F21 /* CoreData.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +74,11 @@
 		8C564DDD141BDC3C0092E120 /* AR-logo-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AR-logo-114.png"; sourceTree = "<group>"; };
 		8CD0EE3F141FBA2100207B2F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		8CD0EE4A141FBBCE00207B2F /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		8CD21B7D1479B8EF00618F21 /* ContentManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentManager.m; sourceTree = "<group>"; };
+		8CD21B7E1479B8EF00618F21 /* ContentManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentManager.h; sourceTree = "<group>"; };
+		8CD21B7F1479B8EF00618F21 /* SynthesizeSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynthesizeSingleton.h; sourceTree = "<group>"; };
+		8CD21B831479B9A900618F21 /* ARKitDemo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ARKitDemo.xcdatamodel; sourceTree = "<group>"; };
+		8CD21B851479B9EA00618F21 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* ARKitDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ARKitDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -79,6 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CD21B861479B9EA00618F21 /* CoreData.framework in Frameworks */,
 				8CD0EE4B141FBBCE00207B2F /* CoreMedia.framework in Frameworks */,
 				8CD0EE40141FBA2100207B2F /* AVFoundation.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
@@ -96,6 +105,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				8CD21B811479B97800618F21 /* Models */,
+				8CD21B7B1479B88600618F21 /* Managers */,
 				7F4C19F4112677260093704B /* ARViewController.h */,
 				7F4C19F5112677260093704B /* ARViewController.m */,
 				1D3623240D0F684500981E51 /* ARKitDemoAppDelegate.h */,
@@ -118,6 +129,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				8CD21B851479B9EA00618F21 /* CoreData.framework */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -186,6 +198,24 @@
 			name = ARKit;
 			path = ../ARKit;
 			sourceTree = SOURCE_ROOT;
+		};
+		8CD21B7B1479B88600618F21 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				8CD21B7D1479B8EF00618F21 /* ContentManager.m */,
+				8CD21B7E1479B8EF00618F21 /* ContentManager.h */,
+				8CD21B7F1479B8EF00618F21 /* SynthesizeSingleton.h */,
+			);
+			name = Managers;
+			sourceTree = "<group>";
+		};
+		8CD21B811479B97800618F21 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				8CD21B821479B9A900618F21 /* ARKitDemo.xcdatamodeld */,
+			);
+			name = Models;
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
@@ -264,6 +294,8 @@
 				7F4C19F6112677260093704B /* ARViewController.m in Sources */,
 				7F4C19FA112678E50093704B /* ARKit.m in Sources */,
 				8C0F54F3141E66E5009D0D64 /* MainViewController.m in Sources */,
+				8CD21B801479B8EF00618F21 /* ContentManager.m in Sources */,
+				8CD21B841479B9A900618F21 /* ARKitDemo.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -399,6 +431,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		8CD21B821479B9A900618F21 /* ARKitDemo.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				8CD21B831479B9A900618F21 /* ARKitDemo.xcdatamodel */,
+			);
+			currentVersion = 8CD21B831479B9A900618F21 /* ARKitDemo.xcdatamodel */;
+			path = ARKitDemo.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
 }

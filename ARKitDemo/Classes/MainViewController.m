@@ -8,11 +8,14 @@
 
 #import "ARKitDemoAppDelegate.h"
 #import "MainViewController.h"
+#import "ContentManager.h"
 
 @implementation MainViewController
 
 @synthesize cameraViewController;
 @synthesize infoViewController;
+@synthesize ScaleOnDistance;
+@synthesize DebugModeSwitch;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -20,13 +23,16 @@
     
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-            // Custom initialization
-    }
+        
+            }
+    
     return self;
 }
 
 - (void)dealloc
 {
+    [DebugModeSwitch release];
+    [ScaleOnDistance release];
     [super dealloc];
     [infoViewController release];
 }
@@ -37,6 +43,13 @@
     [super didReceiveMemoryWarning];
     
     // Release any cached data, images, etc that aren't in use.
+}
+
+- (IBAction)debugModeChanged:(id)sender {
+    [[ContentManager sharedContentManager] setDebugMode:[[self DebugModeSwitch] isOn]];
+}
+- (IBAction)ScaleDistanceChanged:(id)sender {
+    [[ContentManager sharedContentManager] setScaleOnDistance:[[self ScaleOnDistance] isOn]];
 }
 
 -(IBAction) displayAR:(id)sender {
@@ -218,7 +231,6 @@
     [locationArray addObject:tempCoordinate];
     [tempLocation release];
     
-    
     tempLocation = [[CLLocation alloc] initWithLatitude:32.78 longitude:-117.15];
     tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"San Diego"];
     [locationArray addObject:tempCoordinate];
@@ -252,17 +264,22 @@
     return locationArray;
 }
 
-
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    [[self DebugModeSwitch] setOn:NO animated:YES];
+    [[self ScaleOnDistance] setOn:YES animated:YES];
+    [[ContentManager sharedContentManager] setDebugMode:[[self DebugModeSwitch] isOn]];
+    [[ContentManager sharedContentManager] setScaleOnDistance:[[self ScaleOnDistance] isOn]];
 }
 
 - (void)viewDidUnload
 {
+    [self setDebugModeSwitch:nil];
+    [self setScaleOnDistance:nil];
+    
     [super viewDidUnload];
     
     if ([self cameraViewController] != nil) {
@@ -274,7 +291,6 @@
         [infoViewController release];
         [self setInfoViewController:nil];
     }
-    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

@@ -20,4 +20,7 @@
 @property (nonatomic, retain) ARViewController *cameraViewController;
 @property (nonatomic, retain) UIViewController *infoViewController;
 
+@property (retain, nonatomic) IBOutlet UISwitch *ScaleOnDistance;
+
+@property (retain, nonatomic) IBOutlet UISwitch *DebugModeSwitch;
 @end

@@ -17,16 +17,15 @@ iPhone ARKit's APIs are modeled after MapKit's. For an overview of MapKit, pleas
 
 ## Current Status ##
 
-* The AR kit is using new features available to use via iOS4 to make it a better project This includes the following: 
+* The AR kit is targeting the iOS5 SDK.  New features of the SDK include the following: 
 * Using the AVFoundation instead of the UIViewImagePickerControler.
-* No longer a ModalViewController but instead can be loaded into a view. 
-* Launches from a different view, and items are not clickable and will display their own View Controller with information.
+* AR View is no longer a ModalViewController but now loaded into a view. 
+* Launches from a different view, and items are now clickable and will display their own View Controller.
 * Improved perfomance.
-* 
+* Many memory leaks seem to have been found.  If you see any please create an issue and I'll take a look.
 
 ## Current Issues ##
-Still having issues with some minor memory leaks.  Looking into what we need to do to fix this. If anyone sees a memory leak,
-please let me know where and I'll take a look and fix it ASAP.
+Removed the stacking feature that was added last month.  It was not fully baked and was causing more problems than it was solving.
 
 
 ## Blog for Project ##

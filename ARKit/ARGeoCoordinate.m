@@ -2,8 +2,8 @@
 //  ARGeoCoordinate.m
 //  iPhoneAugmentedRealityLib
 //
-//  Created by Haseman on 8/1/09.
-//  Copyright 2009 Zac White. All rights reserved.
+//  Modified by Niels Hansen on 11/23/11
+//  Copyright 2011 Agilite Software. All rights reserved.
 //
 
 #import "ARGeoCoordinate.h"
@@ -33,8 +33,8 @@
 	if (![self geoLocation]) 
 		return;
 	
-    distanceFromOrigin = [origin distanceFromLocation:[self geoLocation]];
-	[self setRadialDistance: sqrt(pow([origin altitude] - [[self geoLocation] altitude], 2) + pow(distanceFromOrigin, 2))];
+    [self setDistanceFromOrigin:[origin distanceFromLocation:[self geoLocation]]];
+	[self setRadialDistance: sqrt(pow([origin altitude] - [[self geoLocation] altitude], 2) + pow([self distanceFromOrigin], 2))];
 	
 	float angle = sin(ABS([origin altitude] - [[self geoLocation] altitude]) / [self radialDistance]);
 	
@@ -44,7 +44,7 @@
 	[self setInclination: angle];
 	[self setAzimuth: [self angleFromCoordinate:[origin coordinate] toCoordinate:[[self geoLocation] coordinate]]];
 	
-	NSLog(@"distance is %f, angle is %f, azimuth is %f",distanceFromOrigin,angle,[self azimuth]);
+	NSLog(@"distance from %@ is %f, angle is %f, azimuth is %f",[self title], [self distanceFromOrigin],angle,[self azimuth]);
 }
 
 + (ARGeoCoordinate *)coordinateWithLocation:(CLLocation *)location locationTitle:(NSString *) titleOfLocation {

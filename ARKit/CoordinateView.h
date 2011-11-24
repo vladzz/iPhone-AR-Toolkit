@@ -17,8 +17,11 @@
 }
 
 - (id)initForCoordinate:(ARGeoCoordinate *)coordinate withDelgate:(id<ARViewProtocol>) aDelegate;
+-(void) updateView;
 
 @property (nonatomic,retain) ARGeoCoordinate *coordinateInfo;
 @property (nonatomic, assign) id<ARViewProtocol> delegate;
+
+@property (nonatomic, retain) UILabel *lblDistance;
 
 @end

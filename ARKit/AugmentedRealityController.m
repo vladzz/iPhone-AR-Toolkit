@@ -9,6 +9,7 @@
 #import "AugmentedRealityController.h"
 #import "ARCoordinate.h"
 #import "ARGeoCoordinate.h"
+#import "CoordinateView.h"
 #import <MapKit/MapKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import <AVFoundation/AVFoundation.h>
@@ -419,7 +420,7 @@
 	
 	for (ARCoordinate *item in [self coordinates]) {
 		
-		UIView *viewToDraw = [coordinateViews objectAtIndex:index];
+		CoordinateView *viewToDraw = [coordinateViews objectAtIndex:index];
 		
 		if ([self viewportContainsView:viewToDraw forCoordinate:item]) {
 			
@@ -438,6 +439,7 @@
 				verticleDiff = 0;
 			
 			[viewToDraw setFrame:CGRectMake(loc.x - width / 2.0, loc.y + verticleDiff, width, height)];
+            [viewToDraw updateView];
             
 			totalDisplayed++;
 			

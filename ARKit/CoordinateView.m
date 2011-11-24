@@ -21,6 +21,7 @@
 
 @synthesize coordinateInfo;
 @synthesize delegate;
+@synthesize lblDistance;
 
 - (id)initForCoordinate:(ARGeoCoordinate *)coordinate withDelgate:(id<ARViewProtocol>) aDelegate {
     
@@ -44,23 +45,50 @@
         
 		[titleLabel setFrame: CGRectMake(BOX_WIDTH / 2.0 - [titleLabel bounds].size.width / 2.0 - 4.0, 0, 
                                          [titleLabel bounds].size.width + 8.0, [titleLabel bounds].size.height + 8.0)];
+        
+        UILabel *distLbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, BOX_WIDTH, 20.0)];
+		
+		[distLbl setBackgroundColor: [UIColor colorWithWhite:.3 alpha:.8]];
+		[distLbl setTextColor:		[UIColor whiteColor]];
+		[distLbl setTextAlignment:	UITextAlignmentCenter];
+		[distLbl setText:			[NSString stringWithFormat:@"%d", [coordinate distanceFromOrigin]]];
+		[distLbl sizeToFit];
+        
+        
+		[distLbl setFrame: CGRectMake(BOX_WIDTH / 2.0 - [titleLabel bounds].size.width / 2.0 - 4.0, 
+                                      [distLbl bounds].size.height, 
+                                      [titleLabel bounds].size.width + 8.0, 
+                                      [distLbl bounds].size.height + 8.0)];
+        
+        
 		
 		UIImageView *pointView	= [[UIImageView alloc] initWithFrame:CGRectZero];
 		[pointView setImage:[UIImage imageNamed:@"location.png"]];
         
 		[pointView setFrame:	CGRectMake((int)(BOX_WIDTH / 2.0 - [pointView image].size.width / 2.0), 
                                            (int)(BOX_HEIGHT / 2.0 - [pointView image].size.height / 2.0), 
-                                           [pointView image].size.width, [pointView image].size.height)];
+                                           [pointView image].size.width, 
+                                           [pointView image].size.height)];
 		
 		[self addSubview:titleLabel];
+        [self addSubview:distLbl];
+        
+        [self setLblDistance:distLbl];
+
 		[self addSubview:pointView];
 		[self setBackgroundColor:[UIColor clearColor]];
         
 		[titleLabel release];
+        [distLbl release];
 		[pointView release];
+        
 	}
 	
     return self;
+}
+
+-(void) updateView {
+    [[self lblDistance] setText:[NSString stringWithFormat:@"%.2f km", [[self coordinateInfo] distanceFromOrigin]/1000.0f]];
 }
 
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {

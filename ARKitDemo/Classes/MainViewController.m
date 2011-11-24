@@ -112,7 +112,7 @@
         
         UILabel *errorLabel = [[UILabel alloc] init];
         [errorLabel setNumberOfLines:0];
-        [errorLabel setText: [NSString stringWithFormat:@"You clicked on %@ and distance is %f",[coordinate title], [coordinate distanceFromOrigin]]];
+        [errorLabel setText: [NSString stringWithFormat:@"You clicked on %@ and distance is %.2f km",[coordinate title], [coordinate distanceFromOrigin]/1000.0f]];
         [errorLabel setFrame: [[infovc view] bounds]];
         [errorLabel setTextAlignment:UITextAlignmentCenter];
         [[infovc view] addSubview:errorLabel];

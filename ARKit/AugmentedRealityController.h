@@ -11,6 +11,7 @@
 #import "ARViewController.h"
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
+#import <CoreMotion/CoreMotion.h>
 
 @class ARCoordinate;
 
@@ -25,11 +26,14 @@
 
 	ARCoordinate		*centerCoordinate;
 	CLLocationManager	*locationManager;
+    CMMotionManager     *motionManager;
 	ARViewController	*rootViewController;
 	
 @private
 	double	latestHeading;
 	double  degreeRange;
+    
+    double rotate;
 	
 	BOOL	debugMode;
    

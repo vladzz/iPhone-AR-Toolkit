@@ -68,6 +68,7 @@
     latestHeading   = -1.0f;
     verticleDiff    = 0.0f;
     prevHeading     = -1.0f;
+    rotate = 0.0f;
     
 	[self setRootViewController: vc];
     [self setMaximumScaleDistance: 0.0];
@@ -220,6 +221,15 @@
 		[[self accelerometerManager] setUpdateInterval: 0.75];
 		[[self accelerometerManager] setDelegate: self];
 	}
+    
+    if (!motionManager) {
+        motionManager = [[CMMotionManager alloc] init];
+        [motionManager setShowsDeviceMovementDisplay:YES];
+        [motionManager setDeviceMotionUpdateInterval:1.0 /60.];
+        [motionManager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXArbitraryCorrectedZVertical];
+        
+        	
+    }
 	
 	if (![self centerCoordinate]) 
 		[self setCenterCoordinate:[ARCoordinate coordinateWithRadialDistance:1.0 inclination:0 azimuth:0]];
@@ -236,16 +246,40 @@
     if ([self accelerometerManager]) {
        [[self accelerometerManager] setDelegate: nil];
     }
+    
+    if (!motionManager) {
+        [motionManager stopDeviceMotionUpdates];
+        [motionManager release];
+        motionManager = nil;
+    }
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading {
     
     latestHeading = degreesToRadian(newHeading.magneticHeading);
     
+        
+    
     //Let's only update the Center Coordinate when we have adjusted by more than 1 degree
-    if (fabs(latestHeading-prevHeading) >= degreesToRadian(1) || prevHeading == -1.0f) {
+    if (fabs(latestHeading-prevHeading) >= degreesToRadian(15) || prevHeading == -1.0f) {
         prevHeading = latestHeading;
         [self updateCenterCoordinate];
+        
+        CMDeviceMotion *dm = [motionManager deviceMotion];
+        if (dm != nil) {
+          //  CMRotationRate rr = [dm rotationRate];
+            rotate += dm.attitude.roll;
+            
+            if (rotate < 0)
+                rotate = (2 * M_PI) - rotate;
+            
+            if (fabs(rotate) > (2 * M_PI))
+                rotate = rotate - (2* M_PI);
+            
+            
+            NSLog(@"x: %.3f y: %.3f heading: %.3f, rotation: %.3f", dm.attitude.roll, dm.attitude.pitch,latestHeading,rotate);
+        }
+
     }
 }
 

@@ -34,6 +34,7 @@
 		8CD21B801479B8EF00618F21 /* ContentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD21B7D1479B8EF00618F21 /* ContentManager.m */; };
 		8CD21B841479B9A900618F21 /* ARKitDemo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8CD21B821479B9A900618F21 /* ARKitDemo.xcdatamodeld */; };
 		8CD21B861479B9EA00618F21 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CD21B851479B9EA00618F21 /* CoreData.framework */; };
+		8CD21B881481845400618F21 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CD21B871481845400618F21 /* CoreMotion.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -79,6 +80,7 @@
 		8CD21B7F1479B8EF00618F21 /* SynthesizeSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynthesizeSingleton.h; sourceTree = "<group>"; };
 		8CD21B831479B9A900618F21 /* ARKitDemo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ARKitDemo.xcdatamodel; sourceTree = "<group>"; };
 		8CD21B851479B9EA00618F21 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		8CD21B871481845400618F21 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* ARKitDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ARKitDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -87,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CD21B881481845400618F21 /* CoreMotion.framework in Frameworks */,
 				8CD21B861479B9EA00618F21 /* CoreData.framework in Frameworks */,
 				8CD0EE4B141FBBCE00207B2F /* CoreMedia.framework in Frameworks */,
 				8CD0EE40141FBA2100207B2F /* AVFoundation.framework in Frameworks */,
@@ -129,7 +132,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				8CD21B851479B9EA00618F21 /* CoreData.framework */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -164,6 +166,8 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8CD21B871481845400618F21 /* CoreMotion.framework */,
+				8CD21B851479B9EA00618F21 /* CoreData.framework */,
 				8CD0EE4A141FBBCE00207B2F /* CoreMedia.framework */,
 				8CD0EE3F141FBA2100207B2F /* AVFoundation.framework */,
 				1109BC301082F1B2006FFB4B /* QuartzCore.framework */,

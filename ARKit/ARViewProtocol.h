@@ -13,3 +13,8 @@
 @protocol ARViewProtocol <NSObject>
 -(void) viewClicked:(ARGeoCoordinate *) coordinate;
 @end
+
+@protocol ARProtocol <NSObject>
+-(void) headingUpdated:(int) value;
+
+@end

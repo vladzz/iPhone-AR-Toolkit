@@ -13,7 +13,7 @@
 
 @class AugmentedRealityController;
 
-@interface ARViewController : UIViewController<ARViewProtocol> {
+@interface ARViewController : UIViewController<ARViewProtocol, ARProtocol> {
 	AugmentedRealityController	*agController;
 	id<ARLocationDelegate> delegate;
 }

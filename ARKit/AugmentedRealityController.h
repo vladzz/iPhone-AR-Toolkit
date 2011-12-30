@@ -16,7 +16,9 @@
 
 @interface AugmentedRealityController : NSObject <UIAccelerometerDelegate, CLLocationManagerDelegate> {
 
-	BOOL scaleViewsBasedOnDistance;
+	id<ARProtocol> delegate;
+    
+    BOOL scaleViewsBasedOnDistance;
 	BOOL rotateViewsBasedOnPerspective;
 
 	double maximumScaleDistance;
@@ -67,12 +69,14 @@
 @property (nonatomic, retain) AVCaptureSession          *captureSession;
 @property (nonatomic, retain) AVCaptureVideoPreviewLayer *previewLayer;
 
+@property (nonatomic, assign) id<ARProtocol> delegate;
+
 
 @property (retain) UILabel  *debugView;
 
 @property (nonatomic,retain) NSMutableArray		*coordinates;
 
-- (id)initWithViewController:(UIViewController *)theView;
+- (id)initWithViewController:(UIViewController *)theView withDelgate:(id<ARProtocol>) aDelegate;
 
 - (void) setupDebugPostion;
 - (void) updateLocations;

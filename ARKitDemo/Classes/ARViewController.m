@@ -31,7 +31,7 @@
 
 - (void)loadView {
     
-	AugmentedRealityController*  arc = [[AugmentedRealityController alloc] initWithViewController:self];
+	AugmentedRealityController*  arc = [[AugmentedRealityController alloc] initWithViewController:self withDelgate:self];
 	
 	[arc setDebugMode:[[ContentManager sharedContentManager] debugMode]];
 	[arc setScaleViewsBasedOnDistance:[[ContentManager sharedContentManager] scaleOnDistance]];
@@ -88,6 +88,11 @@
     NSLog(@"delegate worked click on %@", [coordinate title]);
     [delegate locationClicked:coordinate];
     
+}
+
+
+-(void) headingUpdated:(int) value {
+    NSLog(@"Heading Updated");
 }
 
 - (void)didReceiveMemoryWarning {

@@ -2,7 +2,7 @@
 //  AugmentedRealityController.m
 //  AR Kit
 //
-//  Modified by Niels W Hansen on 10/02/11.
+//  Modified by Niels W Hansen on 12/30/11.
 //  Copyright 2011 Agilite Software. All rights reserved.
 //
 
@@ -25,6 +25,8 @@
 #define HEADING_FILTER 1.0
 #define INTERVAL_UPDATE 0.75
 #define SCALE_FACTOR 1.0
+#define HEADING_NOT_SET -1.0
+#define DEGREE_TO_UPDATE 1
 
 
 @interface AugmentedRealityController (Private)
@@ -33,8 +35,8 @@
 - (void) currentDeviceOrientation;
 
 - (double) findDeltaOfRadianCenter:(double*)centerAzimuth coordinateAzimuth:(double)pointAzimuth betweenNorth:(BOOL*) isBetweenNorth;
-- (CGPoint) pointInView:(UIView *)realityView withView:(UIView *)viewToDraw forCoordinate:(ARCoordinate *)coordinate forIndex:(int)frameIndex;
-- (BOOL) viewportContainsView:(UIView *)viewToDraw forCoordinate:(ARCoordinate *)coordinate;
+- (CGPoint) pointForCoordinate:(ARCoordinate *)coordinate;
+- (BOOL) shouldDisplayCoordinate:(ARCoordinate *)coordinate;
 
 @end
 
@@ -57,26 +59,26 @@
 @synthesize debugMode;
 @synthesize captureSession;
 @synthesize previewLayer;
+@synthesize delegate;
 
 
-- (id)initWithViewController:(UIViewController *)vc {
+- (id)initWithViewController:(UIViewController *)vc withDelgate:(id<ARProtocol>) aDelegate {
     
     if (!(self = [super init]))
 		return nil;
     
-    latestHeading   = -1.0f;
-    prevHeading     = -1.0f;
+    [self setDelegate:aDelegate];
+
+    latestHeading   = HEADING_NOT_SET;
+    prevHeading     = HEADING_NOT_SET;
     
 	[self setRootViewController: vc];
     [self setMaximumScaleDistance: 0.0];
 	[self setMinimumScaleFactor: SCALE_FACTOR];
-    
 	[self setScaleViewsBasedOnDistance: NO];
 	[self setRotateViewsBasedOnPerspective: NO];
 	[self setMaximumRotationAngle: M_PI / 6.0];
-    
     [self setCoordinates:[NSMutableArray array]];
-    
     [self currentDeviceOrientation];
 	
 	CGRect screenRect = [[UIScreen mainScreen] bounds];
@@ -135,12 +137,13 @@
     [avCaptureSession release];
 #endif
 
-    CLLocation *newCenter = [[CLLocation alloc] initWithLatitude:37.41711 longitude:-122.02528];
+    CLLocation *newCenter = [[CLLocation alloc] initWithLatitude:37.41711 longitude:-122.02528]; //TODO: We should get the latest heading here.
 	
 	[self setCenterLocation: newCenter];
 	[newCenter release];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name: UIDeviceOrientationDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) 
+                                                 name: UIDeviceOrientationDidChangeNotification object:nil];
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];	
     	
 	[self startListening];
@@ -224,9 +227,10 @@
     latestHeading = degreesToRadian(newHeading.magneticHeading);
     
     //Let's only update the Center Coordinate when we have adjusted by more than X degrees
-    if (fabs(latestHeading-prevHeading) >= degreesToRadian(1) || prevHeading == -1.0f) {
+    if (fabs(latestHeading-prevHeading) >= degreesToRadian(DEGREE_TO_UPDATE) || prevHeading == HEADING_NOT_SET) {
         prevHeading = latestHeading;
         [self updateCenterCoordinate];
+        [[self delegate] headingUpdated:0];
     }
 }
 
@@ -243,16 +247,23 @@
 - (void)updateCenterCoordinate {
 	
 	double adjustment = 0;
+
+    switch (cameraOrientation) {
+        case UIDeviceOrientationLandscapeLeft:
+            adjustment = degreesToRadian(270); 
+            break;
+        case UIDeviceOrientationLandscapeRight:    
+            adjustment = degreesToRadian(90);
+            break;
+        case UIDeviceOrientationPortraitUpsideDown:
+            adjustment = degreesToRadian(180);
+            break;
+        default:
+            adjustment = 0;
+            break;
+    }
 	
-	if (cameraOrientation == UIDeviceOrientationLandscapeLeft)
-		adjustment = degreesToRadian(270); 
-	else if (cameraOrientation == UIDeviceOrientationLandscapeRight)
-		adjustment = degreesToRadian(90);
-	else if (cameraOrientation == UIDeviceOrientationPortraitUpsideDown)
-		adjustment = degreesToRadian(180);
-
 	[[self centerCoordinate] setAzimuth: latestHeading - adjustment];
-
 	[self updateLocations];
 }
 
@@ -302,7 +313,6 @@
 	
 	if ([coordinate radialDistance] > [self maximumScaleDistance]) 
 		[self setMaximumScaleDistance: [coordinate radialDistance]];
-
 }
 
 - (void)removeCoordinate:(ARGeoCoordinate *)coordinate {
@@ -346,7 +356,7 @@
 	return deltaAzimuth;
 }
 
-- (BOOL)viewportContainsView:(UIView *)viewToDraw  forCoordinate:(ARCoordinate *)coordinate {
+- (BOOL)shouldDisplayCoordinate:(ARCoordinate *)coordinate {
 	
 	double currentAzimuth = [[self centerCoordinate] azimuth];
 	double pointAzimuth	  = [coordinate azimuth];
@@ -362,17 +372,19 @@
 	return result;
 }
 
-- (CGPoint)pointInView:(UIView *)realityView withView:(UIView *)viewToDraw forCoordinate:(ARCoordinate *)coordinate forIndex:(int)frameIndex {	
+- (CGPoint)pointForCoordinate:(ARCoordinate *)coordinate {	
 	
 	CGPoint point;
-	CGRect realityBounds	= [realityView bounds];
+	CGRect realityBounds	= [[self displayView] bounds];
 	double currentAzimuth	= [[self centerCoordinate] azimuth];
 	double pointAzimuth		= [coordinate azimuth];
 	BOOL isBetweenNorth		= NO;
 	double deltaAzimith		= [self findDeltaOfRadianCenter: &currentAzimuth coordinateAzimuth:pointAzimuth betweenNorth:&isBetweenNorth];
 	
-	if ((pointAzimuth > currentAzimuth && !isBetweenNorth) || (currentAzimuth > degreesToRadian(360- degreeRange) && pointAzimuth < degreesToRadian(degreeRange)))
+	if ((pointAzimuth > currentAzimuth && !isBetweenNorth) || 
+        (currentAzimuth > degreesToRadian(360- degreeRange) && pointAzimuth < degreesToRadian(degreeRange))) {
 		point.x = (realityBounds.size.width / 2) + ((deltaAzimith / degreesToRadian(1)) * ADJUST_BY);  // Right side of Azimuth
+    }
 	else
 		point.x = (realityBounds.size.width / 2) - ((deltaAzimith / degreesToRadian(1)) * ADJUST_BY);	// Left side of Azimuth
 	
@@ -385,28 +397,23 @@
 	
 	[debugView setText: [NSString stringWithFormat:@"%.3f %.3f ", -radianToDegrees(viewAngle), radianToDegrees([[self centerCoordinate] azimuth])]];
 	
-	int index		= 0;
-	int frameIndex  = 0;
-	
 	for (ARGeoCoordinate *item in [self coordinates]) {
+
+        UIView *markerView = [item displayView];
+        
+		if ([self shouldDisplayCoordinate:item]) {
 		
-		UIView *viewToDraw = [item displayView];
-		
-		if ([self viewportContainsView:viewToDraw forCoordinate:item]) {
-			
-			CGPoint loc = [self pointInView:[self displayView] withView:viewToDraw forCoordinate:item forIndex:frameIndex];
-			
-            frameIndex++;
+            CGPoint loc = [self pointForCoordinate:item];
             CGFloat scaleFactor = SCALE_FACTOR;
 	
 			if ([self scaleViewsBasedOnDistance]) 
 				scaleFactor = scaleFactor - [self minimumScaleFactor]*([item radialDistance] / [self maximumScaleDistance]);
-			
-			float width	 = [viewToDraw bounds].size.width  * scaleFactor;
-			float height = [viewToDraw bounds].size.height * scaleFactor;
 
-			[viewToDraw setFrame:CGRectMake(loc.x - width / 2.0, loc.y, width, height)];
-            [viewToDraw setNeedsDisplay];
+			float width	 = [markerView bounds].size.width  * scaleFactor;
+			float height = [markerView bounds].size.height * scaleFactor;
+
+			[markerView setFrame:CGRectMake(loc.x - width / 2.0, loc.y, width, height)];
+            [markerView setNeedsDisplay];
 			
 			CATransform3D transform = CATransform3DIdentity;
 			
@@ -429,18 +436,17 @@
 		//		double angleDifference	= itemAzimuth - centerAzimuth;
 		//		transform				= CATransform3DRotate(transform, [self maximumRotationAngle] * angleDifference / 0.3696f , 0, 1, 0);
 			}
-			[[viewToDraw layer] setTransform:transform];
+			[[markerView layer] setTransform:transform];
 			
-			//if we don't have a superview, set it up.
-			if (!([viewToDraw superview])) {
-				[[self displayView] insertSubview:viewToDraw atIndex:1];
+			//if marker is not already set then insert it
+			if (!([markerView superview])) {
+				[[self displayView] insertSubview:markerView atIndex:1];
 			}
 		} 
 		else 
-            if ([viewToDraw superview])
-                [viewToDraw removeFromSuperview];
-		
-		index++;
+            if ([markerView superview])
+                [markerView removeFromSuperview];
+
 	}
 }
 
@@ -461,21 +467,28 @@
     UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
 
 	if (orientation != UIDeviceOrientationUnknown && orientation != UIDeviceOrientationFaceUp && orientation != UIDeviceOrientationFaceDown) {
-		if (orientation == UIDeviceOrientationLandscapeLeft) 
-	        cameraOrientation = AVCaptureVideoOrientationLandscapeRight;
-		else if (orientation == UIDeviceOrientationLandscapeRight) 
-	        cameraOrientation = AVCaptureVideoOrientationLandscapeLeft;
-		else if (orientation == UIDeviceOrientationPortraitUpsideDown)
-            cameraOrientation = AVCaptureVideoOrientationPortraitUpsideDown;
-
-        if (orientation == UIDeviceOrientationPortrait) 
-            cameraOrientation = AVCaptureVideoOrientationPortrait;
-	}
+		switch (cameraOrientation) {
+            case UIDeviceOrientationLandscapeLeft:
+                cameraOrientation = AVCaptureVideoOrientationLandscapeLeft;
+                break;
+            case UIDeviceOrientationLandscapeRight:
+                cameraOrientation = AVCaptureVideoOrientationLandscapeRight;
+                break;
+            case UIDeviceOrientationPortraitUpsideDown:
+                cameraOrientation = AVCaptureVideoOrientationPortraitUpsideDown;
+                break;
+            case UIDeviceOrientationPortrait:
+                cameraOrientation = AVCaptureVideoOrientationPortrait;
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 - (void)deviceOrientationDidChange:(NSNotification *)notification {
 	
-	prevHeading = -1;
+	prevHeading = HEADING_NOT_SET; 
     
     [self currentDeviceOrientation];
 	
@@ -487,21 +500,25 @@
 		CGAffineTransform transform = CGAffineTransformMakeRotation(degreesToRadian(0));
 		CGRect bounds = [[UIScreen mainScreen] bounds];
         
-		if (orientation == UIDeviceOrientationLandscapeLeft) {
-			transform		   = CGAffineTransformMakeRotation(degreesToRadian(90));
-			bounds.size.width  = [[UIScreen mainScreen] bounds].size.height;
-			bounds.size.height = [[UIScreen mainScreen] bounds].size.width;
-		}
-		else if (orientation == UIDeviceOrientationLandscapeRight) {
-			transform		   = CGAffineTransformMakeRotation(degreesToRadian(-90));
-			bounds.size.width  = [[UIScreen mainScreen] bounds].size.height;
-			bounds.size.height = [[UIScreen mainScreen] bounds].size.width;
-		}
-		else if (orientation == UIDeviceOrientationPortraitUpsideDown)
-			transform = CGAffineTransformMakeRotation(degreesToRadian(180));
+        switch (orientation) {
+            case UIDeviceOrientationLandscapeLeft:
+                transform		   = CGAffineTransformMakeRotation(degreesToRadian(90));
+                bounds.size.width  = [[UIScreen mainScreen] bounds].size.height;
+                bounds.size.height = [[UIScreen mainScreen] bounds].size.width;
+                break;
+            case UIDeviceOrientationLandscapeRight:
+                transform		   = CGAffineTransformMakeRotation(degreesToRadian(-90));
+                bounds.size.width  = [[UIScreen mainScreen] bounds].size.height;
+                bounds.size.height = [[UIScreen mainScreen] bounds].size.width;
+                break;
+            case UIDeviceOrientationPortraitUpsideDown:
+                transform = CGAffineTransformMakeRotation(degreesToRadian(180));
+                break;
+            default:
+                break;
+        }
 		
         [[self cameraView] setFrame:bounds];
-        
         [[self previewLayer] setOrientation:cameraOrientation];
         [[self previewLayer] setFrame:bounds];
   
@@ -543,7 +560,8 @@
 		[debugView sizeToFit];
 		CGRect displayRect = [[self displayView] bounds];
 		
-		[debugView setFrame:CGRectMake(0, displayRect.size.height - [debugView bounds].size.height,  displayRect.size.width, [debugView bounds].size.height)];
+		[debugView setFrame:CGRectMake(0, displayRect.size.height - [debugView bounds].size.height,  
+                                       displayRect.size.width, [debugView bounds].size.height)];
 	}
 }
 

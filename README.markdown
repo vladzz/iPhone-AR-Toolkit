@@ -9,7 +9,7 @@ This version of the iPhone ARKit is a forked version of the ARKit started on Git
 * Ability to use both the Landscape and Portrait modes (Completed)
 * Use CoreLocation coordinates and update location as the user moves around. (Completed.) 
 * Use CoreData to store coordinates (Not yet implemented.)
-* Ability to add different type of views to augment. (Not yet implemented.)
+* Ability to add different type of views to augment. (Completed 12/29/11.)
 * Ability to touch any of the augment views to handle other tasks. (Completed.)
 * Add a Radar Control (Not yet implemented)
 

@@ -1,6 +1,6 @@
 //
 //  ARGeoCoordinate.h
-//  iPhoneAugmentedRealityLib
+//  AR Kit
 //
 //  Created by Haseman on 8/1/09.
 //  Copyright 2009 Zac White. All rights reserved.
@@ -13,10 +13,12 @@
 @interface ARGeoCoordinate : ARCoordinate {
 	CLLocation *geoLocation;
     double distanceFromOrigin;
+    UIView *displayView;
     
 }
 
 @property (nonatomic, retain) CLLocation *geoLocation;
+@property (nonatomic, retain) UIView *displayView;
 @property (nonatomic) double distanceFromOrigin;
 
 

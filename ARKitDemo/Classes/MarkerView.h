@@ -1,6 +1,6 @@
 //
 //  CoordinateView.h
-//  iPhoneAugmentedRealityLib
+//  AR Kit
 //
 //  Created by Niels W Hansen on 12/19/09.
 //  Copyright 2011 Agilite Software. All rights reserved.
@@ -11,17 +11,15 @@
 
 @class ARGeoCoordinate;
 
-@interface CoordinateView : UIView {
+@interface MarkerView : UIView {
     ARGeoCoordinate *coordinateInfo;
     id<ARViewProtocol> delegate;
 }
 
 - (id)initForCoordinate:(ARGeoCoordinate *)coordinate withDelgate:(id<ARViewProtocol>) aDelegate;
--(void) updateView;
 
 @property (nonatomic,retain) ARGeoCoordinate *coordinateInfo;
 @property (nonatomic, assign) id<ARViewProtocol> delegate;
-
 @property (nonatomic, retain) UILabel *lblDistance;
 
 @end

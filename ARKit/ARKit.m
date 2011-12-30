@@ -1,6 +1,6 @@
 //
 //  ARKit.m
-//  ARKitDemo
+//  AR Kit
 //
 //  Modifed by Niels Hansen 11/20/11.
 //  Copyright 2011 Agilite Software. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  ARCoordinate.m
-//  iPhoneAugmentedRealityLib
+//  AR Kit
 //
 //  Modified by Niels Hansen on 10/02/11
 //  Copyright 2011 Agilite Software. All rights reserved.

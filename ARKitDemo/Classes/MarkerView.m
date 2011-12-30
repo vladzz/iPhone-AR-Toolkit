@@ -1,6 +1,6 @@
 //
 //  CoordinateView.m
-//  iPhoneAugmentedRealityLib
+//  AR Kit
 //
 //  Created by Niels W Hansen on 12/19/09.
 //  Copyright 2011 Agilite Software. All rights reserved.
@@ -8,7 +8,7 @@
 
 #import "ARViewProtocol.h"
 #import "ARGeoCoordinate.h"
-#import "CoordinateView.h"
+#import "MarkerView.h"
 
 
 #define BOX_WIDTH 150
@@ -16,7 +16,7 @@
 #define BOX_GAP 10
 
 
-@implementation CoordinateView
+@implementation MarkerView
 
 
 @synthesize coordinateInfo;
@@ -87,13 +87,15 @@
     return self;
 }
 
--(void) updateView {
+-(void) drawRect:(CGRect)rect {
+    [super drawRect:rect];
     [[self lblDistance] setText:[NSString stringWithFormat:@"%.2f km", [[self coordinateInfo] distanceFromOrigin]/1000.0f]];
+    
 }
 
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     NSLog(@"%@ was touched!",[[self coordinateInfo] title]);
-    [delegate locationClicked:[self coordinateInfo]];
+    [delegate viewClicked:[self coordinateInfo]];
 
 }
 
@@ -110,9 +112,7 @@
     return NO;
 }
 
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
+
 
 - (void)dealloc {
     [super dealloc];

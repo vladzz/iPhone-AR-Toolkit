@@ -1,14 +1,15 @@
 //
 //  ARViewProtocol.h
-//  ARKitDemo
+//  AR Kit
 //
 //  Created by Niels Hansen on 9/12/11.
 //  Copyright 2011 Agilite Software. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import "ARGeoCoordinate.h"
+
+@class ARGeoCoordinate;
 
 @protocol ARViewProtocol <NSObject>
-    -(void) locationClicked:(ARGeoCoordinate *) coordinate;
+-(void) viewClicked:(ARGeoCoordinate *) coordinate;
 @end

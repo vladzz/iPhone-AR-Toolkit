@@ -20,10 +20,7 @@
 		69E66636111BAF3500BD3E6D /* ARCoordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E6662D111BAF3500BD3E6D /* ARCoordinate.m */; };
 		69E66637111BAF3500BD3E6D /* ARGeoCoordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E6662F111BAF3500BD3E6D /* ARGeoCoordinate.m */; };
 		69E66638111BAF3500BD3E6D /* AugmentedRealityController.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E66631111BAF3500BD3E6D /* AugmentedRealityController.m */; };
-		69E66639111BAF3500BD3E6D /* CoordinateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E66633111BAF3500BD3E6D /* CoordinateView.m */; };
 		69E6663A111BAF3500BD3E6D /* GEOLocations.m in Sources */ = {isa = PBXBuildFile; fileRef = 69E66635111BAF3500BD3E6D /* GEOLocations.m */; };
-		7F4C19A1112674030093704B /* ARLocationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F4C19A0112674030093704B /* ARLocationDelegate.m */; };
-		7F4C19F6112677260093704B /* ARViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F4C19F5112677260093704B /* ARViewController.m */; };
 		7F4C19FA112678E50093704B /* ARKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F4C19F9112678E50093704B /* ARKit.m */; };
 		8C0F54F3141E66E5009D0D64 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C0F54F1141E66E5009D0D64 /* MainViewController.m */; };
 		8C0F54F4141E66E5009D0D64 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C0F54F2141E66E5009D0D64 /* MainViewController.xib */; };
@@ -34,6 +31,8 @@
 		8CD21B801479B8EF00618F21 /* ContentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD21B7D1479B8EF00618F21 /* ContentManager.m */; };
 		8CD21B841479B9A900618F21 /* ARKitDemo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8CD21B821479B9A900618F21 /* ARKitDemo.xcdatamodeld */; };
 		8CD21B861479B9EA00618F21 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CD21B851479B9EA00618F21 /* CoreData.framework */; };
+		B8E524E514AD2BEB002560E9 /* ARViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8E524E214AD2BEB002560E9 /* ARViewController.m */; };
+		B8E524E614AD2BEB002560E9 /* MarkerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B8E524E414AD2BEB002560E9 /* MarkerView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,14 +55,9 @@
 		69E6662F111BAF3500BD3E6D /* ARGeoCoordinate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARGeoCoordinate.m; sourceTree = "<group>"; };
 		69E66630111BAF3500BD3E6D /* AugmentedRealityController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AugmentedRealityController.h; sourceTree = "<group>"; };
 		69E66631111BAF3500BD3E6D /* AugmentedRealityController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AugmentedRealityController.m; sourceTree = "<group>"; };
-		69E66632111BAF3500BD3E6D /* CoordinateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoordinateView.h; sourceTree = "<group>"; };
-		69E66633111BAF3500BD3E6D /* CoordinateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoordinateView.m; sourceTree = "<group>"; };
 		69E66634111BAF3500BD3E6D /* GEOLocations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GEOLocations.h; sourceTree = "<group>"; };
 		69E66635111BAF3500BD3E6D /* GEOLocations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GEOLocations.m; sourceTree = "<group>"; };
 		7F4C199F112674030093704B /* ARLocationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLocationDelegate.h; sourceTree = "<group>"; };
-		7F4C19A0112674030093704B /* ARLocationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLocationDelegate.m; sourceTree = "<group>"; };
-		7F4C19F4112677260093704B /* ARViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARViewController.h; path = ../../ARKit/ARViewController.h; sourceTree = "<group>"; };
-		7F4C19F5112677260093704B /* ARViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARViewController.m; path = ../../ARKit/ARViewController.m; sourceTree = "<group>"; };
 		7F4C19F8112678E50093704B /* ARKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARKit.h; sourceTree = "<group>"; };
 		7F4C19F9112678E50093704B /* ARKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARKit.m; sourceTree = "<group>"; };
 		8C0F54F0141E66E5009D0D64 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -80,6 +74,10 @@
 		8CD21B831479B9A900618F21 /* ARKitDemo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ARKitDemo.xcdatamodel; sourceTree = "<group>"; };
 		8CD21B851479B9EA00618F21 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* ARKitDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ARKitDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		B8E524E114AD2BEB002560E9 /* ARViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARViewController.h; sourceTree = "<group>"; };
+		B8E524E214AD2BEB002560E9 /* ARViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARViewController.m; sourceTree = "<group>"; };
+		B8E524E314AD2BEB002560E9 /* MarkerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarkerView.h; sourceTree = "<group>"; };
+		B8E524E414AD2BEB002560E9 /* MarkerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarkerView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,8 +105,10 @@
 			children = (
 				8CD21B811479B97800618F21 /* Models */,
 				8CD21B7B1479B88600618F21 /* Managers */,
-				7F4C19F4112677260093704B /* ARViewController.h */,
-				7F4C19F5112677260093704B /* ARViewController.m */,
+				B8E524E114AD2BEB002560E9 /* ARViewController.h */,
+				B8E524E214AD2BEB002560E9 /* ARViewController.m */,
+				B8E524E314AD2BEB002560E9 /* MarkerView.h */,
+				B8E524E414AD2BEB002560E9 /* MarkerView.m */,
 				1D3623240D0F684500981E51 /* ARKitDemoAppDelegate.h */,
 				1D3623250D0F684500981E51 /* ARKitDemoAppDelegate.m */,
 				8C0F54F0141E66E5009D0D64 /* MainViewController.h */,
@@ -185,12 +185,9 @@
 				69E6662F111BAF3500BD3E6D /* ARGeoCoordinate.m */,
 				69E66630111BAF3500BD3E6D /* AugmentedRealityController.h */,
 				69E66631111BAF3500BD3E6D /* AugmentedRealityController.m */,
-				69E66632111BAF3500BD3E6D /* CoordinateView.h */,
-				69E66633111BAF3500BD3E6D /* CoordinateView.m */,
 				69E66634111BAF3500BD3E6D /* GEOLocations.h */,
 				69E66635111BAF3500BD3E6D /* GEOLocations.m */,
 				7F4C199F112674030093704B /* ARLocationDelegate.h */,
-				7F4C19A0112674030093704B /* ARLocationDelegate.m */,
 				7F4C19F8112678E50093704B /* ARKit.h */,
 				7F4C19F9112678E50093704B /* ARKit.m */,
 				8C0F54F6141E9D4D009D0D64 /* ARViewProtocol.h */,
@@ -288,14 +285,13 @@
 				69E66636111BAF3500BD3E6D /* ARCoordinate.m in Sources */,
 				69E66637111BAF3500BD3E6D /* ARGeoCoordinate.m in Sources */,
 				69E66638111BAF3500BD3E6D /* AugmentedRealityController.m in Sources */,
-				69E66639111BAF3500BD3E6D /* CoordinateView.m in Sources */,
 				69E6663A111BAF3500BD3E6D /* GEOLocations.m in Sources */,
-				7F4C19A1112674030093704B /* ARLocationDelegate.m in Sources */,
-				7F4C19F6112677260093704B /* ARViewController.m in Sources */,
 				7F4C19FA112678E50093704B /* ARKit.m in Sources */,
 				8C0F54F3141E66E5009D0D64 /* MainViewController.m in Sources */,
 				8CD21B801479B8EF00618F21 /* ContentManager.m in Sources */,
 				8CD21B841479B9A900618F21 /* ARKitDemo.xcdatamodeld in Sources */,
+				B8E524E514AD2BEB002560E9 /* ARViewController.m in Sources */,
+				B8E524E614AD2BEB002560E9 /* MarkerView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,8 +303,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Niels Hansen (ELEJ9MQD7Q)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Niels Hansen (ELEJ9MQD7Q)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -319,8 +315,8 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ARKitDemo;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "79731116-6051-425C-BB34-9F7F467FDF1A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "79731116-6051-425C-BB34-9F7F467FDF1A";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -330,7 +326,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Niels Hansen (ELEJ9MQD7Q)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Niels Hansen (ELEJ9MQD7Q)";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ARKitDemo_Prefix.pch;
@@ -339,7 +336,8 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ARKitDemo;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "79731116-6051-425C-BB34-9F7F467FDF1A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "79731116-6051-425C-BB34-9F7F467FDF1A";
 				SDKROOT = iphoneos;
 			};
 			name = Release;
@@ -348,13 +346,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Niels Hansen (ELEJ9MQD7Q)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Niels Hansen (ELEJ9MQD7Q)";
 				GCC_AUTO_VECTORIZATION = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_UNROLL_LOOPS = YES;
 				OTHER_LDFLAGS = "-ObjC";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "79731116-6051-425C-BB34-9F7F467FDF1A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "79731116-6051-425C-BB34-9F7F467FDF1A";
 				SDKROOT = iphoneos;
 			};
 			name = Distribution;
@@ -364,7 +364,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Niels Hansen (ELEJ9MQD7Q)";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ARKitDemo_Prefix.pch;
@@ -373,7 +373,7 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = ARKitDemo;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "79731116-6051-425C-BB34-9F7F467FDF1A";
 				SDKROOT = iphoneos;
 			};
 			name = Distribution;
@@ -382,10 +382,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Niels Hansen (ELEJ9MQD7Q)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Niels Hansen (ELEJ9MQD7Q)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				OTHER_LDFLAGS = "-ObjC";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "79731116-6051-425C-BB34-9F7F467FDF1A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "79731116-6051-425C-BB34-9F7F467FDF1A";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -396,12 +398,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Niels Hansen (ELEJ9MQD7Q)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Niels Hansen (ELEJ9MQD7Q)";
 				GCC_AUTO_VECTORIZATION = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_UNROLL_LOOPS = YES;
 				OTHER_LDFLAGS = "-ObjC";
+				PROVISIONING_PROFILE = "79731116-6051-425C-BB34-9F7F467FDF1A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "79731116-6051-425C-BB34-9F7F467FDF1A";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};

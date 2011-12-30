@@ -1,6 +1,6 @@
 //
 //  ARCoordinate.h
-//  iPhoneAugmentedRealityLib
+//  AR Kit
 //
 //  Created by Zac White on 8/1/09.
 //  Copyright 2009 Zac White. All rights reserved.

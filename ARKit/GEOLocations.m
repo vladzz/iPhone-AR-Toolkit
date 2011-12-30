@@ -1,8 +1,8 @@
 //
 //  GEOLocations.m
-//  iPhoneAugmentedRealityLib
+//  AR Kit
 //
-//  Created by Niels W Hansen on 12/19/09.
+//  Modified by Niels W Hansen on 12/19/09.
 //  Copyright 2009 Zac White. All rights reserved.
 //
 

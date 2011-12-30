@@ -1,6 +1,6 @@
 //
 //  AugmentedRealityController.m
-//  iPhoneAugmentedRealityLib
+//  AR Kit
 //
 //  Modified by Niels W Hansen on 10/02/11.
 //  Copyright 2011 Agilite Software. All rights reserved.
@@ -9,7 +9,6 @@
 #import "AugmentedRealityController.h"
 #import "ARCoordinate.h"
 #import "ARGeoCoordinate.h"
-#import "CoordinateView.h"
 #import <MapKit/MapKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import <AVFoundation/AVFoundation.h>
@@ -17,10 +16,15 @@
 #define kFilteringFactor 0.05
 #define degreesToRadian(x) (M_PI * (x) / 180.0)
 #define radianToDegrees(x) ((x) * 180.0/M_PI)
+#define M_2PI 2.0 * M_PI
 #define BOX_WIDTH 150
 #define BOX_HEIGHT 100
 #define BOX_GAP 10
 #define ADJUST_BY 30
+#define DISTANCE_FILTER 2.0
+#define HEADING_FILTER 1.0
+#define INTERVAL_UPDATE 0.75
+#define SCALE_FACTOR 1.0
 
 
 @interface AugmentedRealityController (Private)
@@ -39,11 +43,9 @@
 @synthesize locationManager;
 @synthesize accelerometerManager;
 @synthesize displayView;
-@synthesize ARView;
+@synthesize cameraView;
 @synthesize debugView;
 @synthesize rootViewController;
-@synthesize coordinateViews;
-
 @synthesize centerCoordinate;
 @synthesize scaleViewsBasedOnDistance;
 @synthesize rotateViewsBasedOnPerspective;
@@ -53,32 +55,27 @@
 @synthesize centerLocation;
 @synthesize coordinates;
 @synthesize debugMode;
-
 @synthesize captureSession;
 @synthesize previewLayer;
 
-@synthesize startPoint, endPoint;
 
-
-- (id)initWithViewController:(ARViewController *)vc {
+- (id)initWithViewController:(UIViewController *)vc {
     
     if (!(self = [super init]))
 		return nil;
     
     latestHeading   = -1.0f;
-    verticleDiff    = 0.0f;
     prevHeading     = -1.0f;
     
 	[self setRootViewController: vc];
     [self setMaximumScaleDistance: 0.0];
-	[self setMinimumScaleFactor: 1.0];
+	[self setMinimumScaleFactor: SCALE_FACTOR];
     
 	[self setScaleViewsBasedOnDistance: NO];
 	[self setRotateViewsBasedOnPerspective: NO];
 	[self setMaximumRotationAngle: M_PI / 6.0];
     
     [self setCoordinates:[NSMutableArray array]];
-	[self setCoordinateViews:[NSMutableArray array]];
     
     [self currentDeviceOrientation];
 	
@@ -89,14 +86,14 @@
         screenRect.size.height = [[UIScreen mainScreen] bounds].size.width;
     }
     
-	UIView *arView = [[UIView alloc] initWithFrame: screenRect];
-  
-	degreeRange = [arView bounds].size.width / ADJUST_BY;
-    
+	UIView *camView = [[UIView alloc] initWithFrame: screenRect];
     UIView *displayV= [[UIView alloc] initWithFrame: screenRect];
-	
+  
+	degreeRange = [camView bounds].size.width / ADJUST_BY;
+    
+    
 	[vc setView:displayV];
-    [[vc view] insertSubview:arView atIndex:0];
+    [[vc view] insertSubview:camView atIndex:0];
 
 #if !TARGET_IPHONE_SIMULATOR
     
@@ -115,14 +112,10 @@
     }
     
     AVCaptureVideoPreviewLayer *newCaptureVideoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:avCaptureSession];
-    
-    UIView *view        = arView;
-    CALayer *viewLayer  = [view layer];
-    
-    [viewLayer setMasksToBounds:YES];
-    
-    CGRect bounds = [view bounds];
-    [newCaptureVideoPreviewLayer setFrame:bounds];
+
+    [[camView layer] setMasksToBounds:YES];
+
+    [newCaptureVideoPreviewLayer setFrame:[camView bounds]];
     
     if ([newCaptureVideoPreviewLayer isOrientationSupported]) {
         [newCaptureVideoPreviewLayer setOrientation:cameraOrientation];
@@ -130,7 +123,7 @@
     
     [newCaptureVideoPreviewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
     
-    [viewLayer insertSublayer:newCaptureVideoPreviewLayer below:[[viewLayer sublayers] objectAtIndex:0]];
+    [[camView layer] insertSublayer:newCaptureVideoPreviewLayer below:[[[camView layer] sublayers] objectAtIndex:0]];
     
     [self setPreviewLayer:newCaptureVideoPreviewLayer];
     [newCaptureVideoPreviewLayer release];
@@ -149,21 +142,12 @@
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name: UIDeviceOrientationDidChangeNotification object:nil];
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];	
-    
-    UIButton *closeBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
-    
-    [closeBtn setTitle:@"Close" forState:UIControlStateNormal];
-    
-    [closeBtn setBackgroundColor:[UIColor greenColor]];
-    [closeBtn addTarget:self action:@selector(closeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [displayV addSubview:closeBtn];
     	
 	[self startListening];
-    [self setARView:arView];
+    [self setCameraView:camView];
     [self setDisplayView:displayV];
     
-    [arView release];
-    [closeBtn release];
+    [camView release];
     [displayV release];
     
   	return self;
@@ -179,23 +163,18 @@
 }
 
 - (void)dealloc {
+    [self stopListening];
     [self unloadAV];
 	[[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
-    [ARView release];
+    [centerLocation release];
+    [cameraView release];
+    [displayView release];
     locationManager.delegate = nil;
     [UIAccelerometer sharedAccelerometer].delegate = nil;
 	[locationManager release];
-	[coordinateViews release];
 	[coordinates release];
 	[debugView release];
     [super dealloc];
-}
-
-
-- (IBAction)closeButtonClicked:(id)sender {
-    [self stopListening];
-    [self unloadAV];
-    [[self rootViewController] dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark -	
@@ -205,19 +184,21 @@
 	// start our heading readings and our accelerometer readings.
 	if (![self locationManager]) {
 		CLLocationManager *newLocationManager = [[CLLocationManager alloc] init];
+
+        [newLocationManager setHeadingFilter: HEADING_FILTER];
+        [newLocationManager setDistanceFilter:DISTANCE_FILTER];
+		[newLocationManager setDesiredAccuracy: kCLLocationAccuracyNearestTenMeters];
+		[newLocationManager startUpdatingHeading];
+		[newLocationManager startUpdatingLocation];
+		[newLocationManager setDelegate: self];
+        
         [self setLocationManager: newLocationManager];
         [newLocationManager release];
-		[[self locationManager] setHeadingFilter: 1.0];
-        [[self locationManager] setDistanceFilter:2.0];
-		[[self locationManager] setDesiredAccuracy: kCLLocationAccuracyNearestTenMeters];
-		[[self locationManager] startUpdatingHeading];
-		[[self locationManager] startUpdatingLocation];
-		[[self locationManager] setDelegate: self];
 	}
 			
 	if (![self accelerometerManager]) {
 		[self setAccelerometerManager: [UIAccelerometer sharedAccelerometer]];
-		[[self accelerometerManager] setUpdateInterval: 0.75];
+		[[self accelerometerManager] setUpdateInterval: INTERVAL_UPDATE];
 		[[self accelerometerManager] setDelegate: self];
 	}
 	
@@ -242,7 +223,7 @@
     
     latestHeading = degreesToRadian(newHeading.magneticHeading);
     
-    //Let's only update the Center Coordinate when we have adjusted by more than 1 degree
+    //Let's only update the Center Coordinate when we have adjusted by more than X degrees
     if (fabs(latestHeading-prevHeading) >= degreesToRadian(1) || prevHeading == -1.0f) {
         prevHeading = latestHeading;
         [self updateCenterCoordinate];
@@ -290,7 +271,6 @@
 	}
 }
 
-
 - (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration {
 	
 	switch (cameraOrientation) {
@@ -316,32 +296,26 @@
 #pragma mark -	
 #pragma mark Coordinate methods
 
-- (void)addCoordinate:(ARCoordinate *)coordinate augmentedView:(UIView *)agView animated:(BOOL)animated {
+- (void)addCoordinate:(ARGeoCoordinate *)coordinate {
 	
 	[[self coordinates] addObject:coordinate];
 	
 	if ([coordinate radialDistance] > [self maximumScaleDistance]) 
 		[self setMaximumScaleDistance: [coordinate radialDistance]];
-	
-	[coordinateViews addObject:agView];
+
 }
 
-- (void)removeCoordinate:(ARCoordinate *)coordinate {
-	[self removeCoordinate:coordinate animated:YES];
-}
-
-- (void)removeCoordinate:(ARCoordinate *)coordinate animated:(BOOL)animated {
+- (void)removeCoordinate:(ARGeoCoordinate *)coordinate {
 	[[self coordinates] removeObject:coordinate];
 }
 
 - (void)removeCoordinates:(NSArray *)coordinateArray {	
 	
-	for (ARCoordinate *coordinateToRemove in coordinateArray) {
+	for (ARGeoCoordinate *coordinateToRemove in coordinateArray) {
 		NSUInteger indexToRemove = [[self coordinates] indexOfObject:coordinateToRemove];
 		
 		//TODO: Error checking in here.
 		[[self coordinates] removeObjectAtIndex:indexToRemove];
-		[coordinateViews removeObjectAtIndex:indexToRemove];
 	}
 }
 
@@ -351,25 +325,25 @@
 -(double) findDeltaOfRadianCenter:(double*)centerAzimuth coordinateAzimuth:(double)pointAzimuth betweenNorth:(BOOL*) isBetweenNorth {
 
 	if (*centerAzimuth < 0.0) 
-		*centerAzimuth = (M_PI * 2.0) + *centerAzimuth;
+		*centerAzimuth = M_2PI + *centerAzimuth;
 	
-	if (*centerAzimuth > (M_PI * 2.0)) 
-		*centerAzimuth = *centerAzimuth - (M_PI * 2.0);
+	if (*centerAzimuth > M_2PI) 
+		*centerAzimuth = *centerAzimuth - M_2PI;
 	
-	double deltaAzimith = ABS(pointAzimuth - *centerAzimuth);
+	double deltaAzimuth = ABS(pointAzimuth - *centerAzimuth);
 	*isBetweenNorth		= NO;
 
 	// If values are on either side of the Azimuth of North we need to adjust it.  Only check the degree range
 	if (*centerAzimuth < degreesToRadian(degreeRange) && pointAzimuth > degreesToRadian(360-degreeRange)) {
-		deltaAzimith	= (*centerAzimuth + ((M_PI * 2.0) - pointAzimuth));
+		deltaAzimuth	= (*centerAzimuth + (M_2PI - pointAzimuth));
 		*isBetweenNorth = YES;
 	}
 	else if (pointAzimuth < degreesToRadian(degreeRange) && *centerAzimuth > degreesToRadian(360-degreeRange)) {
-		deltaAzimith	= (pointAzimuth + ((M_PI * 2.0) - *centerAzimuth));
+		deltaAzimuth	= (pointAzimuth + (M_2PI - *centerAzimuth));
 		*isBetweenNorth = YES;
 	}
 			
-	return deltaAzimith;
+	return deltaAzimuth;
 }
 
 - (BOOL)viewportContainsView:(UIView *)viewToDraw  forCoordinate:(ARCoordinate *)coordinate {
@@ -377,12 +351,12 @@
 	double currentAzimuth = [[self centerCoordinate] azimuth];
 	double pointAzimuth	  = [coordinate azimuth];
 	BOOL isBetweenNorth	  = NO;
-	double deltaAzimith	  = [self findDeltaOfRadianCenter: &currentAzimuth coordinateAzimuth:pointAzimuth betweenNorth:&isBetweenNorth];
+	double deltaAzimuth	  = [self findDeltaOfRadianCenter: &currentAzimuth coordinateAzimuth:pointAzimuth betweenNorth:&isBetweenNorth];
 	BOOL result			  = NO;
 	
   //  NSLog(@"Current %f, Item %f, delta %f, range %f",currentAzimuth,pointAzimuth,deltaAzimith,degreesToRadian([self degreeRange]));
     
-	if (deltaAzimith <= degreesToRadian(degreeRange))
+	if (deltaAzimuth <= degreesToRadian(degreeRange))
 		result = YES;
 
 	return result;
@@ -409,39 +383,30 @@
 
 - (void)updateLocations {
 	
-	if (!coordinateViews || [coordinateViews count] == 0) 
-		return;
-	
 	[debugView setText: [NSString stringWithFormat:@"%.3f %.3f ", -radianToDegrees(viewAngle), radianToDegrees([[self centerCoordinate] azimuth])]];
 	
 	int index		= 0;
-	totalDisplayed	= 0;
 	int frameIndex  = 0;
 	
-	for (ARCoordinate *item in [self coordinates]) {
+	for (ARGeoCoordinate *item in [self coordinates]) {
 		
-		CoordinateView *viewToDraw = [coordinateViews objectAtIndex:index];
+		UIView *viewToDraw = [item displayView];
 		
 		if ([self viewportContainsView:viewToDraw forCoordinate:item]) {
 			
 			CGPoint loc = [self pointInView:[self displayView] withView:viewToDraw forCoordinate:item forIndex:frameIndex];
 			
             frameIndex++;
-            CGFloat scaleFactor = 1.0;
+            CGFloat scaleFactor = SCALE_FACTOR;
 	
 			if ([self scaleViewsBasedOnDistance]) 
-				scaleFactor = 1.0 - [self minimumScaleFactor]*([item radialDistance] / [self maximumScaleDistance]);
+				scaleFactor = scaleFactor - [self minimumScaleFactor]*([item radialDistance] / [self maximumScaleDistance]);
 			
 			float width	 = [viewToDraw bounds].size.width  * scaleFactor;
 			float height = [viewToDraw bounds].size.height * scaleFactor;
-            
-            if(loc.y == 0 && verticleDiff > 0)
-				verticleDiff = 0;
-			
-			[viewToDraw setFrame:CGRectMake(loc.x - width / 2.0, loc.y + verticleDiff, width, height)];
-            [viewToDraw updateView];
-            
-			totalDisplayed++;
+
+			[viewToDraw setFrame:CGRectMake(loc.x - width / 2.0, loc.y, width, height)];
+            [viewToDraw setNeedsDisplay];
 			
 			CATransform3D transform = CATransform3DIdentity;
 			
@@ -456,10 +421,10 @@
 				double centerAzimuth	= [[self centerCoordinate] azimuth];
 				
 				if (itemAzimuth - centerAzimuth > M_PI) 
-					centerAzimuth += 2 * M_PI;
+					centerAzimuth += M_2PI;
 				
 				if (itemAzimuth - centerAzimuth < -M_PI) 
-					itemAzimuth  += 2 * M_PI;
+					itemAzimuth  += M_2PI;
 		*/		
 		//		double angleDifference	= itemAzimuth - centerAzimuth;
 		//		transform				= CATransform3DRotate(transform, [self maximumRotationAngle] * angleDifference / 0.3696f , 0, 1, 0);
@@ -510,7 +475,6 @@
 
 - (void)deviceOrientationDidChange:(NSNotification *)notification {
 	
-    verticleDiff = 0;
 	prevHeading = -1;
     
     [self currentDeviceOrientation];
@@ -536,7 +500,7 @@
 		else if (orientation == UIDeviceOrientationPortraitUpsideDown)
 			transform = CGAffineTransformMakeRotation(degreesToRadian(180));
 		
-        [[self ARView] setFrame:bounds];
+        [[self cameraView] setFrame:bounds];
         
         [[self previewLayer] setOrientation:cameraOrientation];
         [[self previewLayer] setFrame:bounds];
@@ -583,62 +547,5 @@
 	}
 }
 
-
-#pragma mark -	
-#pragma mark Touch events
-
-- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-	if([touches count] == 1) {
-		UITouch *theTouch = [touches anyObject];
-        startPoint = [theTouch locationInView:self.displayView];
-	}
-	
-}
-
-- (void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-	if([touches count] == 1) {
-		UITouch *theTouch = [touches anyObject];		
-        endPoint = [theTouch locationInView:self.displayView];
-		float diff = endPoint.y - startPoint.y;
-		
-		//NSLog(@"%f %f %d", verticleDiff, diff, totalDisplayed);
-		
-		// Do not scroll down if last point reached
-		// Always allow scrolling up, we restrict it in UpdateLocations method.
-		if ( diff > 0 || (ABS(verticleDiff) + diff + [[UIScreen mainScreen] bounds].size.height) < totalDisplayed * (BOX_GAP + BOX_HEIGHT)) 
-			// We just care about verticle difference
-			verticleDiff += diff;
-    	
-		if(ABS(diff) > 100 || ABS(endPoint.x - startPoint.x) > 100)
-			[self updateLocations];
-		
-		// Update the start point
-		startPoint.x = endPoint.x;
-		startPoint.y = endPoint.y;
-		
-		// update the previous total displayed
-		prevTotalDisplayed = totalDisplayed;
-	}
-}
-
-- (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-	if([touches count] == 1) {
-		UITouch *theTouch = [touches anyObject];		
-        endPoint = [theTouch locationInView:self.displayView];
-		float diff = endPoint.y - startPoint.y;
-		
-		//NSLog(@"%f %f %d", verticleDiff, diff, totalDisplayed);
-		
-		// Do not scroll down if last point
-		if (diff > 0 || (ABS(verticleDiff) + diff + [[UIScreen mainScreen] bounds].size.height) < totalDisplayed * (BOX_GAP + BOX_HEIGHT)) 
-			verticleDiff += diff;// We just care about verticle difference
-		
-		// Always update the locations
-		[self updateLocations];
-		
-		// update the previous total displayed
-		prevTotalDisplayed = totalDisplayed;
-	}
-}
 
 @end

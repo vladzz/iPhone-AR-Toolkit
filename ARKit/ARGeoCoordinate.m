@@ -1,6 +1,6 @@
 //
 //  ARGeoCoordinate.m
-//  iPhoneAugmentedRealityLib
+//  AR Kit
 //
 //  Modified by Niels Hansen on 11/23/11
 //  Copyright 2011 Agilite Software. All rights reserved.
@@ -11,6 +11,7 @@
 @implementation ARGeoCoordinate
 @synthesize distanceFromOrigin;
 @synthesize geoLocation;
+@synthesize displayView;
 
 - (float)angleFromCoordinate:(CLLocationCoordinate2D)first toCoordinate:(CLLocationCoordinate2D)second {
 	

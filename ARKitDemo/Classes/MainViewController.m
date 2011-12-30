@@ -170,25 +170,21 @@
     
     tempLocation = [[CLLocation alloc] initWithLatitude:51.500152 longitude:-0.126236];
     tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"London"];
-//    tempCoordinate.inclination = M_PI/30;
     [locationArray addObject:tempCoordinate];
     [tempLocation release];
     
     tempLocation = [[CLLocation alloc] initWithLatitude:48.856667 longitude:2.350987];
     tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Paris"];
-//    tempCoordinate.inclination = M_PI/30;
     [locationArray addObject:tempCoordinate];
     [tempLocation release];
     
     tempLocation = [[CLLocation alloc] initWithLatitude:55.676294 longitude:12.568116];
     tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Copenhagen"];
-//tempCoordinate.inclination = M_PI/30;
     [locationArray addObject:tempCoordinate];
     [tempLocation release];
     
     tempLocation = [[CLLocation alloc] initWithLatitude:52.373801 longitude:4.890935];
     tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Amsterdam"];
-//    tempCoordinate.inclination = M_PI/30;
     [locationArray addObject:tempCoordinate];
     [tempLocation release];
     
@@ -211,13 +207,11 @@
     
     tempLocation = [[CLLocation alloc] initWithLatitude:49.817492 longitude:15.472962];
     tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Czech Republic"];
- //   tempCoordinate.inclination = M_PI/30;
     [locationArray addObject:tempCoordinate];
     [tempLocation release];
     
     tempLocation = [[CLLocation alloc] initWithLatitude:53.41291 longitude:-8.24389];
     tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Ireland"];
-  //  tempCoordinate.inclination = M_PI/30;
     [locationArray addObject:tempCoordinate];
     [tempLocation release];
     

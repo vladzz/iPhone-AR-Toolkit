@@ -1,6 +1,6 @@
 //
 //  AugmentedRealityController.h
-//  iPhoneAugmentedRealityLib
+//  AR Kit
 //
 //  Modified by Niels W Hansen on 10/02/11.
 //  Copyright 2011 Agilite Software All rights reserved.
@@ -25,7 +25,7 @@
 
 	ARCoordinate		*centerCoordinate;
 	CLLocationManager	*locationManager;
-	ARViewController	*rootViewController;
+	UIViewController	*rootViewController;
 	
 @private
 	double	latestHeading;
@@ -34,18 +34,10 @@
 	BOOL	debugMode;
    
     float	viewAngle;
-    float   verticleDiff;
 	float   prevHeading;
-    
-    int     totalDisplayed;
-	int     prevTotalDisplayed;
     int     cameraOrientation;
     
-    CGPoint startPoint;
-	CGPoint endPoint;
-    
 	NSMutableArray	*coordinates;
-	NSMutableArray	*coordinateViews;
     
     UILabel				*debugView;
     AVCaptureSession    *captureSession;
@@ -54,9 +46,7 @@
     UIAccelerometer		*accelerometerManager;
 	CLLocation			*centerLocation;
 	UIView				*displayView;
-    
-    
-    
+
 }
 
 @property BOOL scaleViewsBasedOnDistance;
@@ -67,16 +57,13 @@
 @property double minimumScaleFactor;
 @property double maximumRotationAngle;
 
-@property CGPoint startPoint;
-@property CGPoint endPoint;
-
 @property (nonatomic, retain) UIAccelerometer           *accelerometerManager;
 @property (nonatomic, retain) CLLocationManager         *locationManager;
 @property (nonatomic, retain) ARCoordinate              *centerCoordinate;
 @property (nonatomic, retain) CLLocation                *centerLocation;
 @property (nonatomic, retain) UIView                    *displayView;
-@property (nonatomic, retain) UIView                    *ARView;
-@property (nonatomic, retain) ARViewController          *rootViewController;
+@property (nonatomic, retain) UIView                    *cameraView;
+@property (nonatomic, retain) UIViewController          *rootViewController;
 @property (nonatomic, retain) AVCaptureSession          *captureSession;
 @property (nonatomic, retain) AVCaptureVideoPreviewLayer *previewLayer;
 
@@ -84,7 +71,6 @@
 @property (retain) UILabel  *debugView;
 
 @property (nonatomic,retain) NSMutableArray		*coordinates;
-@property (nonatomic,retain) NSMutableArray		*coordinateViews;
 
 - (id)initWithViewController:(UIViewController *)theView;
 
@@ -93,11 +79,10 @@
 - (void) stopListening;
 
 // Adding coordinates to the underlying data model.
-- (void)addCoordinate:(ARCoordinate *)coordinate augmentedView:(UIView *)agView animated:(BOOL)animated ;
+- (void)addCoordinate:(ARGeoCoordinate *)coordinate;
 
 // Removing coordinates
-- (void)removeCoordinate:(ARCoordinate *)coordinate;
-- (void)removeCoordinate:(ARCoordinate *)coordinate animated:(BOOL)animated;
+- (void)removeCoordinate:(ARGeoCoordinate *)coordinate;
 - (void)removeCoordinates:(NSArray *)coordinateArray;
 - (void) updateDebugMode:(BOOL) flag;
 

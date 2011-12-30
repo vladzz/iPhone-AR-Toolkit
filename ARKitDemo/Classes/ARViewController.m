@@ -9,7 +9,7 @@
 #import "ARViewController.h"
 #import "AugmentedRealityController.h"
 #import "GEOLocations.h"
-#import "CoordinateView.h"
+#import "MarkerView.h"
 #import "ContentManager.h"
 
 @implementation ARViewController
@@ -38,13 +38,25 @@
 	[arc setMinimumScaleFactor:0.5];
 	[arc setRotateViewsBasedOnPerspective:YES];
     [arc updateDebugMode:![arc debugMode]];
+    
+    UIButton *closeBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
+    
+    [closeBtn setTitle:@"Close" forState:UIControlStateNormal];
+    
+    [closeBtn setBackgroundColor:[UIColor greenColor]];
+    [closeBtn addTarget:self action:@selector(closeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [[self view] addSubview:closeBtn];
+    
+    [closeBtn release];
 	
 	GEOLocations* locations = [[GEOLocations alloc] initWithDelegate:delegate];
 	
 	if ([[locations returnLocations] count] > 0) {
 		for (ARGeoCoordinate *coordinate in [locations returnLocations]) {
-			CoordinateView *cv = [[CoordinateView alloc] initForCoordinate:coordinate withDelgate:self] ;
-			[arc addCoordinate:coordinate augmentedView:cv animated:NO];
+			MarkerView *cv = [[MarkerView alloc] initForCoordinate:coordinate withDelgate:self] ;
+            [coordinate setDisplayView:cv];
+            
+			[arc addCoordinate:coordinate];
 			[cv release];
 		}
 	}
@@ -53,6 +65,12 @@
     [arc release];
 	[locations release];
 }
+
+- (IBAction)closeButtonClicked:(id)sender {
+    [self setAgController:nil];
+    [self dismissModalViewControllerAnimated:YES];
+}
+
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
@@ -66,7 +84,7 @@
 	return YES;
 }
 
--(void) locationClicked:(ARGeoCoordinate *) coordinate {
+-(void) viewClicked:(ARGeoCoordinate *) coordinate {
     NSLog(@"delegate worked click on %@", [coordinate title]);
     [delegate locationClicked:coordinate];
     

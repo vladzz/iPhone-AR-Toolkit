@@ -1,4 +1,4 @@
-# iPhone Augmented Reality Kit#
+# iPhone Augmented Reality Toolkit#
 
 ## Overview ##
 

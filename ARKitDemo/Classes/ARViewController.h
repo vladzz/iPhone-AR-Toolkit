@@ -2,7 +2,7 @@
 //  ARViewController.h
 //  ARKitDemo
 //
-//  Created by Niels W Hansen on 1/23/10.
+//  Modified by Niels W Hansen on 12/31/11.
 //  Copyright 2011 Agilite Software. All rights reserved.
 //
 
@@ -13,7 +13,7 @@
 
 @class AugmentedRealityController;
 
-@interface ARViewController : UIViewController<ARViewProtocol, ARProtocol> {
+@interface ARViewController : UIViewController<ARMarkerDelegate, ARDelegate> {
 	AugmentedRealityController	*agController;
 	id<ARLocationDelegate> delegate;
 }

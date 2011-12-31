@@ -1,8 +1,8 @@
 //
 //  CoordinateView.m
-//  AR Kit
+//  ARKitDemo
 //
-//  Created by Niels W Hansen on 12/19/09.
+//  Modified by Niels W Hansen on 12/31/11.
 //  Copyright 2011 Agilite Software. All rights reserved.
 //
 
@@ -14,6 +14,8 @@
 #define BOX_WIDTH 150
 #define BOX_HEIGHT 100
 #define BOX_GAP 10
+#define BOX_ALPHA 0.8
+#define LABEL_HEIGHT 20.0
 
 
 @implementation MarkerView
@@ -23,7 +25,7 @@
 @synthesize delegate;
 @synthesize lblDistance;
 
-- (id)initForCoordinate:(ARGeoCoordinate *)coordinate withDelgate:(id<ARViewProtocol>) aDelegate {
+- (id)initForCoordinate:(ARGeoCoordinate *)coordinate withDelgate:(id<ARMarkerDelegate>) aDelegate {
     
 	[self setCoordinateInfo:coordinate];
     [self setDelegate:aDelegate];
@@ -36,7 +38,7 @@
         
 		UILabel *titleLabel	= [[UILabel alloc] initWithFrame:CGRectMake(0, 0, BOX_WIDTH, 20.0)];
 		
-		[titleLabel setBackgroundColor: [UIColor colorWithWhite:.3 alpha:.8]];
+		[titleLabel setBackgroundColor: [UIColor colorWithWhite:.3 alpha:BOX_ALPHA]];
 		[titleLabel setTextColor:		[UIColor whiteColor]];
 		[titleLabel setTextAlignment:	UITextAlignmentCenter];
 		[titleLabel setText:			[coordinate title]];
@@ -46,9 +48,9 @@
 		[titleLabel setFrame: CGRectMake(BOX_WIDTH / 2.0 - [titleLabel bounds].size.width / 2.0 - 4.0, 0, 
                                          [titleLabel bounds].size.width + 8.0, [titleLabel bounds].size.height + 8.0)];
         
-        UILabel *distLbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, BOX_WIDTH, 20.0)];
+        UILabel *distLbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, BOX_WIDTH, LABEL_HEIGHT)];
 		
-		[distLbl setBackgroundColor: [UIColor colorWithWhite:.3 alpha:.8]];
+		[distLbl setBackgroundColor: [UIColor colorWithWhite:.3 alpha:BOX_ALPHA]];
 		[distLbl setTextColor:		[UIColor whiteColor]];
 		[distLbl setTextAlignment:	UITextAlignmentCenter];
 		[distLbl setText:			[NSString stringWithFormat:@"%d", [coordinate distanceFromOrigin]]];
@@ -95,7 +97,7 @@
 
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     NSLog(@"%@ was touched!",[[self coordinateInfo] title]);
-    [delegate viewClicked:[self coordinateInfo]];
+    [delegate didTapMarker:[self coordinateInfo]];
 
 }
 

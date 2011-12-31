@@ -2,7 +2,7 @@
 //  AugmentedRealityController.m
 //  AR Kit
 //
-//  Modified by Niels W Hansen on 12/30/11.
+//  Modified by Niels W Hansen on 12/31/11.
 //  Copyright 2011 Agilite Software. All rights reserved.
 //
 
@@ -62,7 +62,7 @@
 @synthesize delegate;
 
 
-- (id)initWithViewController:(UIViewController *)vc withDelgate:(id<ARProtocol>) aDelegate {
+- (id)initWithViewController:(UIViewController *)vc withDelgate:(id<ARDelegate>) aDelegate {
     
     if (!(self = [super init]))
 		return nil;
@@ -230,7 +230,7 @@
     if (fabs(latestHeading-prevHeading) >= degreesToRadian(DEGREE_TO_UPDATE) || prevHeading == HEADING_NOT_SET) {
         prevHeading = latestHeading;
         [self updateCenterCoordinate];
-        [[self delegate] headingUpdated:0];
+        [[self delegate] didUpdateHeading:newHeading];
     }
 }
 
@@ -242,6 +242,8 @@
 
     [self setCenterLocation:newLocation];
     NSLog(@"Location of phone changed!");
+    [[self delegate] didUpdateLocation:newLocation];
+    
 }
 
 - (void)updateCenterCoordinate {
@@ -528,6 +530,8 @@
         
 		degreeRange = [self displayView].bounds.size.width / ADJUST_BY;
 		[self updateDebugMode:YES];
+        [[self delegate] didUpdateOrientation:orientation];
+        
 	}
 }
 

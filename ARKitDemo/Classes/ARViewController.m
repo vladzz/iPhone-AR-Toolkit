@@ -2,7 +2,7 @@
 //  ARViewController.m
 //  ARKitDemo
 //
-//  Modified by Niels W Hansen on 11/20/11.
+//  Modified by Niels W Hansen on 12/31/11.
 //  Copyright 2011 Agilite Software. All rights reserved.
 //
 
@@ -84,15 +84,26 @@
 	return YES;
 }
 
--(void) viewClicked:(ARGeoCoordinate *) coordinate {
+-(void) didTapMarker:(ARGeoCoordinate *) coordinate {
     NSLog(@"delegate worked click on %@", [coordinate title]);
     [delegate locationClicked:coordinate];
     
 }
 
-
--(void) headingUpdated:(int) value {
+-(void) didUpdateHeading:(CLHeading *)newHeading {
     NSLog(@"Heading Updated");
+
+}
+-(void) didUpdateLocation:(CLLocation *)newLocation {
+    NSLog(@"Location Updated");
+
+}
+-(void) didUpdateOrientation:(UIDeviceOrientation) orientation {
+    NSLog(@"Orientation Updated");
+    
+    if (orientation == UIDeviceOrientationPortrait)
+        NSLog(@"Protrait");
+
 }
 
 - (void)didReceiveMemoryWarning {

@@ -2,7 +2,7 @@
 //  AugmentedRealityController.h
 //  AR Kit
 //
-//  Modified by Niels W Hansen on 10/02/11.
+//  Modified by Niels W Hansen on 12/31/11.
 //  Copyright 2011 Agilite Software All rights reserved.
 //
 
@@ -16,7 +16,7 @@
 
 @interface AugmentedRealityController : NSObject <UIAccelerometerDelegate, CLLocationManagerDelegate> {
 
-	id<ARProtocol> delegate;
+	id<ARDelegate> delegate;
     
     BOOL scaleViewsBasedOnDistance;
 	BOOL rotateViewsBasedOnPerspective;
@@ -69,14 +69,14 @@
 @property (nonatomic, retain) AVCaptureSession          *captureSession;
 @property (nonatomic, retain) AVCaptureVideoPreviewLayer *previewLayer;
 
-@property (nonatomic, assign) id<ARProtocol> delegate;
+@property (nonatomic, assign) id<ARDelegate> delegate;
 
 
 @property (retain) UILabel  *debugView;
 
 @property (nonatomic,retain) NSMutableArray		*coordinates;
 
-- (id)initWithViewController:(UIViewController *)theView withDelgate:(id<ARProtocol>) aDelegate;
+- (id)initWithViewController:(UIViewController *)theView withDelgate:(id<ARDelegate>) aDelegate;
 
 - (void) setupDebugPostion;
 - (void) updateLocations;

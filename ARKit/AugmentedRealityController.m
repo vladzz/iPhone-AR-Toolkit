@@ -469,12 +469,12 @@
     UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
 
 	if (orientation != UIDeviceOrientationUnknown && orientation != UIDeviceOrientationFaceUp && orientation != UIDeviceOrientationFaceDown) {
-		switch (cameraOrientation) {
+		switch (orientation) {
             case UIDeviceOrientationLandscapeLeft:
-                cameraOrientation = AVCaptureVideoOrientationLandscapeLeft;
+                cameraOrientation = AVCaptureVideoOrientationLandscapeRight;
                 break;
             case UIDeviceOrientationLandscapeRight:
-                cameraOrientation = AVCaptureVideoOrientationLandscapeRight;
+                cameraOrientation = AVCaptureVideoOrientationLandscapeLeft;
                 break;
             case UIDeviceOrientationPortraitUpsideDown:
                 cameraOrientation = AVCaptureVideoOrientationPortraitUpsideDown;

@@ -2,7 +2,7 @@
 //  AugmentedRealityController.m
 //  AR Kit
 //
-//  Modified by Niels W Hansen on 12/31/11.
+//  Modified by Niels W Hansen on 5/25/12.
 //  Copyright 2011 Agilite Software. All rights reserved.
 //
 
@@ -302,8 +302,6 @@
 		default:
 			break;
 	}
-	
-//	[self updateCenterCoordinate];
 }
 
 #pragma mark -	

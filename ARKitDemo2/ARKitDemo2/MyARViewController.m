@@ -13,14 +13,9 @@
 
 @interface MyARViewController (PrivateMethods)
 
-//- (MyMarkerView *)loadMarkerView;
 - (MyMarkerView *)findClosestMarker;
 - (CGFloat)distanceFromDisplayCenter:(MyMarkerView *)marker;
-- (CGFloat)distanceFromCurrentLocation:(CLLocation *)location;
-
-//- (void)postTweet:(NSString *)title withHashTag:(NSString *)hashtag;
-//- (void)postTweetComplete:(NSString *)output;
-//- (void)postTweetFailed:(NSError *)error;
+- (BOOL)markerViewIntersects:(MyMarkerView *)markerView withClosestMarker:(MyMarkerView *)closestView;
 
 @end
 
@@ -149,61 +144,7 @@
 //    }
 }
 
-//#pragma mark - ARLocationDelegate method
-//
-//- (NSMutableArray *)geoLocations 
-//{
-//    return self.poiModel.geoLocations;
-//}
-
-#pragma mark - DTPOIModel delegate methods
-
-//- (void)poiModelSearchVenuesDidLoad
-//{
-//    int venuesCount = [self.poiModel.geoLocations count];
-//    NSLog(@"poiModelSearchVenuesDidLoad:%d", venuesCount);
-//    
-//    self.overlayView.statusLabel.text = [NSString stringWithFormat:@"Venues Loaded:%d", venuesCount];
-//    
-//	if (venuesCount > 0) {
-//		for (ARGeoCoordinate *coordinate in self.poiModel.geoLocations) {
-////            NSLog(@"coordinate:%@", coordinate.title);
-//			DTMarkerView *marker = [[DTMarkerView alloc] initForCoordinate:coordinate withDelgate:nil] ;
-//            coordinate.markerView = marker;
-//			[self.agController addCoordinate:coordinate];
-//		}
-//	}
-//}
-
-//- (void)poiModel:(DTPOIModel *)model searchVenuesDidFail:(NSError *)error
-//{
-//    NSLog(@"poiModelSearchVenuesDidFail");
-//    self.overlayView.statusLabel.text = @"Venues Load Failed";
-//    NSString *message = [[error userInfo] objectForKey:@"errorDetail"];
-//    
-//    if (error.code == kSearchNovenuesErrorCode) {
-//        message = @"Search returned no venues. Please try again later.";
-//    }
-//    
-//    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Load Venues Error" 
-//                                                        message:message
-//                                                       delegate:nil 
-//                                              cancelButtonTitle:NSLocalizedString(@"OK", @"") 
-//                                              otherButtonTitles:nil];
-//    [alertView show];
-//}
-
 #pragma mark - DTOverlayViewDelegate methods
-
-//- (void)overlayView:(DTOverlayView *)overlayView didTweetWithHashTag:(NSString *)hashtag
-//{
-//    DTMarkerView *closestMarker = [self findClosestMarker];
-//    NSLog(@"closestMarker:%@", closestMarker.coordinateInfo.title);
-//
-//    if (closestMarker != nil) {
-//        [self postTweet:closestMarker.coordinateInfo.title withHashTag:hashtag];
-//    }
-//}
 
 - (void)overlayViewTestDidTap:(OverlayView *)overlayView
 {
@@ -216,7 +157,7 @@
     MyMarkerView *closestMarker = nil;
     NSArray *subviews = self.arController.displayView.subviews;
     int subviewsCount = [subviews count] - 1;
-    
+        
     for (int i=subviewsCount; i>=0; i--) {
         UIView *subview = [subviews objectAtIndex:i];
                 
@@ -225,17 +166,16 @@
                 closestMarker = (MyMarkerView *)subview;
             } else {
                 MyMarkerView *marker = (MyMarkerView *)subview;
-                NSLog(@"%@: %f, %f", marker.coordinate.title, marker.center.x, marker.center.y);
-//                NSLog(@"distance from center:%f", [self distanceFromDisplayCenter:marker]);
-                if (
-//                    ([self distanceFromCurrentLocation:[(MarkerView *)subview coordinateInfo].geoLocation] <
-//                     [self distanceFromCurrentLocation:closestMarker.coordinateInfo.geoLocation]) &&
-                    ([self distanceFromDisplayCenter:marker] < [self distanceFromDisplayCenter:closestMarker])) {
-//                    ([subviews indexOfObject:subview] > [subviews indexOfObject:closestMarker])) {
+                
+                /**
+                 * Find the Marker view closest to the display center and on top of the view hierarchy
+                 */
+                if (([self distanceFromDisplayCenter:marker] < [self distanceFromDisplayCenter:closestMarker]) &&
+                    ![self markerViewIntersects:marker withClosestMarker:closestMarker]) {
                     closestMarker = marker;
-                    NSLog(@"closestMarker:%@", closestMarker.coordinate.title);
                 }
             }
+            NSLog(@"closestMarker:%@", closestMarker.coordinate.title);
         }
     }
     
@@ -244,64 +184,23 @@
                     
 - (CGFloat)distanceFromDisplayCenter:(MyMarkerView *)marker
 {
-//    CGPoint markerPoint = [marker convertPoint:marker.center toView:self.view];
     CGPoint markerPoint = marker.center;
-    NSLog(@"marker:%@, markerPoint: %f, %f", marker.coordinate.title, markerPoint.x, markerPoint.y);
     CGPoint centerPoint = CGPointMake(240.0, 160.0);
     CGFloat xDist = (markerPoint.x - centerPoint.x);
     CGFloat yDist = (markerPoint.y - centerPoint.y);
     return sqrt((xDist * xDist) + (yDist * yDist));
 }
 
-- (CGFloat)distanceFromCurrentLocation:(CLLocation *)location
+/**
+ * Detects if the 2 Marker views are intersecting
+ */
+- (BOOL)markerViewIntersects:(MyMarkerView *)markerView withClosestMarker:(MyMarkerView *)closestView
 {
-    return [location distanceFromLocation:self.arController.centerLocation];
+    if (CGRectIntersectsRect(markerView.frame, closestView.frame))
+        return YES;
+
+    return NO;
 }
-
-#pragma mark - Instance methods
-
-//- (void)postTweet:(NSString *)title withHashTag:(NSString *)hashtag
-//{
-//	ACAccountStore *accountStore = [[ACAccountStore alloc] init];
-//    ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-//	
-//    [accountStore requestAccessToAccountsWithType:accountType withCompletionHandler:^(BOOL granted, NSError *error) {
-//        if(granted) {
-//            NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
-//			if ([accountsArray count] > 0) {
-//				ACAccount *account = [accountsArray objectAtIndex:0];
-//                NSString *message = [NSString stringWithFormat:@"%@ is #%@. #drivebytweeting", title, hashtag];
-//                NSLog(@"postTweet:%@", message);
-//                
-//                TWRequest *postRequest = [[TWRequest alloc] initWithURL:[NSURL URLWithString:@"http://api.twitter.com/1/statuses/update.json"]  
-//                                                             parameters:[NSDictionary dictionaryWithObject:message forKey:@"status"] 
-//                                                          requestMethod:TWRequestMethodPOST];
-//                
-//                [postRequest setAccount:account];
-//                
-//                [postRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
-//                    if (error) {
-//                        [self performSelectorOnMainThread:@selector(postTweetFailed:) withObject:error waitUntilDone:NO];
-//                    } else {                        
-////                        NSString *output = [NSString stringWithFormat:@"HTTP response status: %i", [urlResponse statusCode]];
-//                        [self performSelectorOnMainThread:@selector(postTweetComplete:) withObject:title waitUntilDone:NO];
-//                    }        
-//                }];
-//            }
-//        }
-//    }];
-//}
-
-//- (void)postTweetComplete:(NSString *)output
-//{
-//    NSLog(@"postCompleteHandler:%@", output);
-//    self.overlayView.statusLabel.text = [NSString stringWithFormat:@"Tweet Sent for %@", output];
-//}
-//
-//- (void)postTweetFailed:(NSError *)error
-//{
-//    self.overlayView.statusLabel.text = @"Tweet Failed";
-//}
 
 #pragma mark - Lazy getter
 
@@ -324,22 +223,5 @@
     
     return _overlayView;
 }
-
-/**
- * Load MyMarkerView from xib
- */
-//- (MyMarkerView *)loadMarkerView
-//{
-//    NSArray *xib = [[NSBundle mainBundle] loadNibNamed:@"MyMarkerView" owner:self options:nil];
-//    
-//    for (id view in xib) {
-//        if ([view isKindOfClass:[MyMarkerView class]]) {
-//            return (MyMarkerView *)view;
-//            break;
-//        }
-//    }
-//    
-//    return nil;
-//}
 
 @end

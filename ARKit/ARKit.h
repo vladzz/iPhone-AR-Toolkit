@@ -9,13 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 
-#import "ARViewController.h"
-#import "ARLocationDelegate.h"
+@interface ARKit : NSObject
 
-@interface ARKit : NSObject {
-
-}
-
-+(BOOL)deviceSupportsAR;
++ (BOOL)deviceSupportsAR;
 
 @end

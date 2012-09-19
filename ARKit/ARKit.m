@@ -7,13 +7,12 @@
 //
 
 #import "ARKit.h"
-
+#import <CoreLocation/CoreLocation.h>
 
 @implementation ARKit
 
-+(BOOL)deviceSupportsAR{
-    
-    
++ (BOOL)deviceSupportsAR
+{
     // Go thru and see if the device supports Video Capture.
     NSArray *devices = [AVCaptureDevice devices];
 
@@ -32,9 +31,8 @@
         return NO;
    
 	//TODO: Check to see if Device supports the Gyroscope (iPhone4 and higher)
-    
 
-	if(![CLLocationManager headingAvailable]){
+	if (![CLLocationManager headingAvailable]) {
 		return NO;
 	}
 	

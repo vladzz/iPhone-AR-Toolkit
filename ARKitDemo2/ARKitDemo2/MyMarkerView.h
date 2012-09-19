@@ -1,9 +1,9 @@
 //
-//  CoordinateView.h
-//  AR Kit
+//  MyMarkerView.h
+//  ARKitDemo2
 //
-//  Created by Niels W Hansen on 12/31/11.
-//  Copyright 2011 Agilite Software. All rights reserved.
+//  Modified by Yee Peng Chia on 9/19/12.
+//  Copyright (c) 2012 Cocoa Star Apps. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

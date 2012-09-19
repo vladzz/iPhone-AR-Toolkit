@@ -13,8 +13,24 @@
 		B8CC3EB9160A208900EA7022 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B8CC3EB7160A208900EA7022 /* InfoPlist.strings */; };
 		B8CC3EBB160A208900EA7022 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CC3EBA160A208900EA7022 /* main.m */; };
 		B8CC3EBF160A208900EA7022 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CC3EBE160A208900EA7022 /* AppDelegate.m */; };
-		B8CC3EC2160A208900EA7022 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8CC3EC0160A208900EA7022 /* MainStoryboard.storyboard */; };
-		B8CC3EC5160A208900EA7022 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CC3EC4160A208900EA7022 /* ViewController.m */; };
+		B8CC3EDC160A20FF00EA7022 /* ARController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CC3ED1160A20FF00EA7022 /* ARController.m */; };
+		B8CC3EDD160A20FF00EA7022 /* ARCoordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CC3ED4160A20FF00EA7022 /* ARCoordinate.m */; };
+		B8CC3EDE160A20FF00EA7022 /* ARGeoCoordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CC3ED6160A20FF00EA7022 /* ARGeoCoordinate.m */; };
+		B8CC3EDF160A20FF00EA7022 /* ARKit.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CC3ED8160A20FF00EA7022 /* ARKit.m */; };
+		B8CC3EE0160A20FF00EA7022 /* ARMarkerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CC3EDA160A20FF00EA7022 /* ARMarkerView.m */; };
+		B8CC3EEC160A211F00EA7022 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8CC3EE1160A211F00EA7022 /* MainStoryboard.storyboard */; };
+		B8CC3EED160A211F00EA7022 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CC3EE3160A211F00EA7022 /* ViewController.m */; };
+		B8CC3EEE160A211F00EA7022 /* MyARViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CC3EE5160A211F00EA7022 /* MyARViewController.m */; };
+		B8CC3EEF160A211F00EA7022 /* MyARViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8CC3EE6160A211F00EA7022 /* MyARViewController.xib */; };
+		B8CC3EF0160A211F00EA7022 /* MyMarkerView.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CC3EE8160A211F00EA7022 /* MyMarkerView.m */; };
+		B8CC3EF1160A211F00EA7022 /* OverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CC3EEA160A211F00EA7022 /* OverlayView.m */; };
+		B8CC3EF2160A211F00EA7022 /* OverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8CC3EEB160A211F00EA7022 /* OverlayView.xib */; };
+		B8CC3EF5160A213500EA7022 /* crosshairs.png in Resources */ = {isa = PBXBuildFile; fileRef = B8CC3EF4160A213500EA7022 /* crosshairs.png */; };
+		B8CC3EFB160A217D00EA7022 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8CC3EF6160A217D00EA7022 /* AVFoundation.framework */; };
+		B8CC3EFC160A217D00EA7022 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8CC3EF7160A217D00EA7022 /* CoreLocation.framework */; };
+		B8CC3EFD160A217D00EA7022 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8CC3EF8160A217D00EA7022 /* MapKit.framework */; };
+		B8CC3EFE160A217D00EA7022 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8CC3EF9160A217D00EA7022 /* MediaPlayer.framework */; };
+		B8CC3EFF160A217D00EA7022 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8CC3EFA160A217D00EA7022 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,9 +44,35 @@
 		B8CC3EBC160A208900EA7022 /* ARKitDemo2-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ARKitDemo2-Prefix.pch"; sourceTree = "<group>"; };
 		B8CC3EBD160A208900EA7022 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B8CC3EBE160A208900EA7022 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		B8CC3EC1160A208900EA7022 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
-		B8CC3EC3160A208900EA7022 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		B8CC3EC4160A208900EA7022 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		B8CC3ED0160A20FF00EA7022 /* ARController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARController.h; path = ../ARKit/ARController.h; sourceTree = "<group>"; };
+		B8CC3ED1160A20FF00EA7022 /* ARController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARController.m; path = ../ARKit/ARController.m; sourceTree = "<group>"; };
+		B8CC3ED2160A20FF00EA7022 /* ARControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARControllerDelegate.h; path = ../ARKit/ARControllerDelegate.h; sourceTree = "<group>"; };
+		B8CC3ED3160A20FF00EA7022 /* ARCoordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARCoordinate.h; path = ../ARKit/ARCoordinate.h; sourceTree = "<group>"; };
+		B8CC3ED4160A20FF00EA7022 /* ARCoordinate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARCoordinate.m; path = ../ARKit/ARCoordinate.m; sourceTree = "<group>"; };
+		B8CC3ED5160A20FF00EA7022 /* ARGeoCoordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARGeoCoordinate.h; path = ../ARKit/ARGeoCoordinate.h; sourceTree = "<group>"; };
+		B8CC3ED6160A20FF00EA7022 /* ARGeoCoordinate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARGeoCoordinate.m; path = ../ARKit/ARGeoCoordinate.m; sourceTree = "<group>"; };
+		B8CC3ED7160A20FF00EA7022 /* ARKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARKit.h; path = ../ARKit/ARKit.h; sourceTree = "<group>"; };
+		B8CC3ED8160A20FF00EA7022 /* ARKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARKit.m; path = ../ARKit/ARKit.m; sourceTree = "<group>"; };
+		B8CC3ED9160A20FF00EA7022 /* ARMarkerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARMarkerView.h; path = ../ARKit/ARMarkerView.h; sourceTree = "<group>"; };
+		B8CC3EDA160A20FF00EA7022 /* ARMarkerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARMarkerView.m; path = ../ARKit/ARMarkerView.m; sourceTree = "<group>"; };
+		B8CC3EDB160A20FF00EA7022 /* ARMarkerViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARMarkerViewDelegate.h; path = ../ARKit/ARMarkerViewDelegate.h; sourceTree = "<group>"; };
+		B8CC3EE1160A211F00EA7022 /* MainStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainStoryboard.storyboard; sourceTree = "<group>"; };
+		B8CC3EE2160A211F00EA7022 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		B8CC3EE3160A211F00EA7022 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		B8CC3EE4160A211F00EA7022 /* MyARViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyARViewController.h; sourceTree = "<group>"; };
+		B8CC3EE5160A211F00EA7022 /* MyARViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyARViewController.m; sourceTree = "<group>"; };
+		B8CC3EE6160A211F00EA7022 /* MyARViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyARViewController.xib; sourceTree = "<group>"; };
+		B8CC3EE7160A211F00EA7022 /* MyMarkerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyMarkerView.h; sourceTree = "<group>"; };
+		B8CC3EE8160A211F00EA7022 /* MyMarkerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyMarkerView.m; sourceTree = "<group>"; };
+		B8CC3EE9160A211F00EA7022 /* OverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverlayView.h; sourceTree = "<group>"; };
+		B8CC3EEA160A211F00EA7022 /* OverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverlayView.m; sourceTree = "<group>"; };
+		B8CC3EEB160A211F00EA7022 /* OverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OverlayView.xib; sourceTree = "<group>"; };
+		B8CC3EF4160A213500EA7022 /* crosshairs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crosshairs.png; sourceTree = "<group>"; };
+		B8CC3EF6160A217D00EA7022 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		B8CC3EF7160A217D00EA7022 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		B8CC3EF8160A217D00EA7022 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		B8CC3EF9160A217D00EA7022 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		B8CC3EFA160A217D00EA7022 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +80,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B8CC3EFB160A217D00EA7022 /* AVFoundation.framework in Frameworks */,
+				B8CC3EFC160A217D00EA7022 /* CoreLocation.framework in Frameworks */,
+				B8CC3EFD160A217D00EA7022 /* MapKit.framework in Frameworks */,
+				B8CC3EFE160A217D00EA7022 /* MediaPlayer.framework in Frameworks */,
+				B8CC3EFF160A217D00EA7022 /* QuartzCore.framework in Frameworks */,
 				B8CC3EAF160A208900EA7022 /* UIKit.framework in Frameworks */,
 				B8CC3EB1160A208900EA7022 /* Foundation.framework in Frameworks */,
 				B8CC3EB3160A208900EA7022 /* CoreGraphics.framework in Frameworks */,
@@ -50,6 +97,7 @@
 		B8CC3E9F160A208900EA7022 = {
 			isa = PBXGroup;
 			children = (
+				B8CC3ECF160A20E700EA7022 /* ARKit */,
 				B8CC3EB4160A208900EA7022 /* ARKitDemo2 */,
 				B8CC3EAD160A208900EA7022 /* Frameworks */,
 				B8CC3EAB160A208900EA7022 /* Products */,
@@ -67,6 +115,11 @@
 		B8CC3EAD160A208900EA7022 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B8CC3EF6160A217D00EA7022 /* AVFoundation.framework */,
+				B8CC3EF7160A217D00EA7022 /* CoreLocation.framework */,
+				B8CC3EF8160A217D00EA7022 /* MapKit.framework */,
+				B8CC3EF9160A217D00EA7022 /* MediaPlayer.framework */,
+				B8CC3EFA160A217D00EA7022 /* QuartzCore.framework */,
 				B8CC3EAE160A208900EA7022 /* UIKit.framework */,
 				B8CC3EB0160A208900EA7022 /* Foundation.framework */,
 				B8CC3EB2160A208900EA7022 /* CoreGraphics.framework */,
@@ -79,9 +132,18 @@
 			children = (
 				B8CC3EBD160A208900EA7022 /* AppDelegate.h */,
 				B8CC3EBE160A208900EA7022 /* AppDelegate.m */,
-				B8CC3EC0160A208900EA7022 /* MainStoryboard.storyboard */,
-				B8CC3EC3160A208900EA7022 /* ViewController.h */,
-				B8CC3EC4160A208900EA7022 /* ViewController.m */,
+				B8CC3EE1160A211F00EA7022 /* MainStoryboard.storyboard */,
+				B8CC3EE2160A211F00EA7022 /* ViewController.h */,
+				B8CC3EE3160A211F00EA7022 /* ViewController.m */,
+				B8CC3EE4160A211F00EA7022 /* MyARViewController.h */,
+				B8CC3EE5160A211F00EA7022 /* MyARViewController.m */,
+				B8CC3EE6160A211F00EA7022 /* MyARViewController.xib */,
+				B8CC3EE7160A211F00EA7022 /* MyMarkerView.h */,
+				B8CC3EE8160A211F00EA7022 /* MyMarkerView.m */,
+				B8CC3EE9160A211F00EA7022 /* OverlayView.h */,
+				B8CC3EEA160A211F00EA7022 /* OverlayView.m */,
+				B8CC3EEB160A211F00EA7022 /* OverlayView.xib */,
+				B8CC3EF3160A212700EA7022 /* Resources */,
 				B8CC3EB5160A208900EA7022 /* Supporting Files */,
 			);
 			path = ARKitDemo2;
@@ -96,6 +158,33 @@
 				B8CC3EBC160A208900EA7022 /* ARKitDemo2-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B8CC3ECF160A20E700EA7022 /* ARKit */ = {
+			isa = PBXGroup;
+			children = (
+				B8CC3ED0160A20FF00EA7022 /* ARController.h */,
+				B8CC3ED1160A20FF00EA7022 /* ARController.m */,
+				B8CC3ED2160A20FF00EA7022 /* ARControllerDelegate.h */,
+				B8CC3ED3160A20FF00EA7022 /* ARCoordinate.h */,
+				B8CC3ED4160A20FF00EA7022 /* ARCoordinate.m */,
+				B8CC3ED5160A20FF00EA7022 /* ARGeoCoordinate.h */,
+				B8CC3ED6160A20FF00EA7022 /* ARGeoCoordinate.m */,
+				B8CC3ED7160A20FF00EA7022 /* ARKit.h */,
+				B8CC3ED8160A20FF00EA7022 /* ARKit.m */,
+				B8CC3ED9160A20FF00EA7022 /* ARMarkerView.h */,
+				B8CC3EDA160A20FF00EA7022 /* ARMarkerView.m */,
+				B8CC3EDB160A20FF00EA7022 /* ARMarkerViewDelegate.h */,
+			);
+			name = ARKit;
+			sourceTree = "<group>";
+		};
+		B8CC3EF3160A212700EA7022 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B8CC3EF4160A213500EA7022 /* crosshairs.png */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -150,7 +239,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				B8CC3EB9160A208900EA7022 /* InfoPlist.strings in Resources */,
-				B8CC3EC2160A208900EA7022 /* MainStoryboard.storyboard in Resources */,
+				B8CC3EEC160A211F00EA7022 /* MainStoryboard.storyboard in Resources */,
+				B8CC3EEF160A211F00EA7022 /* MyARViewController.xib in Resources */,
+				B8CC3EF2160A211F00EA7022 /* OverlayView.xib in Resources */,
+				B8CC3EF5160A213500EA7022 /* crosshairs.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,7 +255,15 @@
 			files = (
 				B8CC3EBB160A208900EA7022 /* main.m in Sources */,
 				B8CC3EBF160A208900EA7022 /* AppDelegate.m in Sources */,
-				B8CC3EC5160A208900EA7022 /* ViewController.m in Sources */,
+				B8CC3EDC160A20FF00EA7022 /* ARController.m in Sources */,
+				B8CC3EDD160A20FF00EA7022 /* ARCoordinate.m in Sources */,
+				B8CC3EDE160A20FF00EA7022 /* ARGeoCoordinate.m in Sources */,
+				B8CC3EDF160A20FF00EA7022 /* ARKit.m in Sources */,
+				B8CC3EE0160A20FF00EA7022 /* ARMarkerView.m in Sources */,
+				B8CC3EED160A211F00EA7022 /* ViewController.m in Sources */,
+				B8CC3EEE160A211F00EA7022 /* MyARViewController.m in Sources */,
+				B8CC3EF0160A211F00EA7022 /* MyMarkerView.m in Sources */,
+				B8CC3EF1160A211F00EA7022 /* OverlayView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,14 +276,6 @@
 				B8CC3EB8160A208900EA7022 /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		B8CC3EC0160A208900EA7022 /* MainStoryboard.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B8CC3EC1160A208900EA7022 /* en */,
-			);
-			name = MainStoryboard.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -241,10 +333,12 @@
 		B8CC3EC9160A208900EA7022 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Yee Peng Chia (F78K82W458)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ARKitDemo2/ARKitDemo2-Prefix.pch";
 				INFOPLIST_FILE = "ARKitDemo2/ARKitDemo2-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "82A25E9B-5545-4D92-AB6B-564E761AEBBE";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;

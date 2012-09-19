@@ -13,6 +13,7 @@
 
 @interface MyARViewController (PrivateMethods)
 
+//- (MyMarkerView *)loadMarkerView;
 - (MyMarkerView *)findClosestMarker;
 - (CGFloat)distanceFromDisplayCenter:(MyMarkerView *)marker;
 - (CGFloat)distanceFromCurrentLocation:(CLLocation *)location;
@@ -47,6 +48,7 @@
 {
     [super viewDidLoad];
  
+    // Create the ARController instance
     self.arController = [[ARController alloc] initWithViewController:self];
     self.arController.delegate = self;
     self.arController.debugMode = NO;   //YES;
@@ -54,27 +56,26 @@
     self.arController.minimumScaleFactor = 0.2;
 	self.arController.rotateViewsBasedOnPerspective = YES;
 
-    // Create the ARGeoCoordinate object
+    // Create some ARGeoCoordinate objects
     CLLocation *location = [[CLLocation alloc] initWithLatitude:40.709827 longitude:-74.010628];
     ARGeoCoordinate *coordinate = [ARGeoCoordinate coordinateWithLocation:location locationTitle:@"One Liberty Plaza"];
     MyMarkerView *marker = [[MyMarkerView alloc] initWithCoordinate:coordinate];
-    coordinate.markerView = marker;
     [self.arController addCoordinate:coordinate];
     
     location = [[CLLocation alloc] initWithLatitude:40.710522 longitude:-74.009308];
     coordinate = [ARGeoCoordinate coordinateWithLocation:location locationTitle:@"Cafe Tomato"];
-    marker = [[MyMarkerView alloc] initWithCoordinate:coordinate] ;
-    coordinate.markerView = marker;
+    marker = [[MyMarkerView alloc] initWithCoordinate:coordinate];
     [self.arController addCoordinate:coordinate];
     
     location = [[CLLocation alloc] initWithLatitude:40.709763 longitude:-74.008842];
     coordinate = [ARGeoCoordinate coordinateWithLocation:location locationTitle:@"Toasties"];
-    marker = [[MyMarkerView alloc] initWithCoordinate:coordinate] ;
-    coordinate.markerView = marker;
+    marker = [[MyMarkerView alloc] initWithCoordinate:coordinate];
     [self.arController addCoordinate:coordinate];
     
+    // Add the Overlay view
     [self.view addSubview:self.overlayView];
     
+    // Initiates listeners for device sensor events
     [self.arController startListening];
 }
 
@@ -304,6 +305,9 @@
 
 #pragma mark - Lazy getter
 
+/**
+ * Load OverlayView from xib
+ */
 - (OverlayView *)overlayView
 {
     if (_overlayView == nil) {
@@ -320,5 +324,22 @@
     
     return _overlayView;
 }
+
+/**
+ * Load MyMarkerView from xib
+ */
+//- (MyMarkerView *)loadMarkerView
+//{
+//    NSArray *xib = [[NSBundle mainBundle] loadNibNamed:@"MyMarkerView" owner:self options:nil];
+//    
+//    for (id view in xib) {
+//        if ([view isKindOfClass:[MyMarkerView class]]) {
+//            return (MyMarkerView *)view;
+//            break;
+//        }
+//    }
+//    
+//    return nil;
+//}
 
 @end

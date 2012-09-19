@@ -15,14 +15,14 @@
 @synthesize delegate = _delegate;
 @synthesize startSize = _startSize;
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-    }
-    return self;
-}
+//- (id)initWithFrame:(CGRect)frame
+//{
+//    self = [super initWithFrame:frame];
+//    if (self) {
+//        // Initialization code
+//    }
+//    return self;
+//}
 
 /*
 // Only override drawRect: if you perform custom drawing.
@@ -32,6 +32,27 @@
     // Drawing code
 }
 */
+
+- (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object
+                         change:(NSDictionary*)change
+                        context:(void*)context
+{
+    if ([keyPath isEqual:@"distanceFromOrigin"]) {
+//        NSString* changedName = [change objectForKey:NSKeyValueChangeNewKey];
+        // do something with the changedName - call a method or update the UI here
+//        self.nameLabel.text = changedName;
+        [self setNeedsDisplay];
+    }
+}
+
+/**
+ * Explicit setter creates a reference back to the marker instance
+ */
+- (void)setCoordinate:(ARGeoCoordinate *)coordinate
+{
+    _coordinate = coordinate;
+    _coordinate.markerView = self;
+}
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {

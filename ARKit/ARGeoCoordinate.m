@@ -38,6 +38,7 @@
 		return;
 	
     self.distanceFromOrigin = [origin distanceFromLocation:self.geoLocation];
+//    NSLog(@"distanceFromOrigin:%.4f", self.distanceFromOrigin);
 
 	self.radialDistance = sqrt(pow(origin.altitude - self.geoLocation.altitude, 2) + pow(self.distanceFromOrigin, 2));
 	
@@ -49,6 +50,22 @@
 	self.inclination = angle;
 	self.azimuth = [self angleFromCoordinate:origin.coordinate toCoordinate:self.geoLocation.coordinate];	
 //	NSLog(@"distance from %@ is %f, angle is %f, azimuth is %f", [self title], [self distanceFromOrigin], angle, [self azimuth]);
+}
+
+- (void)setMarkerView:(UIView *)markerView
+{
+    _markerView = markerView;
+    
+    // Register the markerView as an observer for the distanceFromOrigin property
+    [self addObserver:self.markerView
+           forKeyPath:@"distanceFromOrigin"
+              options:NSKeyValueObservingOptionNew
+              context:nil];
+}
+
+- (void)dealloc
+{
+    [self removeObserver:self.markerView forKeyPath:@"distanceFromOrigin"];
 }
 
 + (ARGeoCoordinate *)coordinateWithLocation:(CLLocation *)location locationTitle:(NSString *) titleOfLocation

@@ -13,7 +13,6 @@
 @protocol ARMarkerViewDelegate <NSObject>
 
 @optional
-
 - (void)markerViewDidTap:(ARMarkerView *)markerView;
 
 @end

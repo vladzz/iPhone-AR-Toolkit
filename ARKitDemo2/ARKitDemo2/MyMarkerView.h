@@ -11,7 +11,7 @@
 
 @interface MyMarkerView : ARMarkerView
 
-@property (nonatomic, strong) UILabel *titleLabel;
+@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 
 - (id)initWithCoordinate:(ARGeoCoordinate *)coordinate;
 

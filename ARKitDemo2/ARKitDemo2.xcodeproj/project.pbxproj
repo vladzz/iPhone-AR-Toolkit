@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B84639F3160A6E880008F319 /* IPInsetLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = B84639F2160A6E880008F319 /* IPInsetLabel.m */; };
 		B8CC3EAF160A208900EA7022 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8CC3EAE160A208900EA7022 /* UIKit.framework */; };
 		B8CC3EB1160A208900EA7022 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8CC3EB0160A208900EA7022 /* Foundation.framework */; };
 		B8CC3EB3160A208900EA7022 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8CC3EB2160A208900EA7022 /* CoreGraphics.framework */; };
@@ -34,6 +35,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B84639F1160A6E880008F319 /* IPInsetLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPInsetLabel.h; sourceTree = "<group>"; };
+		B84639F2160A6E880008F319 /* IPInsetLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IPInsetLabel.m; sourceTree = "<group>"; };
 		B8CC3EAA160A208900EA7022 /* ARKitDemo2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARKitDemo2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8CC3EAE160A208900EA7022 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		B8CC3EB0160A208900EA7022 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -140,6 +143,8 @@
 				B8CC3EE6160A211F00EA7022 /* MyARViewController.xib */,
 				B8CC3EE7160A211F00EA7022 /* MyMarkerView.h */,
 				B8CC3EE8160A211F00EA7022 /* MyMarkerView.m */,
+				B84639F1160A6E880008F319 /* IPInsetLabel.h */,
+				B84639F2160A6E880008F319 /* IPInsetLabel.m */,
 				B8CC3EE9160A211F00EA7022 /* OverlayView.h */,
 				B8CC3EEA160A211F00EA7022 /* OverlayView.m */,
 				B8CC3EEB160A211F00EA7022 /* OverlayView.xib */,
@@ -264,6 +269,7 @@
 				B8CC3EEE160A211F00EA7022 /* MyARViewController.m in Sources */,
 				B8CC3EF0160A211F00EA7022 /* MyMarkerView.m in Sources */,
 				B8CC3EF1160A211F00EA7022 /* OverlayView.m in Sources */,
+				B84639F3160A6E880008F319 /* IPInsetLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,6 +379,7 @@
 				B8CC3ECA160A208900EA7022 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

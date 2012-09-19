@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "ARMarkerView.h"
+#import "IPInsetLabel.h"
 
 @interface MyMarkerView : ARMarkerView
 
-@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
+@property (strong, nonatomic) IPInsetLabel *titleLabel;
 
 - (id)initWithCoordinate:(ARGeoCoordinate *)coordinate;
 

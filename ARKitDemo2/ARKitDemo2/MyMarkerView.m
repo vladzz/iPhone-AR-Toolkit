@@ -9,11 +9,8 @@
 #import "MyMarkerView.h"
 #import "ARGeoCoordinate.h"
 
-#define BOX_WIDTH   150
-#define BOX_HEIGHT  50
-#define BOX_GAP     10
-#define BOX_ALPHA   1.0
-#define LABEL_HEIGHT 20.0
+#define BOX_WIDTH   100
+#define BOX_HEIGHT  100
 
 @implementation MyMarkerView
 
@@ -30,24 +27,22 @@
         self.clipsToBounds = NO;
                 
         // Create the title label
-		self.titleLabel	= [[UILabel alloc] initWithFrame:CGRectMake(0, 0, BOX_WIDTH, BOX_HEIGHT)];
+		self.titleLabel	= [[IPInsetLabel alloc] initWithFrame:CGRectMake(0, 0, BOX_WIDTH, BOX_HEIGHT)];
+        self.titleLabel.insets = UIEdgeInsetsMake(5, 5, 5, 5);
 		self.titleLabel.numberOfLines = 3;
         self.titleLabel.backgroundColor = [UIColor clearColor];     
-        self.titleLabel.font = [UIFont systemFontOfSize:18];
+        self.titleLabel.font = [UIFont systemFontOfSize:17];
 		self.titleLabel.textColor = [UIColor whiteColor];
-		self.titleLabel.textAlignment = UITextAlignmentLeft;
+		self.titleLabel.textAlignment = UITextAlignmentCenter;
         self.titleLabel.text = [NSString stringWithFormat:@"%@\n%.3f km", self.coordinate.title,
                                 self.coordinate.distanceFromOrigin];
-        
-		[self.titleLabel sizeToFit];
+        [self.titleLabel resizeHeightToFitText];
         
         CGRect labelFrame = self.titleLabel.frame;
-        labelFrame = CGRectMake(10, 10, labelFrame.size.width, labelFrame.size.height);
-        self.titleLabel.frame = labelFrame;
         
         [self addSubview:self.titleLabel];
         
-        CGRect targFrame = CGRectMake(0, 0, labelFrame.size.width+40, labelFrame.size.height+40);
+        CGRect targFrame = CGRectMake(0, 0, labelFrame.size.width, labelFrame.size.height);
         self.frame = targFrame;
         
         // Store the startSize
@@ -62,6 +57,13 @@
     // Update the titleLabel
     self.titleLabel.text = [NSString stringWithFormat:@"%@\n%.3f km", self.coordinate.title,
                             self.coordinate.distanceFromOrigin];
+    
+    [self.titleLabel resizeHeightToFitText];
+    
+    CGRect labelFrame = self.titleLabel.frame;
+    CGRect frame = CGRectMake(self.frame.origin.x, self.frame.origin.y,
+                              labelFrame.size.width, labelFrame.size.height);
+    self.frame = frame;
 }
 
 @end

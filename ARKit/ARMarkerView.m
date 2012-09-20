@@ -11,36 +11,18 @@
 
 @implementation ARMarkerView
 
-@synthesize coordinate = _coordinate;
+@synthesize geoCoordinate = _geoCoordinate;
 @synthesize delegate = _delegate;
 @synthesize startSize = _startSize;
 
-//- (id)initWithFrame:(CGRect)frame
-//{
-//    self = [super initWithFrame:frame];
-//    if (self) {
-//        // Initialization code
-//    }
-//    return self;
-//}
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
-
+/**
+ * Redraws the view whenever the distanceFromOrigin property changes
+ */
 - (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object
                          change:(NSDictionary*)change
                         context:(void*)context
 {
     if ([keyPath isEqual:@"distanceFromOrigin"]) {
-//        NSString* changedName = [change objectForKey:NSKeyValueChangeNewKey];
-        // do something with the changedName - call a method or update the UI here
-//        self.nameLabel.text = changedName;
         [self setNeedsDisplay];
     }
 }
@@ -48,15 +30,15 @@
 /**
  * Explicit setter creates a reference back to the marker instance
  */
-- (void)setCoordinate:(ARGeoCoordinate *)coordinate
+- (void)setGeoCoordinate:(ARGeoCoordinate *)coordinate
 {
-    _coordinate = coordinate;
-    _coordinate.markerView = self;
+    _geoCoordinate = coordinate;
+    _geoCoordinate.markerView = self;
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    NSLog(@"%@ was touched!", self.coordinate.title);
+    NSLog(@"%@ was touched!", self.geoCoordinate.title);
     [self.delegate markerViewDidTap:self];
 }
 

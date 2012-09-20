@@ -13,7 +13,7 @@
 
 @interface ARMarkerView : UIView
 
-@property (nonatomic,strong) ARGeoCoordinate *coordinate;
+@property (nonatomic,strong) ARGeoCoordinate *geoCoordinate;
 @property (nonatomic, weak) id <ARMarkerViewDelegate> delegate;
 
 @property (nonatomic, assign) CGSize startSize;

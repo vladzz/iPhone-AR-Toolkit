@@ -16,12 +16,14 @@
 
 @synthesize titleLabel = _titleLabel;
 
+#pragma mark - Initialization
+
 - (id)initWithCoordinate:(ARGeoCoordinate *)coordinate
 {
     self = [super initWithFrame:CGRectZero];
 	
 	if (self) {
-        self.coordinate = coordinate;
+        self.geoCoordinate = coordinate;
         self.userInteractionEnabled = NO;
         self.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8];
         self.clipsToBounds = NO;
@@ -34,8 +36,8 @@
         self.titleLabel.font = [UIFont systemFontOfSize:17];
 		self.titleLabel.textColor = [UIColor whiteColor];
 		self.titleLabel.textAlignment = UITextAlignmentCenter;
-        self.titleLabel.text = [NSString stringWithFormat:@"%@\n%.3f km", self.coordinate.title,
-                                self.coordinate.distanceFromOrigin];
+        self.titleLabel.text = [NSString stringWithFormat:@"%@\n%.3f km", self.geoCoordinate.title,
+                                self.geoCoordinate.distanceFromOrigin];
         [self.titleLabel resizeHeightToFitText];
         
         CGRect labelFrame = self.titleLabel.frame;
@@ -52,11 +54,13 @@
     return self;
 }
 
+#pragma mark - View lifecycle
+
 - (void)drawRect:(CGRect)rect
 {
     // Update the titleLabel
-    self.titleLabel.text = [NSString stringWithFormat:@"%@\n%.3f km", self.coordinate.title,
-                            self.coordinate.distanceFromOrigin];
+    self.titleLabel.text = [NSString stringWithFormat:@"%@\n%.3f km", self.geoCoordinate.title,
+                            self.geoCoordinate.distanceFromOrigin];
     
     [self.titleLabel resizeHeightToFitText];
     

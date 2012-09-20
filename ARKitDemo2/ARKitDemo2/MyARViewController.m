@@ -149,7 +149,7 @@
 - (void)overlayViewTestDidTap:(OverlayView *)overlayView
 {
     MyMarkerView *closestMarker = [self findClosestMarker];
-    self.overlayView.statusLabel.text = closestMarker.coordinate.title;
+    self.overlayView.statusLabel.text = closestMarker.geoCoordinate.title;
 }
 
 - (MyMarkerView *)findClosestMarker
@@ -175,7 +175,7 @@
                     closestMarker = marker;
                 }
             }
-            NSLog(@"closestMarker:%@", closestMarker.coordinate.title);
+            NSLog(@"closestMarker:%@", closestMarker.geoCoordinate.title);
         }
     }
     

@@ -38,7 +38,7 @@
 		return;
 	
     self.distanceFromOrigin = [origin distanceFromLocation:self.geoLocation];
-//    NSLog(@"distanceFromOrigin:%.4f", self.distanceFromOrigin);
+    NSLog(@"distanceFromOrigin:%.4f", self.distanceFromOrigin);
 
 	self.radialDistance = sqrt(pow(origin.altitude - self.geoLocation.altitude, 2) + pow(self.distanceFromOrigin, 2));
 	

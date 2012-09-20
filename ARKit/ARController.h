@@ -47,7 +47,8 @@
 @property (nonatomic, strong) UIView *displayView;
 @property (nonatomic, strong) UIView *cameraView;
 
-@property (nonatomic, strong) NSMutableArray *coordinates;
+@property (nonatomic, strong) NSMutableArray *geoCoordinatesArr;
+@property (nonatomic, strong) NSMutableDictionary *geoCoordinatesDict;
 @property (nonatomic, weak) id <ARControllerDelegate> delegate;
 
 - (id)initWithViewController:(UIViewController *)viewController;
@@ -62,7 +63,7 @@
 
 // Removing coordinates
 - (void)removeCoordinate:(ARGeoCoordinate *)coordinate;
-- (void)removeCoordinates:(NSArray *)coordinateArray;
+- (void)removeGeoCoordinatesArr:(NSArray *)coordinateArray;
 - (void)updateDebugMode:(BOOL)flag;
 
 

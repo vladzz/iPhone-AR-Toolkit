@@ -15,7 +15,7 @@
 #define radianToDegrees(x) ((x) * 180.0/M_PI)
 #define M_2PI 2.0 * M_PI
 #define ADJUST_BY 10 //30
-#define DISTANCE_FILTER 2.0
+#define DISTANCE_FILTER 20.0
 #define HEADING_FILTER 1.0
 #define INTERVAL_UPDATE 0.75
 #define SCALE_FACTOR 1.0
@@ -51,7 +51,8 @@
 @synthesize minimumScaleFactor = _minimumScaleFactor;
 @synthesize maximumRotationAngle = _maximumRotationAngle;
 @synthesize centerLocation = _centerLocation;
-@synthesize coordinates = _coordinates;
+@synthesize geoCoordinatesArr = _geoCoordinatesArr;
+@synthesize geoCoordinatesDict = _geoCoordinatesDict;
 
 - (id)initWithViewController:(UIViewController *)viewController
 {
@@ -66,7 +67,9 @@
 	self.scaleViewsBasedOnDistance = YES;
 	self.rotateViewsBasedOnPerspective = NO;
 	self.maximumRotationAngle = M_PI / 6.0;
-    self.coordinates = [NSMutableArray array];
+    self.geoCoordinatesArr = [NSMutableArray array];
+    self.geoCoordinatesDict = [NSMutableDictionary dictionary];
+    
     [self updateCurrentDeviceOrientation];
     
 	CGRect screenRect = [[UIScreen mainScreen] bounds];
@@ -112,7 +115,9 @@
     previewLayer.frame = self.cameraView.bounds;
     
     if ([previewLayer isOrientationSupported]) {
+//    if ([previewLayer supportsVideoOrientation]) {
         previewLayer.orientation = cameraOrientation;
+//        previewLayer.videoOrientation = cameraOrientation;
     }
     
     previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;    
@@ -212,8 +217,8 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation
      fromLocation:(CLLocation *)oldLocation
 {
+    NSLog(@"Location of phone changed:%f, %f", newLocation.coordinate.latitude, newLocation.coordinate.longitude);
     self.centerLocation = newLocation;
-    NSLog(@"Location of phone changed!");
 
     [self.delegate didUpdateLocation:newLocation];
 }
@@ -245,7 +250,7 @@
 {
     _centerLocation = newLocation;
 	
-	for (ARGeoCoordinate *geoLocation in self.coordinates) {
+	for (ARGeoCoordinate *geoLocation in self.geoCoordinatesArr) {
 		if ([geoLocation isKindOfClass:[ARGeoCoordinate class]]) {
 			[geoLocation calibrateUsingOrigin:self.centerLocation];
 			
@@ -282,7 +287,7 @@
 
 - (void)addCoordinate:(ARGeoCoordinate *)coordinate
 {
-    [self.coordinates addObject:coordinate];
+    [self.geoCoordinatesArr addObject:coordinate];
 	
 	if (coordinate.radialDistance > self.maximumScaleDistance)
 		self.maximumScaleDistance = coordinate.radialDistance;
@@ -290,16 +295,16 @@
 
 - (void)removeCoordinate:(ARGeoCoordinate *)coordinate
 {
-	[self.coordinates removeObject:coordinate];
+	[self.geoCoordinatesArr removeObject:coordinate];
 }
 
-- (void)removeCoordinates:(NSArray *)coordinateArray
+- (void)removeGeoCoordinatesArr:(NSArray *)coordinateArray
 {
 	for (ARGeoCoordinate *coordinateToRemove in coordinateArray) {
-		NSUInteger indexToRemove = [self.coordinates indexOfObject:coordinateToRemove];
+		NSUInteger indexToRemove = [self.geoCoordinatesArr indexOfObject:coordinateToRemove];
 		
 		//TODO: Error checking in here.
-		[self.coordinates removeObjectAtIndex:indexToRemove];
+		[self.geoCoordinatesArr removeObjectAtIndex:indexToRemove];
 	}
 }
 
@@ -370,11 +375,11 @@
 
 - (void)updateLocations
 {
-	NSLog(@"updateLocations");
+//	NSLog(@"updateLocations");
 	debugView.text = [NSString stringWithFormat:@"%.3f %.3f ", -radianToDegrees(viewAngle),
                            radianToDegrees(self.centerCoordinate.azimuth)];
 	
-	for (ARGeoCoordinate *item in self.coordinates) {
+	for (ARGeoCoordinate *item in self.geoCoordinatesArr) {
         ARMarkerView *markerView = (ARMarkerView *)item.markerView;
       
 		if ([self shouldDisplayCoordinate:item]) {		
@@ -415,11 +420,6 @@
 			}
             
 			markerView.layer.transform = transform;
-//            NSLog(@"item:%@", item.title);
-            
-//            CGRect markerFrame = markerView.frame;
-//            NSLog(@"marker frame:%f, %f, %@, %@", markerFrame.origin.x, markerFrame.origin.y,
-//                  [NSNumber numberWithDouble:markerFrame.size.width], [NSNumber numberWithDouble:markerFrame.size.height]);
 			
 			//if marker is not already set then insert it
             if (!markerView.superview) {

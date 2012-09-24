@@ -38,11 +38,9 @@
 		return;
 	
     self.distanceFromOrigin = [origin distanceFromLocation:self.geoLocation];
-    NSLog(@"distanceFromOrigin:%.4f", self.distanceFromOrigin);
-
 	self.radialDistance = sqrt(pow(origin.altitude - self.geoLocation.altitude, 2) + pow(self.distanceFromOrigin, 2));
 	
-	float angle = sin(ABS(origin.altitude - self.geoLocation.altitude) / self.radialDistance);
+    float angle = sin(ABS(origin.altitude - self.geoLocation.altitude) / self.radialDistance);
 	
 	if (origin.altitude > self.geoLocation.altitude)
 		angle = -angle;
@@ -68,7 +66,7 @@
     [self removeObserver:self.markerView forKeyPath:@"distanceFromOrigin"];
 }
 
-+ (ARGeoCoordinate *)coordinateWithLocation:(CLLocation *)location locationTitle:(NSString *) titleOfLocation
++ (ARGeoCoordinate *)coordinateWithLocation:(CLLocation *)location locationTitle:(NSString *)titleOfLocation
 {
 	ARGeoCoordinate *newCoordinate	= [[ARGeoCoordinate alloc] init];
 	newCoordinate.geoLocation = location;

@@ -58,12 +58,9 @@
 - (void)updateLocations;
 - (void)stopListening;
 
-// Adding coordinates to the underlying data model.
 - (void)addCoordinate:(ARGeoCoordinate *)coordinate;
-
-// Removing coordinates
 - (void)removeCoordinate:(ARGeoCoordinate *)coordinate;
-- (void)removeGeoCoordinatesArr:(NSArray *)coordinateArray;
+- (void)clearGeoCoordinates;
 - (void)updateDebugMode:(BOOL)flag;
 
 

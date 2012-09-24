@@ -10,6 +10,9 @@
 #import "ARCoordinate.h"
 #import "ARMarkerView.h"
 
+#define IS_IOS_6    ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0)
+#define IS_IPHONE_5 (fabs((double)[[UIScreen mainScreen] bounds].size.height - (double)568) < DBL_EPSILON)
+
 #define kFilteringFactor 0.05
 #define degreesToRadian(x) (M_PI * (x) / 180.0)
 #define radianToDegrees(x) ((x) * 180.0/M_PI)
@@ -104,8 +107,7 @@
     
     if (videoInput) {
         [avCaptureSession addInput:videoInput];
-    }
-    else {
+    } else {
         // Handle the failure.
     }
     
@@ -114,12 +116,16 @@
     previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:avCaptureSession];
     previewLayer.frame = self.cameraView.bounds;
     
-    if ([previewLayer isOrientationSupported]) {
-//    if ([previewLayer supportsVideoOrientation]) {
-        previewLayer.orientation = cameraOrientation;
-//        previewLayer.videoOrientation = cameraOrientation;
+    if (IS_IOS_6) {
+        if (previewLayer.connection.supportsVideoOrientation) {
+            previewLayer.connection.videoOrientation = cameraOrientation;
+        }
+    } else {
+        if ([previewLayer isOrientationSupported]) {
+            previewLayer.orientation = cameraOrientation;
+        }
     }
-    
+        
     previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;    
     [self.cameraView.layer insertSublayer:previewLayer below:[self.cameraView.layer.sublayers objectAtIndex:0]];
     
@@ -298,14 +304,10 @@
 	[self.geoCoordinatesArr removeObject:coordinate];
 }
 
-- (void)removeGeoCoordinatesArr:(NSArray *)coordinateArray
+- (void)clearGeoCoordinates
 {
-	for (ARGeoCoordinate *coordinateToRemove in coordinateArray) {
-		NSUInteger indexToRemove = [self.geoCoordinatesArr indexOfObject:coordinateToRemove];
-		
-		//TODO: Error checking in here.
-		[self.geoCoordinatesArr removeObjectAtIndex:indexToRemove];
-	}
+    [self.geoCoordinatesArr removeAllObjects];
+    self.geoCoordinatesArr = nil;
 }
 
 #pragma mark - Location methods

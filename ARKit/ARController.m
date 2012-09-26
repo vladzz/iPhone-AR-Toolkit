@@ -13,11 +13,11 @@
 #define IS_IOS_6    ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0)
 #define IS_IPHONE_5 (fabs((double)[[UIScreen mainScreen] bounds].size.height - (double)568) < DBL_EPSILON)
 
-#define kFilteringFactor 0.05
+//#define kFilteringFactor 0.05
 #define degreesToRadian(x) (M_PI * (x) / 180.0)
-#define radianToDegrees(x) ((x) * 180.0/M_PI)
+#define radianToDegrees(x) ((x) * 180.0 / M_PI)
 #define M_2PI 2.0 * M_PI
-#define ADJUST_BY 10 //30
+#define ADJUST_BY 30
 #define DISTANCE_FILTER 20.0
 #define HEADING_FILTER 1.0
 #define INTERVAL_UPDATE 0.75
@@ -187,7 +187,7 @@
 
 - (void)stopListening
 {
-//    NSLog(@"stopListening");
+    NSLog(@"stopListening");
     [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
    
@@ -287,6 +287,8 @@
 		default:
 			break;
 	}
+    
+    [self updateLocations];
 }
 
 #pragma mark - Coordinate methods
@@ -345,10 +347,11 @@
 	double deltaAzimuth	  = [self findDeltaOfRadianCenter:&currentAzimuth coordinateAzimuth:pointAzimuth betweenNorth:&isBetweenNorth];
 	BOOL result			  = NO;
 	
-  //  NSLog(@"Current %f, Item %f, delta %f, range %f",currentAzimuth,pointAzimuth,deltaAzimith,degreesToRadian([self degreeRange]));    
+  //  NSLog(@"Current %f, Item %f, delta %f, range %f",currentAzimuth,pointAzimuth,deltaAzimith,degreesToRadian([self degreeRange]));
 	if (deltaAzimuth <= degreesToRadian(degreeRange))
 		result = YES;
 
+//    NSLog(@"shouldDisplayCoordinate:%@ :%@", coordinate.title, (result ? @"Yes" : @"No"));
 	return result;
 }
 
@@ -377,19 +380,20 @@
 
 - (void)updateLocations
 {
-//	NSLog(@"updateLocations");
+	NSLog(@"updateLocations");
 	debugView.text = [NSString stringWithFormat:@"%.3f %.3f ", -radianToDegrees(viewAngle),
                            radianToDegrees(self.centerCoordinate.azimuth)];
 	
-	for (ARGeoCoordinate *item in self.geoCoordinatesArr) {
-        ARMarkerView *markerView = (ARMarkerView *)item.markerView;
+    ARGeoCoordinate *geoCoordinate;
+	for (geoCoordinate in self.geoCoordinatesArr) {
+        ARMarkerView *markerView = (ARMarkerView *)geoCoordinate.markerView;
       
-		if ([self shouldDisplayCoordinate:item]) {		
-            CGPoint loc = [self pointForCoordinate:item];
+		if ([self shouldDisplayCoordinate:geoCoordinate]) {		
+            CGPoint loc = [self pointForCoordinate:geoCoordinate];
             CGFloat scaleFactor = SCALE_FACTOR;
 	
 			if (self.scaleViewsBasedOnDistance) 
-                scaleFactor = scaleFactor - (self.minimumScaleFactor *  item.radialDistance / self.maximumScaleDistance);
+                scaleFactor = scaleFactor - (self.minimumScaleFactor *  geoCoordinate.radialDistance / self.maximumScaleDistance);
 
 //            float width	 = markerView.bounds.size.width  * scaleFactor;
 //			float height = markerView.bounds.size.height * scaleFactor;

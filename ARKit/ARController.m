@@ -10,9 +10,6 @@
 #import "ARCoordinate.h"
 #import "ARMarkerView.h"
 
-#define IS_IOS_6    ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0)
-#define IS_IPHONE_5 (fabs((double)[[UIScreen mainScreen] bounds].size.height - (double)568) < DBL_EPSILON)
-
 //#define kFilteringFactor 0.05
 #define degreesToRadian(x) (M_PI * (x) / 180.0)
 #define radianToDegrees(x) ((x) * 180.0 / M_PI)

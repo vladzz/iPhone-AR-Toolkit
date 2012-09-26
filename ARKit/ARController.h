@@ -15,6 +15,9 @@
 #import "ARControllerDelegate.h"
 #import "ARGeoCoordinate.h"
 
+#define IS_IOS_6    ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0)
+#define IS_IPHONE_5 (fabs((double)[[UIScreen mainScreen] bounds].size.height - (double)568) < DBL_EPSILON)
+
 @class ARCoordinate;
 
 @interface ARController : NSObject <UIAccelerometerDelegate, CLLocationManagerDelegate>

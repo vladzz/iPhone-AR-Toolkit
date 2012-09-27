@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		B84639F3160A6E880008F319 /* IPInsetLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = B84639F2160A6E880008F319 /* IPInsetLabel.m */; };
+		B84643121614BF9A0009B02B /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B84643111614BF9A0009B02B /* Default-568h@2x.png */; };
 		B8CC3EAF160A208900EA7022 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8CC3EAE160A208900EA7022 /* UIKit.framework */; };
 		B8CC3EB1160A208900EA7022 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8CC3EB0160A208900EA7022 /* Foundation.framework */; };
 		B8CC3EB3160A208900EA7022 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8CC3EB2160A208900EA7022 /* CoreGraphics.framework */; };
@@ -37,6 +38,7 @@
 /* Begin PBXFileReference section */
 		B84639F1160A6E880008F319 /* IPInsetLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPInsetLabel.h; sourceTree = "<group>"; };
 		B84639F2160A6E880008F319 /* IPInsetLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IPInsetLabel.m; sourceTree = "<group>"; };
+		B84643111614BF9A0009B02B /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		B8CC3EAA160A208900EA7022 /* ARKitDemo2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARKitDemo2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8CC3EAE160A208900EA7022 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		B8CC3EB0160A208900EA7022 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -188,6 +190,7 @@
 			isa = PBXGroup;
 			children = (
 				B8CC3EF4160A213500EA7022 /* crosshairs.png */,
+				B84643111614BF9A0009B02B /* Default-568h@2x.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -248,6 +251,7 @@
 				B8CC3EEF160A211F00EA7022 /* MyARViewController.xib in Resources */,
 				B8CC3EF2160A211F00EA7022 /* OverlayView.xib in Resources */,
 				B8CC3EF5160A213500EA7022 /* crosshairs.png in Resources */,
+				B84643121614BF9A0009B02B /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,7 +299,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Yee Peng Chia (TUZY4Y74FK)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -310,6 +314,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A85A29F4-4BDC-4BA8-B799-6ABD9E5AF6FF";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -339,12 +344,12 @@
 		B8CC3EC9160A208900EA7022 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Yee Peng Chia (F78K82W458)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Yee Peng Chia (TUZY4Y74FK)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ARKitDemo2/ARKitDemo2-Prefix.pch";
 				INFOPLIST_FILE = "ARKitDemo2/ARKitDemo2-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "82A25E9B-5545-4D92-AB6B-564E761AEBBE";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A85A29F4-4BDC-4BA8-B799-6ABD9E5AF6FF";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;

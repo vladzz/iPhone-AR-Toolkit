@@ -10,15 +10,15 @@
 #import "ARCoordinate.h"
 #import "ARMarkerView.h"
 
-//#define kFilteringFactor 0.05
 #define degreesToRadian(x) (M_PI * (x) / 180.0)
 #define radianToDegrees(x) ((x) * 180.0 / M_PI)
 #define M_2PI 2.0 * M_PI
 #define ADJUST_BY 30
+#define SCALE_FACTOR 1.0
+#define ROTATION_FACTOR 1.0
 #define DISTANCE_FILTER 20.0
 #define HEADING_FILTER 1.0
 #define INTERVAL_UPDATE 0.75
-#define SCALE_FACTOR 1.0
 #define HEADING_NOT_SET -1.0
 #define DEGREE_TO_UPDATE 1
 
@@ -50,6 +50,7 @@
 @synthesize maximumScaleDistance = _maximumScaleDistance;
 @synthesize minimumScaleFactor = _minimumScaleFactor;
 @synthesize maximumRotationAngle = _maximumRotationAngle;
+@synthesize rotationFactor = _rotationFactor;
 @synthesize centerLocation = _centerLocation;
 @synthesize geoCoordinatesArr = _geoCoordinatesArr;
 @synthesize geoCoordinatesDict = _geoCoordinatesDict;
@@ -65,8 +66,9 @@
     self.maximumScaleDistance = 0.1;    // set to .1 prevent NaN errors
 	self.minimumScaleFactor = SCALE_FACTOR;
 	self.scaleViewsBasedOnDistance = YES;
-	self.rotateViewsBasedOnPerspective = NO;
+	self.rotateViewsBasedOnPerspective = YES;
 	self.maximumRotationAngle = M_PI / 6.0;
+    self.rotationFactor = ROTATION_FACTOR;
     self.geoCoordinatesArr = [NSMutableArray array];
     self.geoCoordinatesDict = [NSMutableDictionary dictionary];
     
@@ -377,7 +379,7 @@
 
 - (void)updateLocations
 {
-	NSLog(@"updateLocations");
+//	NSLog(@"updateLocations");
 	debugView.text = [NSString stringWithFormat:@"%.3f %.3f ", -radianToDegrees(viewAngle),
                            radianToDegrees(self.centerCoordinate.azimuth)];
 	
@@ -392,8 +394,6 @@
 			if (self.scaleViewsBasedOnDistance) 
                 scaleFactor = scaleFactor - (self.minimumScaleFactor *  geoCoordinate.radialDistance / self.maximumScaleDistance);
 
-//            float width	 = markerView.bounds.size.width  * scaleFactor;
-//			float height = markerView.bounds.size.height * scaleFactor;
             float width	 = markerView.startSize.width  * scaleFactor;
 			float height = markerView.startSize.height * scaleFactor;
             
@@ -402,24 +402,22 @@
 			
 			CATransform3D transform = CATransform3DIdentity;
 			
-			// Set the scale if it needs it. Scale the perspective transform if we have one.
+			// Set the scale if it needs it
 			if (self.scaleViewsBasedOnDistance) 
 				transform = CATransform3DScale(transform, scaleFactor, scaleFactor, scaleFactor);
 		
+            // Set the rotation transformation
 			if (self.rotateViewsBasedOnPerspective) {
-				transform.m34 = 1.0 / 300.0;
-		/*
-				double itemAzimuth		= [item azimuth];
-				double centerAzimuth	= [[self centerCoordinate] azimuth];
-				
-				if (itemAzimuth - centerAzimuth > M_PI) 
-					centerAzimuth += M_2PI;
-				
-				if (itemAzimuth - centerAzimuth < -M_PI) 
-					itemAzimuth  += M_2PI;
-		*/		
-		//		double angleDifference	= itemAzimuth - centerAzimuth;
-		//		transform				= CATransform3DRotate(transform, [self maximumRotationAngle] * angleDifference / 0.3696f , 0, 1, 0);
+				transform.m34 = -1.0 / 500.0;
+                double angleDifference = geoCoordinate.azimuth - self.centerCoordinate.azimuth;
+                
+                if (angleDifference >= 0) {
+                    markerView.layer.anchorPoint = CGPointMake(0.0, 0.5);
+                } else {
+                    markerView.layer.anchorPoint = CGPointMake(1.0, 0.5);
+                }
+                
+                transform = CATransform3DRotate(transform, -angleDifference * self.rotationFactor, 0, 1, 0);
 			}
             
 			markerView.layer.transform = transform;

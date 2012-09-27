@@ -46,10 +46,9 @@
     // Create the ARController instance
     self.arController = [[ARController alloc] initWithViewController:self];
     self.arController.delegate = self;
-    self.arController.debugMode = NO;   //YES;
-	self.arController.scaleViewsBasedOnDistance = YES;
-    self.arController.minimumScaleFactor = 0.2;
-	self.arController.rotateViewsBasedOnPerspective = YES;
+    self.arController.debugMode = NO;
+    self.arController.minimumScaleFactor = 0.1;
+    self.arController.rotationFactor = 5.0;
 
     // Create some ARGeoCoordinate objects
     CLLocation *location = [[CLLocation alloc] initWithLatitude:40.709827 longitude:-74.010628];
@@ -68,6 +67,7 @@
     [self.arController addCoordinate:coordinate];
     
     // Add the Overlay view
+    self.overlayView.frame = self.view.frame;
     [self.view addSubview:self.overlayView];
     
     // Initiates listeners for device sensor events
@@ -116,32 +116,19 @@
 - (void)didUpdateLocation:(CLLocation *)newLocation 
 {
 //    NSLog(@"Location Updated");
-//    self.overlayView.statusLabel.text = @"Location Updated";
-//    
-//    if (!self.poiModel.isLoading) {
-//        [self.poiModel searchVenuesForLocation:newLocation];
-//        self.overlayView.statusLabel.text = @"Load Venues";
-//    }
+    self.overlayView.statusLabel.text = @"Location Updated";
 }
 
 - (void)didUpdateOrientation:(UIDeviceOrientation) orientation
 {
 //    NSLog(@"Orientation Updated");    
-//    if (orientation == UIDeviceOrientationPortrait)
-//        NSLog(@"Protrait");
-//    self.overlayView.statusLabel.text = @"Orientation Updated";
+    self.overlayView.statusLabel.text = @"Orientation Updated";
 }
 
 // Called by agController when its locations are updated
 - (void)didUpdateMarkers
 {
 //    NSLog(@"didUpdateMarkers:%d", [self.arController.displayView.subviews count]);
-//    for (UIView *subview in self.agController.displayView.subviews) {
-//        if ([subview isKindOfClass:[DTMarkerView class]]) {
-//            [self.overlayView displayControls];
-//            break;
-//        }
-//    }
 }
 
 #pragma mark - DTOverlayViewDelegate methods

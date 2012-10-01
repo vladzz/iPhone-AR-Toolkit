@@ -38,6 +38,7 @@
 		return;
 	
     self.distanceFromOrigin = [origin distanceFromLocation:self.geoLocation];
+//    NSLog(@"distanceFromOrigin:%f", self.distanceFromOrigin);
 	self.radialDistance = sqrt(pow(origin.altitude - self.geoLocation.altitude, 2) + pow(self.distanceFromOrigin, 2));
 	
     float angle = sin(ABS(origin.altitude - self.geoLocation.altitude) / self.radialDistance);

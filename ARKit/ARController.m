@@ -28,7 +28,8 @@
 - (void)updateCenterCoordinate;
 - (void)updateCurrentDeviceOrientation;
 
-- (double)findDeltaOfRadianCenter:(double*)centerAzimuth coordinateAzimuth:(double)pointAzimuth betweenNorth:(BOOL*) isBetweenNorth;
+- (double)findDeltaOfRadianCenter:(double*)centerAzimuth coordinateAzimuth:(double)pointAzimuth
+                     betweenNorth:(BOOL*) isBetweenNorth;
 
 - (CGPoint)pointForCoordinate:(ARCoordinate *)coordinate;
 
@@ -51,6 +52,7 @@
 @synthesize minimumScaleFactor = _minimumScaleFactor;
 @synthesize maximumRotationAngle = _maximumRotationAngle;
 @synthesize rotationFactor = _rotationFactor;
+//@synthesize maxDistanceRange = _maxDistanceRange;
 @synthesize centerLocation = _centerLocation;
 @synthesize geoCoordinatesArr = _geoCoordinatesArr;
 @synthesize geoCoordinatesDict = _geoCoordinatesDict;
@@ -367,13 +369,14 @@
 	
 	if ((pointAzimuth > currentAzimuth && !isBetweenNorth) || 
         (currentAzimuth > degreesToRadian(360- degreeRange) && pointAzimuth < degreesToRadian(degreeRange))) {
-		point.x = (realityBounds.size.width / 2) + ((deltaAzimith / degreesToRadian(1)) * ADJUST_BY);  // Right side of Azimuth
+        // Right side of Azimuth
+		point.x = (realityBounds.size.width / 2) + ((deltaAzimith / degreesToRadian(1)) * ADJUST_BY);  
+    } else {
+        // Left side of Azimuth
+		point.x = (realityBounds.size.width / 2) - ((deltaAzimith / degreesToRadian(1)) * ADJUST_BY);
     }
-	else
-		point.x = (realityBounds.size.width / 2) - ((deltaAzimith / degreesToRadian(1)) * ADJUST_BY);	// Left side of Azimuth
 	
 	point.y = (realityBounds.size.height / 2) + (radianToDegrees(M_PI_2 + viewAngle)  * 2.0);
-  	
 	return point;
 }
 
@@ -383,7 +386,8 @@
 	debugView.text = [NSString stringWithFormat:@"%.3f %.3f ", -radianToDegrees(viewAngle),
                            radianToDegrees(self.centerCoordinate.azimuth)];
 	
-    ARGeoCoordinate *geoCoordinate;
+    ARGeoCoordinate *geoCoordinate = nil;
+    
 	for (geoCoordinate in self.geoCoordinatesArr) {
         ARMarkerView *markerView = (ARMarkerView *)geoCoordinate.markerView;
       
@@ -392,12 +396,18 @@
             CGFloat scaleFactor = SCALE_FACTOR;
 	
 			if (self.scaleViewsBasedOnDistance) 
-                scaleFactor = scaleFactor - (self.minimumScaleFactor *  geoCoordinate.radialDistance / self.maximumScaleDistance);
+                scaleFactor = scaleFactor -
+                              (self.minimumScaleFactor *  geoCoordinate.radialDistance / self.maximumScaleDistance);
 
+            NSLog(@"scaleFactor:%f", scaleFactor);
             float width	 = markerView.startSize.width  * scaleFactor;
 			float height = markerView.startSize.height * scaleFactor;
             
-  			markerView.frame = CGRectMake(loc.x - width / 2.0, loc.y, width, height);
+//            CGFloat yOffsetScaleFactor = geoCoordinate.distanceFromOrigin / 1000;
+            CGFloat targY = loc.y - ((1.0-scaleFactor) * loc.y);
+            
+//  			markerView.frame = CGRectMake(loc.x - width / 2.0, loc.y, width, height);
+            markerView.frame = CGRectMake(loc.x - width / 2.0, targY, width, height);
             [markerView setNeedsDisplay];
 			
 			CATransform3D transform = CATransform3DIdentity;

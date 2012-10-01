@@ -43,6 +43,7 @@
 @property (nonatomic, assign) double minimumScaleFactor;
 @property (nonatomic, assign) double maximumRotationAngle;
 @property (nonatomic, assign) double rotationFactor;
+//@property (nonatomic, assign) double maxDistanceRange;
 
 @property (nonatomic, strong) UIAccelerometer *accelerometerManager;
 @property (nonatomic, strong) CLLocationManager *locationManager;

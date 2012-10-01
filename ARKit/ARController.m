@@ -10,16 +10,18 @@
 #import "ARCoordinate.h"
 #import "ARMarkerView.h"
 
+#define kFilteringFactor 0.175
+
 #define degreesToRadian(x) (M_PI * (x) / 180.0)
 #define radianToDegrees(x) ((x) * 180.0 / M_PI)
 #define M_2PI 2.0 * M_PI
-#define ADJUST_BY 25.0
+#define ADJUST_BY 20.0
 #define SCALE_FACTOR 1.0
 #define ROTATION_FACTOR 1.0
 #define DEFAULT_Y_OFFSET 3.0
 #define DISTANCE_FILTER 20.0
 #define HEADING_FILTER 1.0
-#define INTERVAL_UPDATE 0.033
+#define INTERVAL_UPDATE (1 / 10.0)
 #define HEADING_NOT_SET -1.0
 #define DEGREE_TO_UPDATE 1.0
 
@@ -279,13 +281,18 @@
 #pragma mark - UIAccelerometerDelegate methods
 
 - (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
-{	
+{
+//    CGFloat x = acceleration.x;
+    CGFloat x = (acceleration.x * kFilteringFactor) + ((1.0 - kFilteringFactor) * acceleration.x);
+    
 	switch (cameraOrientation) {
 		case UIDeviceOrientationLandscapeLeft:
-			viewAngle = atan2(acceleration.x, acceleration.z);
-			break;
+//			viewAngle = atan2(acceleration.x, acceleration.z);
+			viewAngle = atan2(x, acceleration.z);
+            break;
 		case UIDeviceOrientationLandscapeRight:
-			viewAngle = atan2(-acceleration.x, acceleration.z);
+//			viewAngle = atan2(-acceleration.x, acceleration.z);
+            viewAngle = atan2(-x, acceleration.z);
 			break;
 		case UIDeviceOrientationPortrait:
 			viewAngle = atan2(acceleration.y, acceleration.z);
@@ -372,13 +379,14 @@
 	double pointAzimuth		= coordinate.azimuth;
 	BOOL isBetweenNorth		= NO;
 	double deltaAzimith		= [self findDeltaOfRadianCenter:&currentAzimuth
-                                       coordinateAzimuth:pointAzimuth
-                                            betweenNorth:&isBetweenNorth];
+                                          coordinateAzimuth:pointAzimuth
+                                               betweenNorth:&isBetweenNorth];
 	
 	if ((pointAzimuth > currentAzimuth && !isBetweenNorth) || 
         (currentAzimuth > degreesToRadian(360- degreeRange) && pointAzimuth < degreesToRadian(degreeRange))) {
         // Right side of Azimuth
-		point.x = (realityBounds.size.width / 2) + ((deltaAzimith / degreesToRadian(1)) * ADJUST_BY);  
+		point.x = (realityBounds.size.width / 2) + ((deltaAzimith / degreesToRadian(1)) * ADJUST_BY);
+//        point.x = (realityBounds.size.width / 2) +
     } else {
         // Left side of Azimuth
 		point.x = (realityBounds.size.width / 2) - ((deltaAzimith / degreesToRadian(1)) * ADJUST_BY);
@@ -415,7 +423,7 @@
                 
                 CGFloat targY = loc.y - ((1.0-scaleFactor) * loc.y * self.yOffsetFactor) + 50.0;
                 
-                //  			markerView.frame = CGRectMake(loc.x - width / 2.0, loc.y, width, height);
+//  			markerView.frame = CGRectMake(loc.x - width / 2.0, loc.y, width, height);
                 CGRect targFrame = CGRectMake(loc.x - width / 2.0, targY, width, height);
                 
                 CATransform3D transform = CATransform3DIdentity;
@@ -434,21 +442,25 @@
                 }
                 
                 dispatch_async(dispatch_get_main_queue(), ^(void) {
-                    markerView.frame = targFrame;
+//                    markerView.frame = targFrame;
                     [markerView setNeedsDisplay];
                     
-                    if (angleDifference >= 0) {
+                    if (angleDifference > 0) {
                         markerView.layer.anchorPoint = CGPointMake(0.0, 0.5);
                     } else {
                         markerView.layer.anchorPoint = CGPointMake(1.0, 0.5);
                     }
                     
                     markerView.layer.transform = transform;
-
+                    
                     //if marker is not already set then insert it
                     if (!markerView.superview) {
                         [self.displayView insertSubview:markerView atIndex:1];
                     }
+                    
+                    [UIView animateWithDuration:2.0 animations:^{
+                        markerView.frame = targFrame;
+                    }];
                 });
             });
 		} else {

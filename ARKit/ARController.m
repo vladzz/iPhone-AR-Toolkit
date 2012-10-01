@@ -13,15 +13,15 @@
 #define degreesToRadian(x) (M_PI * (x) / 180.0)
 #define radianToDegrees(x) ((x) * 180.0 / M_PI)
 #define M_2PI 2.0 * M_PI
-#define ADJUST_BY 30
+#define ADJUST_BY 25.0
 #define SCALE_FACTOR 1.0
 #define ROTATION_FACTOR 1.0
+#define DEFAULT_Y_OFFSET 3.0
 #define DISTANCE_FILTER 20.0
 #define HEADING_FILTER 1.0
-#define INTERVAL_UPDATE 0.75
+#define INTERVAL_UPDATE 0.033
 #define HEADING_NOT_SET -1.0
-#define DEGREE_TO_UPDATE 1
-
+#define DEGREE_TO_UPDATE 1.0
 
 @interface ARController (Private)
 
@@ -52,10 +52,15 @@
 @synthesize minimumScaleFactor = _minimumScaleFactor;
 @synthesize maximumRotationAngle = _maximumRotationAngle;
 @synthesize rotationFactor = _rotationFactor;
-//@synthesize maxDistanceRange = _maxDistanceRange;
+@synthesize yOffsetFactor = _yOffsetFactor;
 @synthesize centerLocation = _centerLocation;
 @synthesize geoCoordinatesArr = _geoCoordinatesArr;
 @synthesize geoCoordinatesDict = _geoCoordinatesDict;
+
+- (void)dealloc
+{
+    dispatch_release(markersQueue);
+}
 
 - (id)initWithViewController:(UIViewController *)viewController
 {
@@ -71,10 +76,13 @@
 	self.rotateViewsBasedOnPerspective = YES;
 	self.maximumRotationAngle = M_PI / 6.0;
     self.rotationFactor = ROTATION_FACTOR;
+    self.yOffsetFactor = DEFAULT_Y_OFFSET;
     self.geoCoordinatesArr = [NSMutableArray array];
     self.geoCoordinatesDict = [NSMutableDictionary dictionary];
     
     [self updateCurrentDeviceOrientation];
+    
+    markersQueue = dispatch_queue_create("com.compustition.drivebytweeting.markersqueue", NULL);
     
 	CGRect screenRect = [[UIScreen mainScreen] bounds];
     
@@ -390,54 +398,60 @@
     
 	for (geoCoordinate in self.geoCoordinatesArr) {
         ARMarkerView *markerView = (ARMarkerView *)geoCoordinate.markerView;
-      
-		if ([self shouldDisplayCoordinate:geoCoordinate]) {		
-            CGPoint loc = [self pointForCoordinate:geoCoordinate];
-            CGFloat scaleFactor = SCALE_FACTOR;
-	
-			if (self.scaleViewsBasedOnDistance) 
-                scaleFactor = scaleFactor -
-                              (self.minimumScaleFactor *  geoCoordinate.radialDistance / self.maximumScaleDistance);
-
-            NSLog(@"scaleFactor:%f", scaleFactor);
-            float width	 = markerView.startSize.width  * scaleFactor;
-			float height = markerView.startSize.height * scaleFactor;
-            
-//            CGFloat yOffsetScaleFactor = geoCoordinate.distanceFromOrigin / 1000;
-            CGFloat targY = loc.y - ((1.0-scaleFactor) * loc.y);
-            
-//  			markerView.frame = CGRectMake(loc.x - width / 2.0, loc.y, width, height);
-            markerView.frame = CGRectMake(loc.x - width / 2.0, targY, width, height);
-            [markerView setNeedsDisplay];
-			
-			CATransform3D transform = CATransform3DIdentity;
-			
-			// Set the scale if it needs it
-			if (self.scaleViewsBasedOnDistance) 
-				transform = CATransform3DScale(transform, scaleFactor, scaleFactor, scaleFactor);
-		
-            // Set the rotation transformation
-			if (self.rotateViewsBasedOnPerspective) {
-				transform.m34 = -1.0 / 500.0;
-                double angleDifference = geoCoordinate.azimuth - self.centerCoordinate.azimuth;
+        
+        if ([self shouldDisplayCoordinate:geoCoordinate]) {
+            dispatch_async(markersQueue, ^(void) {
+                CGPoint loc = [self pointForCoordinate:geoCoordinate];
+                CGFloat scaleFactor = SCALE_FACTOR;
                 
-                if (angleDifference >= 0) {
-                    markerView.layer.anchorPoint = CGPointMake(0.0, 0.5);
-                } else {
-                    markerView.layer.anchorPoint = CGPointMake(1.0, 0.5);
+                if (self.scaleViewsBasedOnDistance) {
+                    scaleFactor = scaleFactor - (self.minimumScaleFactor *  geoCoordinate.radialDistance /
+                                                 self.maximumScaleDistance);
                 }
                 
-                transform = CATransform3DRotate(transform, -angleDifference * self.rotationFactor, 0, 1, 0);
-			}
-            
-			markerView.layer.transform = transform;
-			
-			//if marker is not already set then insert it
-            if (!markerView.superview) {
-				[self.displayView insertSubview:markerView atIndex:1];
-			}
-		}
-		else {
+                //            NSLog(@"scaleFactor:%f", scaleFactor);
+                float width	 = markerView.startSize.width  * scaleFactor;
+                float height = markerView.startSize.height * scaleFactor;
+                
+                CGFloat targY = loc.y - ((1.0-scaleFactor) * loc.y * self.yOffsetFactor) + 50.0;
+                
+                //  			markerView.frame = CGRectMake(loc.x - width / 2.0, loc.y, width, height);
+                CGRect targFrame = CGRectMake(loc.x - width / 2.0, targY, width, height);
+                
+                CATransform3D transform = CATransform3DIdentity;
+                
+                // Set the scale if it needs it
+                if (self.scaleViewsBasedOnDistance)
+                    transform = CATransform3DScale(transform, scaleFactor, scaleFactor, scaleFactor);
+                
+                double angleDifference =  0.0;
+                
+                // Set the rotation transformation
+                if (self.rotateViewsBasedOnPerspective) {
+                    transform.m34 = -1.0 / 500.0;
+                    angleDifference = geoCoordinate.azimuth - self.centerCoordinate.azimuth;
+                    transform = CATransform3DRotate(transform, -angleDifference * self.rotationFactor, 0, 1, 0);
+                }
+                
+                dispatch_async(dispatch_get_main_queue(), ^(void) {
+                    markerView.frame = targFrame;
+                    [markerView setNeedsDisplay];
+                    
+                    if (angleDifference >= 0) {
+                        markerView.layer.anchorPoint = CGPointMake(0.0, 0.5);
+                    } else {
+                        markerView.layer.anchorPoint = CGPointMake(1.0, 0.5);
+                    }
+                    
+                    markerView.layer.transform = transform;
+
+                    //if marker is not already set then insert it
+                    if (!markerView.superview) {
+                        [self.displayView insertSubview:markerView atIndex:1];
+                    }
+                });
+            });
+		} else {
             if (markerView.superview)
                 [markerView removeFromSuperview];
         }

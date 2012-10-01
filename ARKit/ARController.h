@@ -33,6 +33,8 @@
     UILabel				*debugView;
     AVCaptureSession    *captureSession;
     AVCaptureVideoPreviewLayer *previewLayer;
+    
+    dispatch_queue_t markersQueue;
 }
 
 @property (nonatomic, assign) BOOL scaleViewsBasedOnDistance;
@@ -43,7 +45,7 @@
 @property (nonatomic, assign) double minimumScaleFactor;
 @property (nonatomic, assign) double maximumRotationAngle;
 @property (nonatomic, assign) double rotationFactor;
-//@property (nonatomic, assign) double maxDistanceRange;
+@property (nonatomic, assign) double yOffsetFactor;
 
 @property (nonatomic, strong) UIAccelerometer *accelerometerManager;
 @property (nonatomic, strong) CLLocationManager *locationManager;

@@ -344,12 +344,12 @@
 		B8CC3EC9160A208900EA7022 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Yee Peng Chia (TUZY4Y74FK)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ARKitDemo2/ARKitDemo2-Prefix.pch";
 				INFOPLIST_FILE = "ARKitDemo2/ARKitDemo2-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A85A29F4-4BDC-4BA8-B799-6ABD9E5AF6FF";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;

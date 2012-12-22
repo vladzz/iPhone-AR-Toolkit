@@ -11,6 +11,35 @@
 #import "ARGeoCoordinate.h"
 #import "MyMarkerView.h"
 
+const char *poiNames[] = {
+    "St. George Tabernacle",
+    "St. George Temple",
+    "Dixie State College",
+    "Walgreens",
+    "Brigham Young Home",
+    "St. George Opera House",
+    "St. George City Office",
+    "Old Airport",
+    "Big \"D\"",
+    "Dixie rock"
+};
+
+CLLocationCoordinate2D poiCoords[] = {
+    {37.10793, -113.58389},
+    {37.10052, -113.57802},
+    {37.10432, -113.56830},
+    {37.10960, -113.59110},
+    {37.11138, -113.58483},
+    {37.11174, -113.58293},
+    {37.11227, -113.57979},
+    {37.09736, -113.59144},
+    {37.10813, -113.59726},
+    {37.11542, -113.57987}
+};
+
+CLLocationDistance poiAltitudes[] = {800, 812, 824, 816, 808, 820, 812, 885, 960, 940};
+
+
 @interface MyARViewController (PrivateMethods)
 
 - (MyMarkerView *)findClosestMarker;
@@ -65,6 +94,19 @@
     coordinate = [ARGeoCoordinate coordinateWithLocation:location locationTitle:@"Toasties"];
     marker = [[MyMarkerView alloc] initWithCoordinate:coordinate];
     [self.arController addCoordinate:coordinate];
+    
+    
+    int numPois = sizeof(poiCoords) / sizeof(CLLocationCoordinate2D);
+    
+	NSMutableArray *placesOfInterest = [NSMutableArray arrayWithCapacity:numPois];
+	for (int i = 0; i < numPois; i++)
+    {
+        location = [[CLLocation alloc] initWithLatitude:poiCoords[i].latitude longitude:poiCoords[i].longitude];
+        coordinate = [ARGeoCoordinate coordinateWithLocation:location locationTitle:[NSString stringWithCString:poiNames[i] encoding:NSASCIIStringEncoding]];
+        marker = [[MyMarkerView alloc] initWithCoordinate:coordinate];
+        [self.arController addCoordinate:coordinate];
+	}
+
     
     // Add the Overlay view
     self.overlayView.frame = self.view.frame;

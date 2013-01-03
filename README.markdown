@@ -5,13 +5,13 @@
 This version of the iPhone ARKit is a forked version of the ARKit started on GitHub by Zac White, then forked by jjamminjim.  
 
 ### Goals of the project ###
-* Not depended on a specific View Controller or the main App Delegate. (Completed) [jjamminjim]
-* Ability to use both the Landscape and Portrait modes. (Completed) [jjamminjim]
-* Use CoreLocation coordinates and update location as the user moves around. (Completed) [jjamminjim] 
-* Ability to add different type of views to augment. (Completed) [jjamminjim]
-* Ability to touch any of the augment views to handle other tasks. (Completed) [jjamminjim]
+* ~~Not depended on a specific View Controller or the main App Delegate. (Completed) [jjamminjim]~~
+* ~~Ability to use both the Landscape and Portrait modes. (Completed) [jjamminjim]~~
+* ~~Use CoreLocation coordinates and update location as the user moves around. (Completed) [jjamminjim]~~
+* ~~Ability to add different type of views to augment. (Completed) [jjamminjim]~~
+* ~~Ability to touch any of the augment views to handle other tasks. (Completed) [jjamminjim]~~
 * Add a Radar Control
-* Convert to ARC (Completed)
+* ~~Convert to ARC (Completed)~~
 
 iPhone ARKit's APIs are modeled after MapKit's. For an overview of MapKit, please read [the documentation](http://developer.apple.com/iphone/library/documentation/MapKit/Reference/MapKit_Framework_Reference/index.html) for more information.
 

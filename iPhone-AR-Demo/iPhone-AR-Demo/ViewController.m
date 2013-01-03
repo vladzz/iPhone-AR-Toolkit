@@ -44,6 +44,7 @@
     tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Denver"];
     [locationArray addObject:tempCoordinate];
     
+    
     tempLocation = [[CLLocation alloc] initWithLatitude:45.523875 longitude:-122.670399];
     tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Portland"];
     [locationArray addObject:tempCoordinate];
@@ -138,12 +139,14 @@
     
     tempLocation = [[CLLocation alloc] initWithLatitude:53.566667 longitude:-113.516667];
     tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Edmonton"];
+    tempCoordinate.inclination = M_PI/30;
     [locationArray addObject:tempCoordinate];
     
     
     tempLocation = [[CLLocation alloc] initWithLatitude:47.620973 longitude:-122.347276];
     tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Seattle"];
     [locationArray addObject:tempCoordinate];
+    
     
     
     return locationArray;

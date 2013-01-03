@@ -10,14 +10,14 @@ This version of the iPhone ARKit is a forked version of the ARKit started on Git
 * ~~Use CoreLocation coordinates and update location as the user moves around. (Completed) [jjamminjim]~~
 * ~~Ability to add different type of views to augment. (Completed) [jjamminjim]~~
 * ~~Ability to touch any of the augment views to handle other tasks. (Completed) [jjamminjim]~~
-* Add a Radar Control
 * ~~Convert to ARC (Completed)~~
+* Add a Radar Control
 
 iPhone ARKit's APIs are modeled after MapKit's. For an overview of MapKit, please read [the documentation](http://developer.apple.com/iphone/library/documentation/MapKit/Reference/MapKit_Framework_Reference/index.html) for more information.
 
 ## Current Status ##
 
-**The AR kit is targeting the iOS6 SDK.**
+The AR kit is targeting the iOS6 SDK.
 
 ## Current Issues ##
 Detecting correct screen size (for iPhone 5, status bars, nav bars etc...)

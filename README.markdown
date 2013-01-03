@@ -4,6 +4,10 @@
 
 This version of the iPhone ARKit is a forked version of the ARKit started on GitHub by Zac White, then forked by jjamminjim.  
 
+## Screenshots ##
+
+![Vertical](http://i.imgur.com/heW49l.png) ![Horizontal 1](http://i.imgur.com/TA8lXl.png)
+
 ### Goals of the project ###
 * ~~Not depended on a specific View Controller or the main App Delegate. (Completed) [jjamminjim]~~
 * ~~Ability to use both the Landscape and Portrait modes. (Completed) [jjamminjim]~~

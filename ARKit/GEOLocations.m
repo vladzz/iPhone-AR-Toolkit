@@ -3,7 +3,7 @@
 //  AR Kit
 //
 //  Modified by Niels W Hansen on 12/19/09.
-//  Copyright 2009 Zac White. All rights reserved.
+//  Modified by Ed Rackham (a1phanumeric) 2013
 //
 
 #import "GEOLocations.h"
@@ -18,21 +18,11 @@
 
 - (id)initWithDelegate:(id<ARLocationDelegate>) aDelegate{
 	[self setDelegate:aDelegate];
-
 	return self;
 }
 
--(NSMutableArray*) returnLocations 
-{
+-(NSMutableArray*) returnLocations{
 	return [delegate geoLocations];
 }
-
-- (void)dealloc {
-	
-
-    [super dealloc];
-}
-
-
 
 @end

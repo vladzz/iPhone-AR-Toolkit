@@ -3,7 +3,7 @@
 //  AR Kit
 //
 //  Created by Niels W Hansen on 12/19/09.
-//  Copyright 2011 Agilite Software. All rights reserved.
+//  Modified by Ed Rackham (a1phanumeric) 2013
 //
 
 #import <Foundation/Foundation.h>
@@ -11,11 +11,7 @@
  
 @class ARCoordinate;
 
-@interface GEOLocations : NSObject {
-	
-
-	id<ARLocationDelegate> delegate;
-}
+@interface GEOLocations : NSObject
 
 @property(nonatomic,assign) id<ARLocationDelegate> delegate;
 

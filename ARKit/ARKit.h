@@ -3,7 +3,7 @@
 //  AR Kit
 //
 //  Modified by Niels Hansen on 11/20/11.
-//  Copyright 2011 Agilite Software. All rights reserved.
+//  Modified by Ed Rackham (a1phanumeric) 2013
 //
 
 #import <Foundation/Foundation.h>
@@ -12,10 +12,8 @@
 #import "ARViewController.h"
 #import "ARLocationDelegate.h"
 
-@interface ARKit : NSObject {
+@interface ARKit : NSObject
 
-}
-
-+(BOOL)deviceSupportsAR;
++ (BOOL)deviceSupportsAR;
 
 @end

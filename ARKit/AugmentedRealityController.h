@@ -3,7 +3,7 @@
 //  AR Kit
 //
 //  Modified by Niels W Hansen on 12/31/11.
-//  Copyright 2011 Agilite Software All rights reserved.
+//  Modified by Ed Rackham (a1phanumeric) 2013
 //
 
 #import <Foundation/Foundation.h>
@@ -15,19 +15,6 @@
 @class ARCoordinate;
 
 @interface AugmentedRealityController : NSObject <UIAccelerometerDelegate, CLLocationManagerDelegate> {
-
-	id<ARDelegate> delegate;
-    
-    BOOL scaleViewsBasedOnDistance;
-	BOOL rotateViewsBasedOnPerspective;
-
-	double maximumScaleDistance;
-	double minimumScaleFactor;
-	double maximumRotationAngle;
-
-	ARCoordinate		*centerCoordinate;
-	CLLocationManager	*locationManager;
-	UIViewController	*rootViewController;
 	
 @private
 	double	latestHeading;

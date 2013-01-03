@@ -3,7 +3,7 @@
 //  AR Kit
 //
 //  Modifed by Niels Hansen 11/20/11.
-//  Copyright 2011 Agilite Software. All rights reserved.
+//  Modified by Ed Rackham (a1phanumeric) 2013
 //
 
 #import "ARKit.h"
@@ -11,8 +11,7 @@
 
 @implementation ARKit
 
-+(BOOL)deviceSupportsAR{
-    
++ (BOOL)deviceSupportsAR{
     
     // Go thru and see if the device supports Video Capture.
     NSArray *devices = [AVCaptureDevice devices];

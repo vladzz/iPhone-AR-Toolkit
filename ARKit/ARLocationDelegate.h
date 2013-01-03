@@ -3,7 +3,7 @@
 //  AR Kit
 //
 //  Created by Jared Crawford on 2/13/10.
-//  Copyright 2011. All rights reserved.
+//  Modified by Ed Rackham (a1phanumeric) 2013
 //
 
 #import <Foundation/Foundation.h>
@@ -13,8 +13,8 @@
 @protocol ARLocationDelegate
 
 //returns an array of ARGeoCoordinates
--(NSMutableArray *)geoLocations;
--(void) locationClicked:(ARGeoCoordinate *) coordinate;
+- (NSMutableArray *)geoLocations;
+- (void)locationClicked:(ARGeoCoordinate *)coordinate;
 
 @end
 

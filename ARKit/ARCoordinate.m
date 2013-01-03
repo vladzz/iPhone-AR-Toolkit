@@ -3,7 +3,7 @@
 //  AR Kit
 //
 //  Modified by Niels Hansen on 10/02/11
-//  Copyright 2011 Agilite Software. All rights reserved.
+//  Modified by Ed Rackham (a1phanumeric) 2013
 //
 
 #import "ARCoordinate.h"
@@ -24,7 +24,7 @@
 	[newCoordinate setAzimuth: newAzimuth];
 	[newCoordinate setTitle: @""];
 	
-	return [newCoordinate autorelease];
+	return newCoordinate;
 }
 
 - (NSUInteger)hash {
@@ -55,13 +55,6 @@
 		equal = equal && [[self title] isEqualToString:[otherCoordinate title]];
 	
 	return equal;
-}
-
-- (void)dealloc {
-	
-	[self setTitle: nil];
-	[self setSubtitle: nil];
-	[super dealloc];
 }
 
 - (NSString *)description {

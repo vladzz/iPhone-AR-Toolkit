@@ -148,4 +148,9 @@
     
     return locationArray;
 }
+
+
+- (void)locationClicked:(ARGeoCoordinate *)coordinate{
+    NSLog(@"%@", coordinate);
+}
 @end

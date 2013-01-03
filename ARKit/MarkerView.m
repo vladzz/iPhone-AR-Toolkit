@@ -10,100 +10,98 @@
 #import "ARGeoCoordinate.h"
 #import "MarkerView.h"
 
+#define LABEL_HEIGHT        20
+#define LABEL_MARGIN        5
+#define DISCLOSURE_MARGIN   10
 
-#define BOX_WIDTH 150
-#define BOX_HEIGHT 100
-#define BOX_GAP 10
-#define BOX_ALPHA 0.8
-#define LABEL_HEIGHT 20.0
+@implementation MarkerView{
+    BOOL                    _allowsCallout;
+    UIImage                 *_bgImage;
+    UILabel                 *_lblDistance;
+    id<ARMarkerDelegate>    _delegate;
+    ARGeoCoordinate         *_coordinateInfo;
+}
 
+- (id)initForCoordinate:(ARGeoCoordinate *)coordinate withDelgate:(id<ARMarkerDelegate>)aDelegate{
+    return [self initForCoordinate:coordinate withDelgate:aDelegate allowsCallout:YES];
+}
 
-@implementation MarkerView
-
-
-@synthesize coordinateInfo;
-@synthesize delegate;
-@synthesize lblDistance;
-
-- (id)initForCoordinate:(ARGeoCoordinate *)coordinate withDelgate:(id<ARMarkerDelegate>) aDelegate {
+- (id)initForCoordinate:(ARGeoCoordinate *)coordinate withDelgate:(id<ARMarkerDelegate>)aDelegate allowsCallout:(BOOL)allowsCallout{
     
-	[self setCoordinateInfo:coordinate];
-    [self setDelegate:aDelegate];
+    _coordinateInfo = coordinate;
+    _delegate       = aDelegate;
+    _allowsCallout  = allowsCallout;
+    _bgImage        = [UIImage imageNamed:@"bgCallout.png"];
     
-	CGRect theFrame = CGRectMake(0, 0, BOX_WIDTH, BOX_HEIGHT);
+    UIImage *disclosureImage    = [UIImage imageNamed:@"bgCalloutDisclosure.png"];
+    CGSize calloutSize          = _bgImage.size;
+	CGRect theFrame             = CGRectMake(0, 0, calloutSize.width, calloutSize.height);
 	
-	if ((self = [super initWithFrame:theFrame])) {
+    
+	if(self = [super initWithFrame:theFrame]){
         
-        [self setUserInteractionEnabled:YES]; // Allow for touches
+        [self setContentMode:UIViewContentModeScaleAspectFit];
+        [self setAutoresizesSubviews:YES];
         
-		UILabel *titleLabel	= [[UILabel alloc] initWithFrame:CGRectMake(0, 0, BOX_WIDTH, 20.0)];
-		
-		[titleLabel setBackgroundColor: [UIColor colorWithWhite:.3 alpha:BOX_ALPHA]];
+        if(_allowsCallout){
+            [self setUserInteractionEnabled:YES];
+        }
+    
+        UIImageView *bgImageView = [[UIImageView alloc] initWithImage:_bgImage];
+        [self addSubview:bgImageView];
+        
+        CGSize labelSize = CGSizeMake(calloutSize.width - (LABEL_MARGIN * 2), LABEL_HEIGHT);
+        if(_allowsCallout){
+            labelSize.width -= disclosureImage.size.width + (DISCLOSURE_MARGIN * 2);
+        }
+        
+        UILabel *titleLabel	= [[UILabel alloc] initWithFrame:CGRectMake(LABEL_MARGIN, LABEL_MARGIN, labelSize.width, labelSize.height)];
+		[titleLabel setBackgroundColor: [UIColor clearColor]];
 		[titleLabel setTextColor:		[UIColor whiteColor]];
 		[titleLabel setTextAlignment:	NSTextAlignmentCenter];
+        [titleLabel setFont:            [UIFont fontWithName:@"Helvetica-Bold" size:17.0]];
 		[titleLabel setText:			[coordinate title]];
-		[titleLabel sizeToFit];
-
-        
-		[titleLabel setFrame: CGRectMake(BOX_WIDTH / 2.0 - [titleLabel bounds].size.width / 2.0 - 4.0, 0, 
-                                         [titleLabel bounds].size.width + 8.0, [titleLabel bounds].size.height + 8.0)];
-        
-        UILabel *distLbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, BOX_WIDTH, LABEL_HEIGHT)];
-		
-		[distLbl setBackgroundColor:    [UIColor colorWithWhite:.3 alpha:BOX_ALPHA]];
-		[distLbl setTextColor:          [UIColor whiteColor]];
-		[distLbl setTextAlignment:      NSTextAlignmentCenter];
-		[distLbl setText:               [NSString stringWithFormat:@"%f", [coordinate distanceFromOrigin]]];
-		[distLbl sizeToFit];
+        [self addSubview:titleLabel];
         
         
-		[distLbl setFrame: CGRectMake(BOX_WIDTH / 2.0 - [titleLabel bounds].size.width / 2.0 - 4.0, 
-                                      [distLbl bounds].size.height, 
-                                      [titleLabel bounds].size.width + 8.0, 
-                                      [distLbl bounds].size.height + 8.0)];
-        
+        _lblDistance = [[UILabel alloc] initWithFrame:CGRectMake(0, LABEL_HEIGHT + LABEL_MARGIN, labelSize.width, labelSize.height)];
+		[_lblDistance setBackgroundColor:    [UIColor clearColor]];
+		[_lblDistance setTextColor:          [UIColor whiteColor]];
+		[_lblDistance setTextAlignment:      NSTextAlignmentCenter];
+        [_lblDistance setFont:               [UIFont fontWithName:@"Helvetica" size:13.0]];
+		[_lblDistance setText:               [NSString stringWithFormat:@"%f", [coordinate distanceFromOrigin]]];
+        [self addSubview:_lblDistance];
         
 		
-		UIImageView *pointView	= [[UIImageView alloc] initWithFrame:CGRectZero];
-		[pointView setImage:[UIImage imageNamed:@"location.png"]];
+        if(_allowsCallout){
+            UIImageView *disclosureImageView = [[UIImageView alloc] initWithFrame:CGRectMake(calloutSize.width - disclosureImage.size.width - DISCLOSURE_MARGIN, DISCLOSURE_MARGIN, disclosureImage.size.width, disclosureImage.size.height)];
+            [disclosureImageView setImage:[UIImage imageNamed:@"bgCalloutDisclosure.png"]];
+            [self addSubview:disclosureImageView];
+        }
         
-		[pointView setFrame:	CGRectMake((int)(BOX_WIDTH / 2.0 - [pointView image].size.width / 2.0), 
-                                           (int)(BOX_HEIGHT / 2.0 - [pointView image].size.height / 2.0), 
-                                           [pointView image].size.width, 
-                                           [pointView image].size.height)];
-		
-		[self addSubview:titleLabel];
-        [self addSubview:distLbl];
         
-        [self setLblDistance:distLbl];
-
-		[self addSubview:pointView];
-		[self setBackgroundColor:[UIColor clearColor]];
-        
+        [self setBackgroundColor:[UIColor clearColor]];
 	}
 	
     return self;
+    
 }
 
--(void) drawRect:(CGRect)rect {
+- (void)drawRect:(CGRect)rect{
     [super drawRect:rect];
-    [[self lblDistance] setText:[NSString stringWithFormat:@"%.2f km", [[self coordinateInfo] distanceFromOrigin]/1000.0f]];
-    
+    [_lblDistance setText:[NSString stringWithFormat:@"%.2f km", [_coordinateInfo distanceFromOrigin]/1000.0f]];
 }
 
-- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    NSLog(@"%@ was touched!",[[self coordinateInfo] title]);
-    [delegate didTapMarker:[self coordinateInfo]];
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    [_delegate didTapMarker:_coordinateInfo];
 }
 
-- (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
 }
 
-- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
-    
-    CGRect theFrame = CGRectMake(0, 0, BOX_WIDTH, BOX_HEIGHT);
-    
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event{
+    CGRect theFrame = CGRectMake(0, 0, _bgImage.size.width, _bgImage.size.height);
     if(CGRectContainsPoint(theFrame, point))
         return YES; // touched the view;
     

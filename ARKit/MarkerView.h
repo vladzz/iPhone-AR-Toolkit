@@ -14,10 +14,5 @@
 @interface MarkerView : UIView
 
 - (id)initForCoordinate:(ARGeoCoordinate *)coordinate withDelgate:(id<ARMarkerDelegate>) aDelegate;
-
-@property (nonatomic,retain) ARGeoCoordinate *coordinateInfo;
-@property (nonatomic, assign) id<ARMarkerDelegate> delegate;
-@property (nonatomic, retain) UILabel *lblDistance;
-
-
+- (id)initForCoordinate:(ARGeoCoordinate *)coordinate withDelgate:(id<ARMarkerDelegate>)aDelegate allowsCallout:(BOOL)allowsCallout;
 @end

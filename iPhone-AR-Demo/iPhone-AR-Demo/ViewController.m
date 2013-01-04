@@ -40,7 +40,7 @@
     ARGeoCoordinate *tempCoordinate;
     CLLocation       *tempLocation;
     
-    tempLocation = [[CLLocation alloc] initWithLatitude:39.550051 longitude:-105.782067];
+    /*tempLocation = [[CLLocation alloc] initWithLatitude:39.550051 longitude:-105.782067];
     tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Denver"];
     [locationArray addObject:tempCoordinate];
     
@@ -84,7 +84,6 @@
     tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Hawaii"];
     tempCoordinate.inclination = M_PI/30;
     [locationArray addObject:tempCoordinate];
-    
     
     
     tempLocation = [[CLLocation alloc] initWithLatitude:40.756054 longitude:-73.986951];
@@ -139,15 +138,30 @@
     
     tempLocation = [[CLLocation alloc] initWithLatitude:53.566667 longitude:-113.516667];
     tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Edmonton"];
-    tempCoordinate.inclination = M_PI/30;
+    tempCoordinate.inclination = 0.5;
     [locationArray addObject:tempCoordinate];
     
     
     tempLocation = [[CLLocation alloc] initWithLatitude:47.620973 longitude:-122.347276];
     tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Seattle"];
     [locationArray addObject:tempCoordinate];
+    */
     
+    tempLocation = [[CLLocation alloc] initWithLatitude:50.461921 longitude:-3.525315];
+    tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Torquay"];
+    [locationArray addObject:tempCoordinate];
     
+    tempLocation = [[CLLocation alloc] initWithLatitude:50.43548 longitude:-3.561437];
+    tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Paignton"];
+    [locationArray addObject:tempCoordinate];
+    
+    tempLocation = [[CLLocation alloc] initWithLatitude:50.394304 longitude:-3.513823];
+    tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Brixham"];
+    [locationArray addObject:tempCoordinate];
+    
+    tempLocation = [[CLLocation alloc] initWithLatitude:50.4327 longitude:-3.686686];
+    tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Totnes"];
+    [locationArray addObject:tempCoordinate];
     
     return locationArray;
 }

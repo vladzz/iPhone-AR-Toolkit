@@ -40,7 +40,11 @@
     
     UIButton *closeBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
     [closeBtn setTitle:@"Close" forState:UIControlStateNormal];
-    [closeBtn setBackgroundColor:[UIColor greenColor]];
+    [closeBtn.titleLabel setFont:[UIFont boldSystemFontOfSize:13.0]];
+    [closeBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [closeBtn.titleLabel setShadowColor:[UIColor colorWithWhite:0.1 alpha:1.0]];
+    [closeBtn.titleLabel setShadowOffset:CGSizeMake(0, -1)];
+    [closeBtn setBackgroundColor:[UIColor colorWithWhite:0.3 alpha:1.0]];
     [closeBtn addTarget:self action:@selector(closeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [[self view] addSubview:closeBtn];
     

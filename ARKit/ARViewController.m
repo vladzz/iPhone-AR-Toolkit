@@ -62,7 +62,7 @@
     [self setAgController:arc];
 }
 
-- (IBAction)closeButtonClicked:(id)sender {
+- (void)closeButtonClicked:(id)sender {
     [self setAgController:nil];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -87,31 +87,26 @@
 }
 
 - (void)didUpdateHeading:(CLHeading *)newHeading {
-    NSLog(@"Heading Updated");
-
+    //NSLog(@"Heading Updated");
 }
 - (void)didUpdateLocation:(CLLocation *)newLocation {
-    NSLog(@"Location Updated");
-
+    //NSLog(@"Location Updated");
 }
 - (void)didUpdateOrientation:(UIDeviceOrientation)orientation {
-    NSLog(@"Orientation Updated");
+   /*NSLog(@"Orientation Updated");
     
     if(orientation == UIDeviceOrientationPortrait)
-        NSLog(@"Protrait");
-
+        NSLog(@"Portrait");
+    */
 }
 
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
 }
 
 - (void)viewDidUnload {
 	agController = nil;
 }
-
 
 @end

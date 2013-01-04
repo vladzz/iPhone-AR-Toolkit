@@ -19,8 +19,5 @@
 
 - (id)initWithDelegate:(id<ARLocationDelegate>)aDelegate;
 
-
-
-
 @end
 

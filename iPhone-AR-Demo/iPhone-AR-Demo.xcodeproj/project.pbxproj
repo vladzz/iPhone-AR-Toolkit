@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		64E4D2ED1696DBE500515B74 /* Radar.m in Sources */ = {isa = PBXBuildFile; fileRef = 64E4D2EA1696DBE500515B74 /* Radar.m */; };
+		64E4D2EE1696DBE500515B74 /* RadarViewPortView.m in Sources */ = {isa = PBXBuildFile; fileRef = 64E4D2EC1696DBE500515B74 /* RadarViewPortView.m */; };
 		64F542C01695C116009F9468 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64F542BF1695C116009F9468 /* UIKit.framework */; };
 		64F542C21695C116009F9468 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64F542C11695C116009F9468 /* Foundation.framework */; };
 		64F542C41695C116009F9468 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64F542C31695C116009F9468 /* CoreGraphics.framework */; };
@@ -36,6 +38,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		64E4D2E91696DBE400515B74 /* Radar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Radar.h; path = ../../ARKit/Radar.h; sourceTree = "<group>"; };
+		64E4D2EA1696DBE500515B74 /* Radar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Radar.m; path = ../../ARKit/Radar.m; sourceTree = "<group>"; };
+		64E4D2EB1696DBE500515B74 /* RadarViewPortView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RadarViewPortView.h; path = ../../ARKit/RadarViewPortView.h; sourceTree = "<group>"; };
+		64E4D2EC1696DBE500515B74 /* RadarViewPortView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RadarViewPortView.m; path = ../../ARKit/RadarViewPortView.m; sourceTree = "<group>"; };
 		64F542BB1695C116009F9468 /* iPhone-AR-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iPhone-AR-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		64F542BF1695C116009F9468 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		64F542C11695C116009F9468 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -175,6 +181,10 @@
 				64F542F01695C184009F9468 /* GEOLocations.m */,
 				64F542F31695C184009F9468 /* MarkerView.h */,
 				64F542F41695C184009F9468 /* MarkerView.m */,
+				64E4D2E91696DBE400515B74 /* Radar.h */,
+				64E4D2EA1696DBE500515B74 /* Radar.m */,
+				64E4D2EB1696DBE500515B74 /* RadarViewPortView.h */,
+				64E4D2EC1696DBE500515B74 /* RadarViewPortView.m */,
 			);
 			name = ARKit;
 			sourceTree = "<group>";
@@ -271,6 +281,8 @@
 				64F542F91695C184009F9468 /* AugmentedRealityController.m in Sources */,
 				64F542FA1695C184009F9468 /* GEOLocations.m in Sources */,
 				64F542FC1695C184009F9468 /* MarkerView.m in Sources */,
+				64E4D2ED1696DBE500515B74 /* Radar.m in Sources */,
+				64E4D2EE1696DBE500515B74 /* RadarViewPortView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -386,6 +398,7 @@
 				64F542E11695C116009F9468 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

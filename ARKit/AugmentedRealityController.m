@@ -101,17 +101,17 @@
     radarView       = [[Radar alloc] initWithFrame:CGRectMake(displayV.frame.size.width - 63, 2, 61, 61)];
     radarViewPort   = [[RadarViewPortView alloc] initWithFrame:CGRectMake(displayV.frame.size.width - 63, 2, 61, 61)];
     
-    UILabel *northLabel = [[UILabel alloc] initWithFrame:CGRectMake(displayV.frame.size.width - 37, 2, 10, 10)];
-    northLabel.backgroundColor = [UIColor clearColor];
-    northLabel.textColor = [UIColor whiteColor];
-    northLabel.font = [UIFont boldSystemFontOfSize:8.0];
-    northLabel.textAlignment = NSTextAlignmentCenter;
-    northLabel.text = @"N";
-    northLabel.alpha = 0.8;
+    radarNorthLabel = [[UILabel alloc] initWithFrame:CGRectMake(displayV.frame.size.width - 37, 2, 10, 10)];
+    radarNorthLabel.backgroundColor = [UIColor clearColor];
+    radarNorthLabel.textColor = [UIColor whiteColor];
+    radarNorthLabel.font = [UIFont boldSystemFontOfSize:8.0];
+    radarNorthLabel.textAlignment = NSTextAlignmentCenter;
+    radarNorthLabel.text = @"N";
+    radarNorthLabel.alpha = 0.8;
     
     [displayV addSubview:radarView];
     [displayV addSubview:radarViewPort];
-    [displayV addSubview:northLabel];
+    [displayV addSubview:radarNorthLabel];
 
 #if !TARGET_IPHONE_SIMULATOR
     
@@ -570,6 +570,10 @@
         [displayView setTransform:CGAffineTransformIdentity];
 		[displayView setTransform: transform];
 		[displayView setBounds:bounds];  
+        
+        [radarView       setFrame:CGRectMake(bounds.size.width - 63, 2, 61, 61)];
+        [radarViewPort   setFrame:CGRectMake(bounds.size.width - 63, 2, 61, 61)];
+        [radarNorthLabel setFrame:CGRectMake(bounds.size.width - 37, 2, 10, 10)];
         
 		degreeRange = [self displayView].bounds.size.width / ADJUST_BY;
 		[self updateDebugMode:YES];

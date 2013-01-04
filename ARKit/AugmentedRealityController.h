@@ -28,17 +28,18 @@
 	float   prevHeading;
     int     cameraOrientation;
     
-	NSMutableArray	*coordinates;
+	NSMutableArray              *coordinates;
     
-    UILabel				*debugView;
-    AVCaptureSession    *captureSession;
-    AVCaptureVideoPreviewLayer *previewLayer;
+    UILabel                     *debugView;
+    AVCaptureSession            *captureSession;
+    AVCaptureVideoPreviewLayer  *previewLayer;
     
-    UIAccelerometer		*accelerometerManager;
-	CLLocation			*centerLocation;
-	UIView				*displayView;
-    Radar *radarView;
-    RadarViewPortView *radarViewPort;
+    UIAccelerometer             *accelerometerManager;
+	CLLocation                  *centerLocation;
+	UIView                      *displayView;
+    Radar                       *radarView;
+    RadarViewPortView           *radarViewPort;
+    UILabel                     *radarNorthLabel;
 }
 
 @property BOOL scaleViewsBasedOnDistance;

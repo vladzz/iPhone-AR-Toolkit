@@ -301,9 +301,7 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
-
     [self setCenterLocation:newLocation];
-    NSLog(@"Location of phone changed!");
     [[self delegate] didUpdateLocation:newLocation];
     
 }
@@ -485,7 +483,6 @@
 	
 			if ([self scaleViewsBasedOnDistance]) {
 				scaleFactor = scaleFactor - [self minimumScaleFactor]*([item radialDistance] / [self maximumScaleDistance]);
-                NSLog(@"SF is %f", scaleFactor);
             }
 
 			float width	 = [markerView bounds].size.width  * scaleFactor;

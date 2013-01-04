@@ -33,7 +33,8 @@
     _minimumScaleFactor             = 0.5;
     _rotateViewsBasedOnPerspective  = YES;
     _showsRadar                     = YES;
-    
+    _radarRange                     = 20.0;
+    _onlyShowItemsWithinRadarRange  = NO;
     
     // Create ARC
     _agController = [[AugmentedRealityController alloc] initWithViewController:self withDelgate:self];
@@ -50,10 +51,12 @@
     
 	[_agController setDebugMode:_debugMode];
     [_agController setShowsRadar:_showsRadar];
+    [_agController setRadarRange:_radarRange];
 	[_agController setScaleViewsBasedOnDistance:_scaleViewsBasedOnDistance];
 	[_agController setMinimumScaleFactor:_minimumScaleFactor];
 	[_agController setRotateViewsBasedOnPerspective:_rotateViewsBasedOnPerspective];
     [_agController updateDebugMode:![_agController debugMode]];
+    [_agController setOnlyShowItemsWithinRadarRange:_onlyShowItemsWithinRadarRange];
     
     GEOLocations *locations = [[GEOLocations alloc] initWithDelegate:delegate];
 	
@@ -146,6 +149,16 @@
 - (void)setRadarViewportColour:(UIColor *)radarViewportColour{
     _radarViewportColour = radarViewportColour;
     [_agController.radarViewPort setViewportColour:_radarViewportColour];
+}
+
+- (void)setRadarRange:(float)radarRange{
+    _radarRange = radarRange;
+    [_agController setRadarRange:_radarRange];
+}
+
+- (void)setOnlyShowItemsWithinRadarRange:(BOOL)onlyShowItemsWithinRadarRange{
+    _onlyShowItemsWithinRadarRange = onlyShowItemsWithinRadarRange;
+    [_agController setOnlyShowItemsWithinRadarRange:_onlyShowItemsWithinRadarRange];
 }
 
 

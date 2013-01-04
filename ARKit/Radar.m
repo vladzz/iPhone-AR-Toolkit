@@ -19,7 +19,7 @@
     if ((self = [super initWithFrame:frame])) {
         self.backgroundColor    = [UIColor clearColor];
         _radarBackgroundColour  = [UIColor colorWithRed:14.0/255.0 green:140.0/255.0 blue:14.0/255.0 alpha:0.2];
-        _pointColour            = [UIColor colorWithRed:9.0/255.0 green:90.0/255.0 blue:148.0/255.0 alpha:0.85];
+        _pointColour            = [UIColor whiteColor];
     }
     return self;
 }

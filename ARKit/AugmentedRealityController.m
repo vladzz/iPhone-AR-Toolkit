@@ -77,6 +77,7 @@
 	[self setMinimumScaleFactor: SCALE_FACTOR];
 	[self setScaleViewsBasedOnDistance: NO];
 	[self setRotateViewsBasedOnPerspective: NO];
+    [self setOnlyShowItemsWithinRadarRange:NO];
 	[self setMaximumRotationAngle: M_PI / 6.0];
     [self setCoordinates:[NSMutableArray array]];
     [self currentDeviceOrientation];
@@ -338,6 +339,12 @@
 		if ([geoLocation isKindOfClass:[ARGeoCoordinate class]]) {
 			[geoLocation calibrateUsingOrigin:centerLocation];
 			
+            if(_onlyShowItemsWithinRadarRange){
+                if(([geoLocation radialDistance] / 1000) > _radarRange){
+                    continue;
+                }
+            }
+            
 			if ([geoLocation radialDistance] > [self maximumScaleDistance]) 
 				[self setMaximumScaleDistance:[geoLocation radialDistance]];
 		}
@@ -426,9 +433,17 @@
 	
   //  NSLog(@"Current %f, Item %f, delta %f, range %f",currentAzimuth,pointAzimuth,deltaAzimith,degreesToRadian([self degreeRange]));
     
-	if (deltaAzimuth <= degreesToRadian(degreeRange))
+	if (deltaAzimuth <= degreesToRadian(degreeRange)){
 		result = YES;
-
+    }
+    
+    // Limit results to only those within radar range (if set)
+    if(_onlyShowItemsWithinRadarRange){
+        if(([coordinate radialDistance] / 1000) > _radarRange){
+            result = NO;
+        }
+    }
+    
 	return result;
 }
 
@@ -468,8 +483,10 @@
             CGPoint loc = [self pointForCoordinate:item];
             CGFloat scaleFactor = SCALE_FACTOR;
 	
-			if ([self scaleViewsBasedOnDistance]) 
+			if ([self scaleViewsBasedOnDistance]) {
 				scaleFactor = scaleFactor - [self minimumScaleFactor]*([item radialDistance] / [self maximumScaleDistance]);
+                NSLog(@"SF is %f", scaleFactor);
+            }
 
 			float width	 = [markerView bounds].size.width  * scaleFactor;
 			float height = [markerView bounds].size.height * scaleFactor;
@@ -516,7 +533,7 @@
     
     if(_showsRadar){
         _radarView.pois      = radarPointValues;
-        _radarView.radius    = 20.0;
+        _radarView.radius    = _radarRange;
         [_radarView setNeedsDisplay];
     }
 }

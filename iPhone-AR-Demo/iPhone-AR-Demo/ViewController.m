@@ -29,10 +29,12 @@
 - (IBAction)startAR:(id)sender {
     if([ARKit deviceSupportsAR]){
         _arViewController = [[ARViewController alloc] initWithDelegate:self];
-        [_arViewController setShowsRadar:YES];
-        [_arViewController setRadarBackgroundColour:[UIColor blackColor]];
-        [_arViewController setRadarViewportColour:[UIColor darkGrayColor]];
-        [_arViewController setRadarPointColour:[UIColor whiteColor]];
+        //[_arViewController setShowsRadar:YES];
+        //[_arViewController setRadarBackgroundColour:[UIColor blackColor]];
+        //[_arViewController setRadarViewportColour:[UIColor darkGrayColor]];
+        //[_arViewController setRadarPointColour:[UIColor whiteColor]];
+        [_arViewController setRadarRange:4000.0];
+        [_arViewController setOnlyShowItemsWithinRadarRange:YES];
         [_arViewController setModalTransitionStyle: UIModalTransitionStyleFlipHorizontal];
         [self presentViewController:_arViewController animated:YES completion:nil];
     }
@@ -44,7 +46,8 @@
     ARGeoCoordinate *tempCoordinate;
     CLLocation       *tempLocation;
     
-    /*tempLocation = [[CLLocation alloc] initWithLatitude:39.550051 longitude:-105.782067];
+    
+    tempLocation = [[CLLocation alloc] initWithLatitude:39.550051 longitude:-105.782067];
     tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Denver"];
     [locationArray addObject:tempCoordinate];
     
@@ -149,8 +152,7 @@
     tempLocation = [[CLLocation alloc] initWithLatitude:47.620973 longitude:-122.347276];
     tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Seattle"];
     [locationArray addObject:tempCoordinate];
-    */
-    
+
     tempLocation = [[CLLocation alloc] initWithLatitude:50.461921 longitude:-3.525315];
     tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Torquay"];
     [locationArray addObject:tempCoordinate];
@@ -166,6 +168,15 @@
     tempLocation = [[CLLocation alloc] initWithLatitude:50.4327 longitude:-3.686686];
     tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Totnes"];
     [locationArray addObject:tempCoordinate];
+    
+    tempLocation = [[CLLocation alloc] initWithLatitude:50.458061 longitude:-3.597078];
+    tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Marldon"];
+    [locationArray addObject:tempCoordinate];
+    
+    tempLocation = [[CLLocation alloc] initWithLatitude:50.528717 longitude:-3.606691];
+    tempCoordinate = [ARGeoCoordinate coordinateWithLocation:tempLocation locationTitle:@"Newton Abbot"];
+    [locationArray addObject:tempCoordinate];
+    
     
     return locationArray;
 }

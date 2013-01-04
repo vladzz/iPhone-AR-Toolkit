@@ -24,6 +24,8 @@
 @property (strong, nonatomic, setter = setRadarPointColour:)                UIColor *radarPointColour;
 @property (strong, nonatomic, setter = setRadarBackgroundColour:)           UIColor *radarBackgroundColour;
 @property (strong, nonatomic, setter = setRadarViewportColour:)             UIColor *radarViewportColour;
+@property (assign, nonatomic, setter = setRadarRange:)                      float radarRange;
+@property (assign, nonatomic, setter = setOnlyShowItemsWithinRadarRange:)   BOOL onlyShowItemsWithinRadarRange;
 
 - (id)initWithDelegate:(id<ARLocationDelegate>)aDelegate;
 

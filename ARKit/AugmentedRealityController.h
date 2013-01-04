@@ -60,8 +60,10 @@
 @property (nonatomic, retain) AVCaptureSession          *captureSession;
 @property (nonatomic, retain) AVCaptureVideoPreviewLayer *previewLayer;
 
-@property (strong, nonatomic) Radar                       *radarView;
-@property (strong, nonatomic) RadarViewPortView           *radarViewPort;
+@property (assign, nonatomic) BOOL                      onlyShowItemsWithinRadarRange;
+@property (strong, nonatomic) Radar                     *radarView;
+@property (strong, nonatomic) RadarViewPortView         *radarViewPort;
+@property (assign, nonatomic) float                     radarRange;
 
 @property (nonatomic, assign) id<ARDelegate> delegate;
 

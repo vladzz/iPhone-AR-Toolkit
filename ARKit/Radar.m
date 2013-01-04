@@ -17,7 +17,9 @@
 
 - (id)initWithFrame:(CGRect)frame{
     if ((self = [super initWithFrame:frame])) {
-        self.backgroundColor = [UIColor clearColor];
+        self.backgroundColor    = [UIColor clearColor];
+        _radarBackgroundColour  = [UIColor colorWithRed:14.0/255.0 green:140.0/255.0 blue:14.0/255.0 alpha:0.2];
+        _pointColour            = [UIColor colorWithRed:9.0/255.0 green:90.0/255.0 blue:148.0/255.0 alpha:0.85];
     }
     return self;
 }
@@ -25,8 +27,7 @@
 
 - (void)drawRect:(CGRect)rect{
     CGContextRef contextRef = UIGraphicsGetCurrentContext();
-    CGContextSetRGBFillColor(contextRef, 0, 0, 115, 0.3);
-    CGContextSetRGBStrokeColor(contextRef, 0, 0, 125, 0.1);
+    CGContextSetFillColorWithColor(contextRef, _radarBackgroundColour.CGColor);
     
     // Draw a radar and the view port 
     CGContextFillEllipseInRect(contextRef, CGRectMake(0.5, 0.5, RADIUS*2, RADIUS*2)); 
@@ -67,7 +68,7 @@
                 y = RADIUS;
             }
             //drawing the radar point
-            CGContextSetRGBFillColor(contextRef, 255, 0, 0, 1);
+            CGContextSetFillColorWithColor(contextRef, _pointColour.CGColor);
             if (x <= RADIUS * 2 && x >= 0 && y >= 0 && y <= RADIUS * 2) {
                 CGContextFillEllipseInRect(contextRef, CGRectMake(x, y, 2, 2)); 
             }

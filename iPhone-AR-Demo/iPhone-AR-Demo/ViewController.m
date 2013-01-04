@@ -30,6 +30,9 @@
     if([ARKit deviceSupportsAR]){
         _arViewController = [[ARViewController alloc] initWithDelegate:self];
         [_arViewController setShowsRadar:YES];
+        [_arViewController setRadarBackgroundColour:[UIColor blackColor]];
+        [_arViewController setRadarViewportColour:[UIColor darkGrayColor]];
+        [_arViewController setRadarPointColour:[UIColor whiteColor]];
         [_arViewController setModalTransitionStyle: UIModalTransitionStyleFlipHorizontal];
         [self presentViewController:_arViewController animated:YES completion:nil];
     }

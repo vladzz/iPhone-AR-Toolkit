@@ -21,6 +21,9 @@
 @property (assign, nonatomic, setter = setScaleViewsBasedOnDistance:)       BOOL scaleViewsBasedOnDistance;
 @property (assign, nonatomic, setter = setMinimumScaleFactor:)              float minimumScaleFactor;
 @property (assign, nonatomic, setter = setRotateViewsBasedOnPerspective:)   BOOL rotateViewsBasedOnPerspective;
+@property (strong, nonatomic, setter = setRadarPointColour:)                UIColor *radarPointColour;
+@property (strong, nonatomic, setter = setRadarBackgroundColour:)           UIColor *radarBackgroundColour;
+@property (strong, nonatomic, setter = setRadarViewportColour:)             UIColor *radarViewportColour;
 
 - (id)initWithDelegate:(id<ARLocationDelegate>)aDelegate;
 

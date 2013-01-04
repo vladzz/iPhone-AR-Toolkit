@@ -156,20 +156,20 @@
 - (void)setShowsRadar:(BOOL)showsRadar{
     _showsRadar = showsRadar;
     
-    [radarView          removeFromSuperview];
-    [radarViewPort      removeFromSuperview];
+    [_radarView          removeFromSuperview];
+    [_radarViewPort      removeFromSuperview];
     [radarNorthLabel    removeFromSuperview];
     
-    radarView       = nil;
-    radarViewPort   = nil;
+    _radarView       = nil;
+    _radarViewPort   = nil;
     radarNorthLabel = nil;
     
     if(_showsRadar){
         
         CGRect displayFrame = [self maximumUsableFrame];
         
-        radarView       = [[Radar alloc] initWithFrame:CGRectMake(displayFrame.size.width - 63, 2, 61, 61)];
-        radarViewPort   = [[RadarViewPortView alloc] initWithFrame:CGRectMake(displayFrame.size.width - 63, 2, 61, 61)];
+        _radarView       = [[Radar alloc] initWithFrame:CGRectMake(displayFrame.size.width - 63, 2, 61, 61)];
+        _radarViewPort   = [[RadarViewPortView alloc] initWithFrame:CGRectMake(displayFrame.size.width - 63, 2, 61, 61)];
         
         radarNorthLabel = [[UILabel alloc] initWithFrame:CGRectMake(displayFrame.size.width - 37, 2, 10, 10)];
         radarNorthLabel.backgroundColor = [UIColor clearColor];
@@ -179,8 +179,8 @@
         radarNorthLabel.text = @"N";
         radarNorthLabel.alpha = 0.8;
         
-        [self.displayView addSubview:radarView];
-        [self.displayView addSubview:radarViewPort];
+        [self.displayView addSubview:_radarView];
+        [self.displayView addSubview:_radarViewPort];
         [self.displayView addSubview:radarNorthLabel];
     }
 }
@@ -290,8 +290,8 @@
             gradToRotate = 360 + gradToRotate;
         }
         
-        radarViewPort.referenceAngle = gradToRotate;
-        [radarViewPort setNeedsDisplay];
+        _radarViewPort.referenceAngle = gradToRotate;
+        [_radarViewPort setNeedsDisplay];
     }
 }
 
@@ -515,9 +515,9 @@
 	}
     
     if(_showsRadar){
-        radarView.pois      = radarPointValues;
-        radarView.radius    = 20.0;
-        [radarView setNeedsDisplay];
+        _radarView.pois      = radarPointValues;
+        _radarView.radius    = 20.0;
+        [_radarView setNeedsDisplay];
     }
 }
 
@@ -600,8 +600,8 @@
 		[displayView setBounds:bounds];  
         
         if(_showsRadar){
-            [radarView       setFrame:CGRectMake(bounds.size.width - 63, 2, 61, 61)];
-            [radarViewPort   setFrame:CGRectMake(bounds.size.width - 63, 2, 61, 61)];
+            [_radarView       setFrame:CGRectMake(bounds.size.width - 63, 2, 61, 61)];
+            [_radarViewPort   setFrame:CGRectMake(bounds.size.width - 63, 2, 61, 61)];
             [radarNorthLabel setFrame:CGRectMake(bounds.size.width - 37, 2, 10, 10)];
         }
         

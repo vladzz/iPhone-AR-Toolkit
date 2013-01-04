@@ -37,8 +37,6 @@
     UIAccelerometer             *accelerometerManager;
 	CLLocation                  *centerLocation;
 	UIView                      *displayView;
-    Radar                       *radarView;
-    RadarViewPortView           *radarViewPort;
     UILabel                     *radarNorthLabel;
 }
 
@@ -61,6 +59,9 @@
 @property (nonatomic, retain) UIViewController          *rootViewController;
 @property (nonatomic, retain) AVCaptureSession          *captureSession;
 @property (nonatomic, retain) AVCaptureVideoPreviewLayer *previewLayer;
+
+@property (strong, nonatomic) Radar                       *radarView;
+@property (strong, nonatomic) RadarViewPortView           *radarViewPort;
 
 @property (nonatomic, assign) id<ARDelegate> delegate;
 

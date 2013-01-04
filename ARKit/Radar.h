@@ -16,4 +16,7 @@
 @property (nonatomic, strong) NSArray *pois;
 @property (nonatomic, assign) float radius;
 
+@property (strong, nonatomic) UIColor *radarBackgroundColour;
+@property (strong, nonatomic) UIColor *pointColour;
+
 @end

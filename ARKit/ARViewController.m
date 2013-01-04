@@ -133,6 +133,21 @@
     [_agController setRotateViewsBasedOnPerspective:_rotateViewsBasedOnPerspective];
 }
 
+- (void)setRadarPointColour:(UIColor *)radarPointColour{
+    _radarPointColour = radarPointColour;
+    [_agController.radarView setPointColour:_radarPointColour];
+}
+
+- (void)setRadarBackgroundColour:(UIColor *)radarBackgroundColour{
+    _radarBackgroundColour = radarBackgroundColour;
+    [_agController.radarView setRadarBackgroundColour:_radarBackgroundColour];
+}
+
+- (void)setRadarViewportColour:(UIColor *)radarViewportColour{
+    _radarViewportColour = radarViewportColour;
+    [_agController.radarViewPort setViewportColour:_radarViewportColour];
+}
+
 
 #pragma mark - View Cleanup
 - (void)didReceiveMemoryWarning {

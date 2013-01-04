@@ -18,6 +18,7 @@
         _newAngle               = 45.0;
         _referenceAngle         = 247.5;
         self.backgroundColor    = [UIColor clearColor];
+        _viewportColour         = [UIColor colorWithRed:14.0/255.0 green:140.0/255.0 blue:14.0/255.0 alpha:0.5];
     }
     
     return self;
@@ -25,7 +26,7 @@
 
 - (void)drawRect:(CGRect)rect{
     CGContextRef contextRef = UIGraphicsGetCurrentContext();
-    CGContextSetRGBFillColor(contextRef, 0, 255, 115, 0.3);
+    CGContextSetFillColorWithColor(contextRef, _viewportColour.CGColor);
     CGContextMoveToPoint(contextRef, RADIUS, RADIUS);
     CGContextAddArc(contextRef, RADIUS, RADIUS, RADIUS,  radians(_referenceAngle), radians(_referenceAngle+_newAngle),0);
     CGContextClosePath(contextRef);

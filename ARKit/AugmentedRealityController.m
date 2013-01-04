@@ -280,12 +280,16 @@
     
     if(_showsRadar){
         int gradToRotate = newHeading.magneticHeading - 90 - 22.5;
-        if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft || [[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeRight) {
+        if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft) {
             gradToRotate += 90;
+        }
+        if([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeRight){
+            gradToRotate -= 90;
         }
         if (gradToRotate < 0) {
             gradToRotate = 360 + gradToRotate;
         }
+        
         radarViewPort.referenceAngle = gradToRotate;
         [radarViewPort setNeedsDisplay];
     }

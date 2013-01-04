@@ -81,21 +81,37 @@
     [self setCoordinates:[NSMutableArray array]];
     [self currentDeviceOrientation];
 	
-	CGRect screenRect = [[UIScreen mainScreen] bounds];
+	/*CGRect screenRect = [[UIScreen mainScreen] bounds];
     
     if (cameraOrientation == UIDeviceOrientationLandscapeLeft || cameraOrientation == UIDeviceOrientationLandscapeRight) {
         screenRect.size.width  = [[UIScreen mainScreen] applicationFrame].size.height;
         screenRect.size.height = [[UIScreen mainScreen] applicationFrame].size.width;
-    }
+    }*/
     
-	UIView *camView = [[UIView alloc] initWithFrame: screenRect];
-    UIView *displayV= [[UIView alloc] initWithFrame: screenRect];
+	UIView *camView = [[UIView alloc] initWithFrame: [self maximumUsableFrame]];
+    UIView *displayV= [[UIView alloc] initWithFrame: [self maximumUsableFrame]];
   
 	degreeRange = [camView bounds].size.width / ADJUST_BY;
     
     
 	[vc setView:displayV];
     [[vc view] insertSubview:camView atIndex:0];
+    
+    
+    radarView       = [[Radar alloc] initWithFrame:CGRectMake(2, 2, 61, 61)];
+    radarViewPort   = [[RadarViewPortView alloc] initWithFrame:CGRectMake(2, 2, 61, 61)];
+    
+    UILabel *northLabel = [[UILabel alloc] initWithFrame:CGRectMake(28, 2, 10, 10)];
+    northLabel.backgroundColor = [UIColor blackColor];
+    northLabel.textColor = [UIColor whiteColor];
+    northLabel.font = [UIFont systemFontOfSize:8.0];
+    northLabel.textAlignment = NSTextAlignmentCenter;
+    northLabel.text = @"N";
+    northLabel.alpha = 0.8;
+    
+    [displayV addSubview:radarView];
+    [displayV addSubview:radarViewPort];
+    [displayV addSubview:northLabel];
 
 #if !TARGET_IPHONE_SIMULATOR
     
@@ -148,6 +164,29 @@
     [self setDisplayView:displayV];
     
   	return self;
+}
+
+- (CGRect)maximumUsableFrame{
+    CGRect maxFrame = [UIScreen mainScreen].applicationFrame;
+    
+    maxFrame.origin.x = 0;
+    maxFrame.origin.y = 0;
+    
+    if(cameraOrientation == UIDeviceOrientationLandscapeLeft || cameraOrientation == UIDeviceOrientationLandscapeRight){
+        NSInteger width, height;
+        width   = maxFrame.size.height;
+        height  = maxFrame.size.width;
+        maxFrame.size.height = height;
+        maxFrame.size.width = width;
+    }
+    
+    if(self.rootViewController.navigationController)
+        maxFrame.size.height -= self.rootViewController.navigationController.navigationBar.frame.size.height;
+    
+    if(self.rootViewController.tabBarController && !self.rootViewController.tabBarController.tabBar.hidden)
+        maxFrame.size.height -= self.rootViewController.tabBarController.tabBar.frame.size.height;
+    
+    return maxFrame;
 }
 
 -(void)unloadAV {
@@ -218,6 +257,16 @@
         [self updateCenterCoordinate];
         [[self delegate] didUpdateHeading:newHeading];
     }
+    
+    int gradToRotate = newHeading.magneticHeading - 90 - 22.5;
+    if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft || [[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeRight) {
+        gradToRotate += 90;
+    }
+    if (gradToRotate < 0) {
+        gradToRotate = 360 + gradToRotate;
+    }
+    radarViewPort.referenceAngle = gradToRotate;
+    [radarViewPort setNeedsDisplay];
 }
 
 - (BOOL)locationManagerShouldDisplayHeadingCalibration:(CLLocationManager *)manager {
@@ -382,8 +431,10 @@
 	
 	[debugView setText: [NSString stringWithFormat:@"%.3f %.3f ", -radianToDegrees(viewAngle), radianToDegrees([[self centerCoordinate] azimuth])]];
 	
+    NSMutableArray *radarPointValues = [[NSMutableArray alloc] initWithCapacity:[self.coordinates count]];
+    
 	for (ARGeoCoordinate *item in [self coordinates]) {
-
+        
         UIView *markerView = [item displayView];
         
 		if ([self shouldDisplayCoordinate:item]) {
@@ -427,15 +478,22 @@
 			if (!([markerView superview])) {
 				[[self displayView] insertSubview:markerView atIndex:1];
 			}
-		} 
-		else 
-            if ([markerView superview])
+		}else {
+            if([markerView superview]){
                 [markerView removeFromSuperview];
-
+            }
+        }
+        
+        [radarPointValues addObject:item];
+        
 	}
+    
+    radarView.pois      = radarPointValues;
+    radarView.radius    = 50.0;
+    [radarView setNeedsDisplay];
 }
 
--(NSComparisonResult) LocationSortClosestFirst:(ARCoordinate *) s1 secondCoord:(ARCoordinate*) s2 {
+- (NSComparisonResult)LocationSortClosestFirst:(ARCoordinate *)s1 secondCoord:(ARCoordinate*)s2{
     
 	if ([s1 radialDistance] < [s2 radialDistance]) 
 		return NSOrderedAscending;
@@ -483,18 +541,20 @@
 	if (orientation != UIDeviceOrientationUnknown && orientation != UIDeviceOrientationFaceUp && orientation != UIDeviceOrientationFaceDown) {
 		
 		CGAffineTransform transform = CGAffineTransformMakeRotation(degreesToRadian(0));
-		CGRect bounds = [[UIScreen mainScreen] bounds];
+		//CGRect bounds = [[UIScreen mainScreen] bounds];
+        
+        CGRect bounds = [self maximumUsableFrame];
         
         switch (orientation) {
             case UIDeviceOrientationLandscapeLeft:
                 transform		   = CGAffineTransformMakeRotation(degreesToRadian(90));
-                bounds.size.width  = [[UIScreen mainScreen] bounds].size.height;
-                bounds.size.height = [[UIScreen mainScreen] bounds].size.width;
+                //bounds.size.width  = [[UIScreen mainScreen] bounds].size.height;
+                //bounds.size.height = [[UIScreen mainScreen] bounds].size.width;
                 break;
             case UIDeviceOrientationLandscapeRight:
                 transform		   = CGAffineTransformMakeRotation(degreesToRadian(-90));
-                bounds.size.width  = [[UIScreen mainScreen] bounds].size.height;
-                bounds.size.height = [[UIScreen mainScreen] bounds].size.width;
+                //bounds.size.width  = [[UIScreen mainScreen] bounds].size.height;
+                //bounds.size.height = [[UIScreen mainScreen] bounds].size.width;
                 break;
             case UIDeviceOrientationPortraitUpsideDown:
                 transform = CGAffineTransformMakeRotation(degreesToRadian(180));
@@ -521,7 +581,7 @@
 #pragma mark -	
 #pragma mark Debug features
 
-- (void)updateDebugMode:(BOOL) flag {
+- (void)updateDebugMode:(BOOL)flag {
 
 	if ([self debugMode] == flag) {
 		CGRect debugRect = CGRectMake(0, [[self displayView] bounds].size.height -20, [[self displayView] bounds].size.width, 20);	
@@ -541,7 +601,7 @@
 
 }
 
--(void) setupDebugPostion {
+- (void)setupDebugPostion{
 	
 	if ([self debugMode]) {
 		[debugView sizeToFit];

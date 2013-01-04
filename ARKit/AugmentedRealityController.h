@@ -11,6 +11,8 @@
 #import "ARViewController.h"
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
+#import "Radar.h"
+#import "RadarViewPortView.h"
 
 @class ARCoordinate;
 
@@ -35,7 +37,8 @@
     UIAccelerometer		*accelerometerManager;
 	CLLocation			*centerLocation;
 	UIView				*displayView;
-
+    Radar *radarView;
+    RadarViewPortView *radarViewPort;
 }
 
 @property BOOL scaleViewsBasedOnDistance;

@@ -50,6 +50,8 @@
 @property double minimumScaleFactor;
 @property double maximumRotationAngle;
 
+@property (nonatomic, assign, setter = setShowsRadar:) BOOL showsRadar;
+
 @property (nonatomic, retain) UIAccelerometer           *accelerometerManager;
 @property (nonatomic, retain) CLLocationManager         *locationManager;
 @property (nonatomic, retain) ARCoordinate              *centerCoordinate;

@@ -29,6 +29,7 @@
 - (IBAction)startAR:(id)sender {
     if([ARKit deviceSupportsAR]){
         _arViewController = [[ARViewController alloc] initWithDelegate:self];
+        [_arViewController setShowsRadar:YES];
         [_arViewController setModalTransitionStyle: UIModalTransitionStyleFlipHorizontal];
         [self presentViewController:_arViewController animated:YES completion:nil];
     }

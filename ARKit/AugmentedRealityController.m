@@ -98,20 +98,7 @@
     [[vc view] insertSubview:camView atIndex:0];
     
     
-    radarView       = [[Radar alloc] initWithFrame:CGRectMake(displayV.frame.size.width - 63, 2, 61, 61)];
-    radarViewPort   = [[RadarViewPortView alloc] initWithFrame:CGRectMake(displayV.frame.size.width - 63, 2, 61, 61)];
     
-    radarNorthLabel = [[UILabel alloc] initWithFrame:CGRectMake(displayV.frame.size.width - 37, 2, 10, 10)];
-    radarNorthLabel.backgroundColor = [UIColor clearColor];
-    radarNorthLabel.textColor = [UIColor whiteColor];
-    radarNorthLabel.font = [UIFont boldSystemFontOfSize:8.0];
-    radarNorthLabel.textAlignment = NSTextAlignmentCenter;
-    radarNorthLabel.text = @"N";
-    radarNorthLabel.alpha = 0.8;
-    
-    [displayV addSubview:radarView];
-    [displayV addSubview:radarViewPort];
-    [displayV addSubview:radarNorthLabel];
 
 #if !TARGET_IPHONE_SIMULATOR
     
@@ -164,6 +151,38 @@
     [self setDisplayView:displayV];
     
   	return self;
+}
+
+- (void)setShowsRadar:(BOOL)showsRadar{
+    _showsRadar = showsRadar;
+    
+    [radarView          removeFromSuperview];
+    [radarViewPort      removeFromSuperview];
+    [radarNorthLabel    removeFromSuperview];
+    
+    radarView       = nil;
+    radarViewPort   = nil;
+    radarNorthLabel = nil;
+    
+    if(_showsRadar){
+        
+        CGRect displayFrame = [self maximumUsableFrame];
+        
+        radarView       = [[Radar alloc] initWithFrame:CGRectMake(displayFrame.size.width - 63, 2, 61, 61)];
+        radarViewPort   = [[RadarViewPortView alloc] initWithFrame:CGRectMake(displayFrame.size.width - 63, 2, 61, 61)];
+        
+        radarNorthLabel = [[UILabel alloc] initWithFrame:CGRectMake(displayFrame.size.width - 37, 2, 10, 10)];
+        radarNorthLabel.backgroundColor = [UIColor clearColor];
+        radarNorthLabel.textColor = [UIColor whiteColor];
+        radarNorthLabel.font = [UIFont boldSystemFontOfSize:8.0];
+        radarNorthLabel.textAlignment = NSTextAlignmentCenter;
+        radarNorthLabel.text = @"N";
+        radarNorthLabel.alpha = 0.8;
+        
+        [self.displayView addSubview:radarView];
+        [self.displayView addSubview:radarViewPort];
+        [self.displayView addSubview:radarNorthLabel];
+    }
 }
 
 - (CGRect)maximumUsableFrame{
@@ -258,15 +277,18 @@
         [[self delegate] didUpdateHeading:newHeading];
     }
     
-    int gradToRotate = newHeading.magneticHeading - 90 - 22.5;
-    if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft || [[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeRight) {
-        gradToRotate += 90;
+    
+    if(_showsRadar){
+        int gradToRotate = newHeading.magneticHeading - 90 - 22.5;
+        if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft || [[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeRight) {
+            gradToRotate += 90;
+        }
+        if (gradToRotate < 0) {
+            gradToRotate = 360 + gradToRotate;
+        }
+        radarViewPort.referenceAngle = gradToRotate;
+        [radarViewPort setNeedsDisplay];
     }
-    if (gradToRotate < 0) {
-        gradToRotate = 360 + gradToRotate;
-    }
-    radarViewPort.referenceAngle = gradToRotate;
-    [radarViewPort setNeedsDisplay];
 }
 
 - (BOOL)locationManagerShouldDisplayHeadingCalibration:(CLLocationManager *)manager {
@@ -488,9 +510,11 @@
         
 	}
     
-    radarView.pois      = radarPointValues;
-    radarView.radius    = 20.0;
-    [radarView setNeedsDisplay];
+    if(_showsRadar){
+        radarView.pois      = radarPointValues;
+        radarView.radius    = 20.0;
+        [radarView setNeedsDisplay];
+    }
 }
 
 - (NSComparisonResult)LocationSortClosestFirst:(ARCoordinate *)s1 secondCoord:(ARCoordinate*)s2{
@@ -571,9 +595,11 @@
 		[displayView setTransform: transform];
 		[displayView setBounds:bounds];  
         
-        [radarView       setFrame:CGRectMake(bounds.size.width - 63, 2, 61, 61)];
-        [radarViewPort   setFrame:CGRectMake(bounds.size.width - 63, 2, 61, 61)];
-        [radarNorthLabel setFrame:CGRectMake(bounds.size.width - 37, 2, 10, 10)];
+        if(_showsRadar){
+            [radarView       setFrame:CGRectMake(bounds.size.width - 63, 2, 61, 61)];
+            [radarViewPort   setFrame:CGRectMake(bounds.size.width - 63, 2, 61, 61)];
+            [radarNorthLabel setFrame:CGRectMake(bounds.size.width - 37, 2, 10, 10)];
+        }
         
 		degreeRange = [self displayView].bounds.size.width / ADJUST_BY;
 		[self updateDebugMode:YES];

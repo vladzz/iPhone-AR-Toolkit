@@ -98,13 +98,13 @@
     [[vc view] insertSubview:camView atIndex:0];
     
     
-    radarView       = [[Radar alloc] initWithFrame:CGRectMake(2, 2, 61, 61)];
-    radarViewPort   = [[RadarViewPortView alloc] initWithFrame:CGRectMake(2, 2, 61, 61)];
+    radarView       = [[Radar alloc] initWithFrame:CGRectMake(displayV.frame.size.width - 63, 2, 61, 61)];
+    radarViewPort   = [[RadarViewPortView alloc] initWithFrame:CGRectMake(displayV.frame.size.width - 63, 2, 61, 61)];
     
-    UILabel *northLabel = [[UILabel alloc] initWithFrame:CGRectMake(28, 2, 10, 10)];
-    northLabel.backgroundColor = [UIColor blackColor];
+    UILabel *northLabel = [[UILabel alloc] initWithFrame:CGRectMake(displayV.frame.size.width - 37, 2, 10, 10)];
+    northLabel.backgroundColor = [UIColor clearColor];
     northLabel.textColor = [UIColor whiteColor];
-    northLabel.font = [UIFont systemFontOfSize:8.0];
+    northLabel.font = [UIFont boldSystemFontOfSize:8.0];
     northLabel.textAlignment = NSTextAlignmentCenter;
     northLabel.text = @"N";
     northLabel.alpha = 0.8;
@@ -489,7 +489,7 @@
 	}
     
     radarView.pois      = radarPointValues;
-    radarView.radius    = 50.0;
+    radarView.radius    = 20.0;
     [radarView setNeedsDisplay];
 }
 

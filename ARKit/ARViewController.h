@@ -14,8 +14,13 @@
 
 @interface ARViewController : UIViewController<ARMarkerDelegate, ARDelegate>
 
-@property (nonatomic, retain) AugmentedRealityController *agController;
 @property (nonatomic, assign) id<ARLocationDelegate> delegate;
+
+@property (assign, nonatomic, setter = setDebugMode:)                       BOOL debugMode;
+@property (assign, nonatomic, setter = setShowsRadar:)                      BOOL showsRadar;
+@property (assign, nonatomic, setter = setScaleViewsBasedOnDistance:)       BOOL scaleViewsBasedOnDistance;
+@property (assign, nonatomic, setter = setMinimumScaleFactor:)              float minimumScaleFactor;
+@property (assign, nonatomic, setter = setRotateViewsBasedOnPerspective:)   BOOL rotateViewsBasedOnPerspective;
 
 - (id)initWithDelegate:(id<ARLocationDelegate>)aDelegate;
 

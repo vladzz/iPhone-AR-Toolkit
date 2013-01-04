@@ -11,33 +11,33 @@
 #import "GEOLocations.h"
 #import "MarkerView.h"
 
-@implementation ARViewController
+@implementation ARViewController{
+    AugmentedRealityController *_agController;
+}
 
-@synthesize agController;
 @synthesize delegate;
 
 - (id)initWithDelegate:(id<ARLocationDelegate>)aDelegate{
 	
 	[self setDelegate:aDelegate];
 	
-	if (!(self = [super init]))
+	if (!(self = [super init])){
 		return nil;
+	}
+    
+	[self setWantsFullScreenLayout:NO];
+    
+    // Defaults
+    _debugMode                      = NO;
+    _scaleViewsBasedOnDistance      = YES;
+    _minimumScaleFactor             = 0.5;
+    _rotateViewsBasedOnPerspective  = YES;
+    _showsRadar                     = YES;
+    
+    
+    // Create ARC
+    _agController = [[AugmentedRealityController alloc] initWithViewController:self withDelgate:self];
 	
-	[self setWantsFullScreenLayout: NO];
-    
- 	return self;
-}
-
-- (void)loadView{
-    
-	AugmentedRealityController *arc = [[AugmentedRealityController alloc] initWithViewController:self withDelgate:self];
-	
-	[arc setDebugMode:NO];
-	[arc setScaleViewsBasedOnDistance:YES];
-	[arc setMinimumScaleFactor:0.5];
-	[arc setRotateViewsBasedOnPerspective:YES];
-    [arc updateDebugMode:![arc debugMode]];
-    
     UIButton *closeBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
     [closeBtn setTitle:@"Close" forState:UIControlStateNormal];
     [closeBtn.titleLabel setFont:[UIFont boldSystemFontOfSize:13.0]];
@@ -48,22 +48,30 @@
     [closeBtn addTarget:self action:@selector(closeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [[self view] addSubview:closeBtn];
     
-	
-	GEOLocations *locations = [[GEOLocations alloc] initWithDelegate:delegate];
+	[_agController setDebugMode:_debugMode];
+    [_agController setShowsRadar:_showsRadar];
+	[_agController setScaleViewsBasedOnDistance:_scaleViewsBasedOnDistance];
+	[_agController setMinimumScaleFactor:_minimumScaleFactor];
+	[_agController setRotateViewsBasedOnPerspective:_rotateViewsBasedOnPerspective];
+    [_agController updateDebugMode:![_agController debugMode]];
+    
+    GEOLocations *locations = [[GEOLocations alloc] initWithDelegate:delegate];
 	
 	if([[locations returnLocations] count] > 0){
 		for (ARGeoCoordinate *coordinate in [locations returnLocations]){
 			MarkerView *cv = [[MarkerView alloc] initForCoordinate:coordinate withDelgate:self allowsCallout:YES];
             [coordinate setDisplayView:cv];
-			[arc addCoordinate:coordinate];
+			[_agController addCoordinate:coordinate];
 		}
 	}
     
-    [self setAgController:arc];
+    
+    
+ 	return self;
 }
 
 - (void)closeButtonClicked:(id)sender {
-    [self setAgController:nil];
+    _agController = nil;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -100,13 +108,41 @@
     */
 }
 
+#pragma mark - Custom Setters
+- (void)setDebugMode:(BOOL)debugMode{
+    _debugMode = debugMode;
+    [_agController setDebugMode:_debugMode];
+}
+
+- (void)setShowsRadar:(BOOL)showsRadar{
+    _showsRadar = showsRadar;
+    [_agController setShowsRadar:_showsRadar];
+}
+
+- (void)setScaleViewsBasedOnDistance:(BOOL)scaleViewsBasedOnDistance{
+    _scaleViewsBasedOnDistance = scaleViewsBasedOnDistance;
+    [_agController setScaleViewsBasedOnDistance:_scaleViewsBasedOnDistance];
+}
+
+- (void)setMinimumScaleFactor:(float)minimumScaleFactor{
+    _minimumScaleFactor = minimumScaleFactor;
+    [_agController setMinimumScaleFactor:_minimumScaleFactor];
+}
+
+- (void)setRotateViewsBasedOnPerspective:(BOOL)rotateViewsBasedOnPerspective{
+    _rotateViewsBasedOnPerspective = rotateViewsBasedOnPerspective;
+    [_agController setRotateViewsBasedOnPerspective:_rotateViewsBasedOnPerspective];
+}
+
+
+#pragma mark - View Cleanup
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
 }
 
 - (void)viewDidUnload {
-	agController = nil;
+	_agController = nil;
 }
 
 @end

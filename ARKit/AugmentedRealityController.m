@@ -133,7 +133,7 @@
     
     [self setPreviewLayer:newCaptureVideoPreviewLayer];
     
-    [avCaptureSession setSessionPreset:AVCaptureSessionPresetLow];
+    [avCaptureSession setSessionPreset:AVCaptureSessionPresetHigh];
     [avCaptureSession startRunning];
     
     [self setCaptureSession:avCaptureSession];

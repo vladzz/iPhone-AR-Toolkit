@@ -13,4 +13,7 @@
 
 - (IBAction)startAR:(id)sender;
 - (IBAction)startARWithoutCloseButton:(id)sender;
+- (IBAction)startARNothing:(id)sender;
+- (IBAction)startARNavBar:(id)sender;
+- (IBAction)startAREverything:(id)sender;
 @end

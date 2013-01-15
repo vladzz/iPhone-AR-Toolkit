@@ -1,54 +1,146 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2844" systemVersion="12C60" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2840" systemVersion="11G56" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="BPe-RP-ixO">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1930"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1926"/>
     </dependencies>
     <scenes>
-        <!--View Controller - Item-->
-        <scene sceneID="5">
+        <!--Navigation Controller - ARKit-->
+        <scene sceneID="X4B-lP-ixU">
             <objects>
-                <viewController id="2" customClass="ViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="3">
-                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
+                <navigationController definesPresentationContext="YES" id="6Yh-dR-BCy" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="ARKit" id="DBt-7h-mcD"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="0oJ-4X-vfw">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.13625059589999999" green="0.199886544" blue="0.26672114159999999" alpha="1" colorSpace="calibratedRGB"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Pc3-Pn-76P" kind="relationship" relationship="rootViewController" id="mxG-4J-0aC"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3aj-a2-8wH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-331" y="-1380"/>
+        </scene>
+        <!--View Controller - iPhone ARKit-->
+        <scene sceneID="rdf-jG-imJ">
+            <objects>
+                <viewController id="Pc3-Pn-76P" customClass="ViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="TGK-b3-mX7">
+                        <rect key="frame" x="0.0" y="64" width="320" height="455"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="g6T-gY-B3v">
-                                <rect key="frame" x="39" y="204" width="242" height="44"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="rFq-k4-Z0w">
+                                <rect key="frame" x="20" y="18" width="280" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.15689464450000001" green="0.19460053250000001" blue="0.26672114159999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Start AR">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                <size key="titleShadowOffset" width="0.0" height="1"/>
+                                <state key="normal" title="Start AR Standard">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.091953039510000001" green="0.1027413806" blue="0.15403778700000001" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <state key="highlighted">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="startAR:" destination="2" eventType="touchUpInside" id="1un-dR-NHa"/>
+                                    <action selector="startAR:" destination="Pc3-Pn-76P" eventType="touchUpInside" id="Bha-8U-GH8"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="edZ-2s-7Ix">
-                                <rect key="frame" x="39" y="300" width="242" height="44"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="292-F7-ToK">
+                                <rect key="frame" x="20" y="70" width="280" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.15689464450000001" green="0.19460053250000001" blue="0.26672114159999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <size key="titleShadowOffset" width="0.0" height="1"/>
                                 <state key="normal" title="Start AR Without Close Button">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.091953039510000001" green="0.1027413806" blue="0.15403778700000001" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <state key="highlighted">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="startARWithoutCloseButton:" destination="2" eventType="touchUpInside" id="k4n-Bn-QcU"/>
+                                    <action selector="startARWithoutCloseButton:" destination="Pc3-Pn-76P" eventType="touchUpInside" id="u5u-TP-cbQ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ogU-UB-ii1">
+                                <rect key="frame" x="20" y="122" width="280" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.15689464450000001" green="0.19460053250000001" blue="0.26672114159999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <size key="titleShadowOffset" width="0.0" height="1"/>
+                                <state key="normal" title="Start AR No Status Bar">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.091953039510000001" green="0.1027413806" blue="0.15403778700000001" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="startARNothing:" destination="Pc3-Pn-76P" eventType="touchUpInside" id="nZe-WD-TQR"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="s2l-gd-8Ah">
+                                <rect key="frame" x="20" y="174" width="280" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.15689464450000001" green="0.19460053250000001" blue="0.26672114159999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <size key="titleShadowOffset" width="0.0" height="1"/>
+                                <state key="normal" title="Start AR Nav Bar No Tab Bar">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.091953039510000001" green="0.1027413806" blue="0.15403778700000001" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="startARNavBar:" destination="Pc3-Pn-76P" eventType="touchUpInside" id="sWv-Uy-7hN"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="a2V-Uv-czb">
+                                <rect key="frame" x="20" y="226" width="280" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.15689464450000001" green="0.19460053250000001" blue="0.26672114159999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <size key="titleShadowOffset" width="0.0" height="1"/>
+                                <state key="normal" title="Start AR Nav Bar With Tab Bar">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.091953039510000001" green="0.1027413806" blue="0.15403778700000001" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="startAREverything:" destination="Pc3-Pn-76P" eventType="touchUpInside" id="zCy-yA-3Gk"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.22444597290000001" green="0.21775509709999999" blue="0.26672114159999999" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="9J1-bP-87j"/>
-                    <navigationItem key="navigationItem" id="DhN-MP-6Tm"/>
+                    <tabBarItem key="tabBarItem" title="ARKit" id="uKc-nK-YMt"/>
+                    <navigationItem key="navigationItem" title="iPhone ARKit" id="G5e-vN-RFf"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lOc-ec-FvK" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-380" y="-554"/>
+            <point key="canvasLocation" x="136" y="-1380"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="S5e-5A-3Za">
+            <objects>
+                <tabBarController definesPresentationContext="YES" id="BPe-RP-ixO" sceneMemberID="viewController">
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="e75-bu-ilI">
+                        <rect key="frame" x="129" y="330" width="163" height="49"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="6Yh-dR-BCy" kind="relationship" relationship="viewControllers" id="0JN-fJ-sFV"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2LP-4R-nW6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-788" y="-1380"/>
         </scene>
     </scenes>
     <classes>
@@ -56,6 +148,9 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
             <relationships>
                 <relationship kind="action" name="startAR:"/>
+                <relationship kind="action" name="startAREverything:"/>
+                <relationship kind="action" name="startARNavBar:"/>
+                <relationship kind="action" name="startARNothing:"/>
                 <relationship kind="action" name="startARWithoutCloseButton:"/>
             </relationships>
         </class>

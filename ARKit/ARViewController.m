@@ -40,13 +40,11 @@
     // Create ARC
     _agController = [[AugmentedRealityController alloc] initWithViewController:self withDelgate:self];
 	
-	[_agController setDebugMode:_debugMode];
     [_agController setShowsRadar:_showsRadar];
     [_agController setRadarRange:_radarRange];
 	[_agController setScaleViewsBasedOnDistance:_scaleViewsBasedOnDistance];
 	[_agController setMinimumScaleFactor:_minimumScaleFactor];
 	[_agController setRotateViewsBasedOnPerspective:_rotateViewsBasedOnPerspective];
-    [_agController updateDebugMode:![_agController debugMode]];
     [_agController setOnlyShowItemsWithinRadarRange:_onlyShowItemsWithinRadarRange];
     
     GEOLocations *locations = [[GEOLocations alloc] initWithDelegate:delegate];
@@ -58,6 +56,9 @@
 			[_agController addCoordinate:coordinate];
 		}
 	}
+    
+    [self.view setAutoresizesSubviews:YES];
+    
     
  	return self;
 }
@@ -90,6 +91,10 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	return YES;
+}
+
+- (BOOL)shouldAutorotate{
+    return YES;
 }
 
 - (void)didTapMarker:(ARGeoCoordinate *)coordinate {

@@ -46,7 +46,6 @@
 @synthesize accelerometerManager;
 @synthesize displayView;
 @synthesize cameraView;
-@synthesize debugView;
 @synthesize rootViewController;
 @synthesize centerCoordinate;
 @synthesize scaleViewsBasedOnDistance;
@@ -82,23 +81,27 @@
     [self setCoordinates:[NSMutableArray array]];
     [self currentDeviceOrientation];
 	
-	/*CGRect screenRect = [[UIScreen mainScreen] bounds];
+	CGRect screenRect = [[UIScreen mainScreen] bounds];
     
     if (cameraOrientation == UIDeviceOrientationLandscapeLeft || cameraOrientation == UIDeviceOrientationLandscapeRight) {
-        screenRect.size.width  = [[UIScreen mainScreen] applicationFrame].size.height;
-        screenRect.size.height = [[UIScreen mainScreen] applicationFrame].size.width;
-    }*/
+        screenRect.size.width  = [[UIScreen mainScreen] bounds].size.height;
+        screenRect.size.height = [[UIScreen mainScreen] bounds].size.width;
+    }
     
-	UIView *camView = [[UIView alloc] initWithFrame: [self maximumUsableFrame]];
-    UIView *displayV= [[UIView alloc] initWithFrame: [self maximumUsableFrame]];
-  
+	UIView *camView = [[UIView alloc] initWithFrame:screenRect];
+    UIView *displayV= [[UIView alloc] initWithFrame:screenRect];
+    
+    [displayV setAutoresizesSubviews:YES];
+    [camView setAutoresizesSubviews:YES];
+    
+    camView.autoresizingMask    = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    displayV.autoresizingMask   = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    
 	degreeRange = [camView bounds].size.width / ADJUST_BY;
     
     
 	[vc setView:displayV];
     [[vc view] insertSubview:camView atIndex:0];
-    
-    
     
 
 #if !TARGET_IPHONE_SIMULATOR
@@ -119,7 +122,7 @@
     
     AVCaptureVideoPreviewLayer *newCaptureVideoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:avCaptureSession];
 
-    [[camView layer] setMasksToBounds:YES];
+    [[camView layer] setMasksToBounds:NO];
 
     [newCaptureVideoPreviewLayer setFrame:[camView bounds]];
     
@@ -143,15 +146,21 @@
 	
 	[self setCenterLocation: newCenter];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) 
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:)
                                                  name: UIDeviceOrientationDidChangeNotification object:nil];
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];	
-    	
+    
+	
 	[self startListening];
     [self setCameraView:camView];
     [self setDisplayView:displayV];
     
+    
   	return self;
+}
+
+- (BOOL)shouldAutorotate{
+    return YES;
 }
 
 - (void)setShowsRadar:(BOOL)showsRadar{
@@ -167,7 +176,7 @@
     
     if(_showsRadar){
         
-        CGRect displayFrame = [self maximumUsableFrame];
+        CGRect displayFrame = [[UIScreen mainScreen] bounds];
         
         _radarView       = [[Radar alloc] initWithFrame:CGRectMake(displayFrame.size.width - 63, 2, 61, 61)];
         _radarViewPort   = [[RadarViewPortView alloc] initWithFrame:CGRectMake(displayFrame.size.width - 63, 2, 61, 61)];
@@ -180,33 +189,15 @@
         radarNorthLabel.text = @"N";
         radarNorthLabel.alpha = 0.8;
         
+        
+        _radarView.autoresizingMask         = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
+        _radarViewPort.autoresizingMask     = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
+        radarNorthLabel.autoresizingMask    = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
+        
         [self.displayView addSubview:_radarView];
         [self.displayView addSubview:_radarViewPort];
         [self.displayView addSubview:radarNorthLabel];
     }
-}
-
-- (CGRect)maximumUsableFrame{
-    CGRect maxFrame = [UIScreen mainScreen].applicationFrame;
-    
-    maxFrame.origin.x = 0;
-    maxFrame.origin.y = 0;
-    
-    if(cameraOrientation == UIDeviceOrientationLandscapeLeft || cameraOrientation == UIDeviceOrientationLandscapeRight){
-        NSInteger width, height;
-        width   = maxFrame.size.height;
-        height  = maxFrame.size.width;
-        maxFrame.size.height = height;
-        maxFrame.size.width = width;
-    }
-    
-    if(self.rootViewController.navigationController)
-        maxFrame.size.height -= self.rootViewController.navigationController.navigationBar.frame.size.height;
-    
-    if(self.rootViewController.tabBarController && !self.rootViewController.tabBarController.tabBar.hidden)
-        maxFrame.size.height -= self.rootViewController.tabBarController.tabBar.frame.size.height;
-    
-    return maxFrame;
 }
 
 -(void)unloadAV {
@@ -468,8 +459,6 @@
 
 - (void)updateLocations {
 	
-	[debugView setText: [NSString stringWithFormat:@"%.3f %.3f ", -radianToDegrees(viewAngle), radianToDegrees([[self centerCoordinate] azimuth])]];
-	
     NSMutableArray *radarPointValues = [[NSMutableArray alloc] initWithCapacity:[self.coordinates count]];
     
 	for (ARGeoCoordinate *item in [self coordinates]) {
@@ -577,88 +566,31 @@
     
     [self currentDeviceOrientation];
 	
+    [[self previewLayer].connection setVideoOrientation:cameraOrientation];
+    
     UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
 	
-	// Later we may handle the Orientation of Faceup to show a Map.  For now let's ignore it.
-	if (orientation != UIDeviceOrientationUnknown && orientation != UIDeviceOrientationFaceUp && orientation != UIDeviceOrientationFaceDown) {
-		
-		CGAffineTransform transform = CGAffineTransformMakeRotation(degreesToRadian(0));
-		//CGRect bounds = [[UIScreen mainScreen] bounds];
-        
-        CGRect bounds = [self maximumUsableFrame];
-        
-        switch (orientation) {
-            case UIDeviceOrientationLandscapeLeft:
-                transform		   = CGAffineTransformMakeRotation(degreesToRadian(90));
-                //bounds.size.width  = [[UIScreen mainScreen] bounds].size.height;
-                //bounds.size.height = [[UIScreen mainScreen] bounds].size.width;
-                break;
-            case UIDeviceOrientationLandscapeRight:
-                transform		   = CGAffineTransformMakeRotation(degreesToRadian(-90));
-                //bounds.size.width  = [[UIScreen mainScreen] bounds].size.height;
-                //bounds.size.height = [[UIScreen mainScreen] bounds].size.width;
-                break;
-            case UIDeviceOrientationPortraitUpsideDown:
-                transform = CGAffineTransformMakeRotation(degreesToRadian(180));
-                break;
-            default:
-                break;
-        }
-		
-        [[self cameraView] setFrame:bounds];
-        [[self previewLayer].connection setVideoOrientation:cameraOrientation];
-        [[self previewLayer] setFrame:bounds];
-  
-        [displayView setTransform:CGAffineTransformIdentity];
-		[displayView setTransform: transform];
-		[displayView setBounds:bounds];  
-        
-        if(_showsRadar){
-            [_radarView       setFrame:CGRectMake(bounds.size.width - 63, 2, 61, 61)];
-            [_radarViewPort   setFrame:CGRectMake(bounds.size.width - 63, 2, 61, 61)];
-            [radarNorthLabel setFrame:CGRectMake(bounds.size.width - 37, 2, 10, 10)];
-        }
-        
-		degreeRange = [self displayView].bounds.size.width / ADJUST_BY;
-		[self updateDebugMode:YES];
-        [[self delegate] didUpdateOrientation:orientation];
-        
-	}
+    CGRect newFrame = [[UIScreen mainScreen] bounds];
+    
+    switch (orientation) {
+        case UIDeviceOrientationLandscapeLeft:
+        case UIDeviceOrientationLandscapeRight:
+            newFrame.size.width     = [[UIScreen mainScreen] applicationFrame].size.height;
+            newFrame.size.height    = [[UIScreen mainScreen] applicationFrame].size.width;
+            break;
+        case UIDeviceOrientationPortraitUpsideDown:
+            break;
+        default:
+            break;
+    }
+    
+    [previewLayer setFrame:[self.cameraView bounds]];
+    
+    if ([previewLayer.connection isVideoOrientationSupported]) {
+        [previewLayer.connection setVideoOrientation:cameraOrientation];
+    }
+    
+    [previewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
+    
 }
-
-#pragma mark -	
-#pragma mark Debug features
-
-- (void)updateDebugMode:(BOOL)flag {
-
-	if ([self debugMode] == flag) {
-		CGRect debugRect = CGRectMake(0, [[self displayView] bounds].size.height -20, [[self displayView] bounds].size.width, 20);	
-		[debugView setFrame: debugRect];
-		return;
-	}
-	
-	if ([self debugMode]) {
-		debugView = [[UILabel alloc] initWithFrame:CGRectZero];
-		[debugView setTextAlignment: NSTextAlignmentCenter];
-		[debugView setText: @"Waiting..."];
-		[displayView addSubview:debugView];
-		[self setupDebugPostion];
-	}
-	else 
-		[debugView removeFromSuperview];
-
-}
-
-- (void)setupDebugPostion{
-	
-	if ([self debugMode]) {
-		[debugView sizeToFit];
-		CGRect displayRect = [[self displayView] bounds];
-		
-		[debugView setFrame:CGRectMake(0, displayRect.size.height - [debugView bounds].size.height,  
-                                       displayRect.size.width, [debugView bounds].size.height)];
-	}
-}
-
-
 @end

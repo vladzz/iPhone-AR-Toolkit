@@ -30,7 +30,6 @@
     
 	NSMutableArray              *coordinates;
     
-    UILabel                     *debugView;
     AVCaptureSession            *captureSession;
     AVCaptureVideoPreviewLayer  *previewLayer;
     
@@ -67,14 +66,10 @@
 
 @property (nonatomic, assign) id<ARDelegate> delegate;
 
-
-@property (retain) UILabel  *debugView;
-
 @property (nonatomic,retain) NSMutableArray		*coordinates;
 
 - (id)initWithViewController:(UIViewController *)theView withDelgate:(id<ARDelegate>) aDelegate;
 
-- (void) setupDebugPostion;
 - (void) updateLocations;
 - (void) stopListening;
 
@@ -84,7 +79,6 @@
 // Removing coordinates
 - (void)removeCoordinate:(ARGeoCoordinate *)coordinate;
 - (void)removeCoordinates:(NSArray *)coordinateArray;
-- (void) updateDebugMode:(BOOL) flag;
 
 
 @end

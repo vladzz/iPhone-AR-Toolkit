@@ -21,13 +21,17 @@
     [super viewDidLoad];
 }
 
+- (void)viewDidAppear:(BOOL)animated{
+    _arViewController = nil;
+}
+
 - (void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 - (IBAction)startAR:(id)sender {
-    if([ARKit deviceSupportsAR]){
+    //if([ARKit deviceSupportsAR]){
         _arViewController = [[ARViewController alloc] initWithDelegate:self];
         //[_arViewController setShowsRadar:YES];
         //[_arViewController setRadarBackgroundColour:[UIColor blackColor]];
@@ -37,18 +41,50 @@
         [_arViewController setOnlyShowItemsWithinRadarRange:YES];
         [_arViewController setModalTransitionStyle: UIModalTransitionStyleFlipHorizontal];
         [self presentViewController:_arViewController animated:YES completion:nil];
-    }
+    //}
 }
 
 - (IBAction)startARWithoutCloseButton:(id)sender {
-    if([ARKit deviceSupportsAR]){
+    //if([ARKit deviceSupportsAR]){
         _arViewController = [[ARViewController alloc] initWithDelegate:self];
         _arViewController.showsCloseButton = false;
         [_arViewController setRadarRange:4000.0];
         [_arViewController setOnlyShowItemsWithinRadarRange:YES];
         [_arViewController setModalTransitionStyle: UIModalTransitionStyleFlipHorizontal];
         [self presentViewController:_arViewController animated:YES completion:nil];
-    }
+    //}
+}
+
+- (IBAction)startARNothing:(id)sender {
+    //if([ARKit deviceSupportsAR]){
+    _arViewController = [[ARViewController alloc] initWithDelegate:self];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+    [_arViewController setRadarRange:4000.0];
+    [_arViewController setOnlyShowItemsWithinRadarRange:YES];
+    [_arViewController setModalTransitionStyle: UIModalTransitionStyleFlipHorizontal];
+    [self presentViewController:_arViewController animated:YES completion:nil];
+    //}
+}
+
+- (IBAction)startARNavBar:(id)sender {
+    //if([ARKit deviceSupportsAR]){
+    _arViewController = [[ARViewController alloc] initWithDelegate:self];
+    _arViewController.showsCloseButton = false;
+    [_arViewController setHidesBottomBarWhenPushed:YES];
+    [_arViewController setRadarRange:4000.0];
+    [_arViewController setOnlyShowItemsWithinRadarRange:YES];
+    [self.navigationController pushViewController:_arViewController animated:YES];
+    //}
+}
+
+- (IBAction)startAREverything:(id)sender {
+    //if([ARKit deviceSupportsAR]){
+    _arViewController = [[ARViewController alloc] initWithDelegate:self];
+    _arViewController.showsCloseButton = false;
+    [_arViewController setRadarRange:4000.0];
+    [_arViewController setOnlyShowItemsWithinRadarRange:YES];
+    [self.navigationController pushViewController:_arViewController animated:YES];
+    //}
 }
 
 - (NSMutableArray *)geoLocations{

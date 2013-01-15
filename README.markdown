@@ -17,6 +17,11 @@ This version of the iPhone ARKit is a forked version of the ARKit started on Git
 * ~~Improve the markers (aesthetically) (Completed)~~
 * ~~Add a Radar Control (Completed)~~
 
+## In the pipeline ##
+* iOS 5 Support
+* Better callout placement
+* API for useful data to be built in (such as country lists)
+
 iPhone ARKit's APIs are modeled after MapKit's. For an overview of MapKit, please read [the documentation](http://developer.apple.com/iphone/library/documentation/MapKit/Reference/MapKit_Framework_Reference/index.html) for more information.
 
 ## How to Use ##

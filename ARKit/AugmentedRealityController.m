@@ -261,7 +261,7 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading {
     
     latestHeading = degreesToRadian(newHeading.magneticHeading);
-    
+        
     //Let's only update the Center Coordinate when we have adjusted by more than X degrees
     if (fabs(latestHeading-prevHeading) >= degreesToRadian(DEGREE_TO_UPDATE) || prevHeading == HEADING_NOT_SET) {
         prevHeading = latestHeading;
@@ -474,17 +474,19 @@
 				scaleFactor = scaleFactor - [self minimumScaleFactor]*([item radialDistance] / [self maximumScaleDistance]);
             }
 
-			float width	 = [markerView bounds].size.width  * scaleFactor;
-			float height = [markerView bounds].size.height * scaleFactor;
+			float width	 = [markerView frame].size.width  * scaleFactor;
+			float height = [markerView frame].size.height * scaleFactor;
 
 			[markerView setFrame:CGRectMake(loc.x - width / 2.0, loc.y, width, height)];
             [markerView setNeedsDisplay];
 			
 			CATransform3D transform = CATransform3DIdentity;
-			
+            
 			// Set the scale if it needs it. Scale the perspective transform if we have one.
-			if ([self scaleViewsBasedOnDistance]) 
+			if ([self scaleViewsBasedOnDistance]) {
 				transform = CATransform3DScale(transform, scaleFactor, scaleFactor, scaleFactor);
+            }
+            
 		
 			if ([self rotateViewsBasedOnPerspective]) {
 				transform.m34 = 1.0 / 300.0;
